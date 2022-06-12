@@ -21,22 +21,22 @@ type UpdateBookInput struct {
 
 // GET /books
 // Get all books
-func FindBooks(ctx *gin.Context) {
+func FindBooks(c *gin.Context) {
 	var books []models.Book
 	models.DB.Find(&books)
 
-	ctx.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"data": books,
 	})
 }
 
 // POST /books
 // Create a new book
-func CreateBook(ctx *gin.Context) {
+func CreateBook(c *gin.Context) {
 	// validate input
 	var input CreateBookInput
-	if err := ctx.ShouldBindJSON(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -49,35 +49,35 @@ func CreateBook(ctx *gin.Context) {
 	}
 	models.DB.Create(&book)
 
-	ctx.JSON(http.StatusCreated, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"data": book,
 	})
 }
 
 // GET /books/:id
 // Find a book
-func FindBook(ctx *gin.Context) {
+func FindBook(c *gin.Context) {
 	var book models.Book
 
-	if err := models.DB.Where("id = ?", ctx.Param("id")).First(&book).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"data": book,
 	})
 }
 
 // PATCH /books/:id
 // Update book
-func UpdateBook(ctx *gin.Context) {
+func UpdateBook(c *gin.Context) {
 	// get model if exist
 	var book models.Book
-	if err := models.DB.Where("id = ?", ctx.Param("id")).First(&book).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
 		return
@@ -85,15 +85,15 @@ func UpdateBook(ctx *gin.Context) {
 
 	// validate input
 	var input UpdateBookInput
-	if err := ctx.ShouldBindJSON(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
 	models.DB.Model(&book).Updates(input)
-	ctx.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"data": book,
 	})
 }
