@@ -54,7 +54,12 @@ func CreateBook(c *gin.Context) {
 		Title:  input.Title,
 		Author: input.Author,
 	}
-	models.DB.Create(&book)
+
+	if err := models.DB.Create(&book).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"data": book,
@@ -66,7 +71,6 @@ func CreateBook(c *gin.Context) {
 func FindBook(c *gin.Context) {
 	var book models.Book
 
-	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
