@@ -11,13 +11,21 @@ import (
 
 // structs
 type CreateBookInput struct {
-	Title  string `json:"title" binding:"required"`
-	Author string `json:"author" binding:"required"`
+	Title         string `json:"title" binding:"required"`
+	Author        string `json:"author" binding:"required"`
+	ISBN          string `json:"isbn" binding:"required"`
+	Description   string `json:"description" binding:"required"`
+	Publisher     string `json:"publisher" binding:"required"`
+	NumberOfPages uint   `json:"number_of_pages" binding:"required"`
 }
 
 type UpdateBookInput struct {
-	Title  string `json:"title"`
-	Author string `json:"author"`
+	Title         string `json:"title"`
+	Author        string `json:"author"`
+	ISBN          string `json:"isbn"`
+	Description   string `json:"description"`
+	Publisher     string `json:"publisher"`
+	NumberOfPages uint   `json:"number_of_pages"`
 }
 
 // GET /books
@@ -51,14 +59,19 @@ func CreateBook(c *gin.Context) {
 
 	// create book
 	book := models.Book{
-		Title:  input.Title,
-		Author: input.Author,
+		Title:         input.Title,
+		Author:        input.Author,
+		ISBN:          input.ISBN,
+		Description:   input.Description,
+		Publisher:     input.Publisher,
+		NumberOfPages: input.NumberOfPages,
 	}
 
 	if err := models.DB.Create(&book).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
@@ -105,15 +118,20 @@ func UpdateBook(c *gin.Context) {
 	}
 
 	updatedBook := models.Book{
-		Title:     input.Title,
-		Author:    input.Author,
-		UpdatedAt: time.Now(),
+		Title:         input.Title,
+		Author:        input.Author,
+		ISBN:          input.ISBN,
+		Description:   input.Description,
+		Publisher:     input.Publisher,
+		NumberOfPages: input.NumberOfPages,
+		UpdatedAt:     time.Now(),
 	}
 
 	if err := models.DB.Model(&book).Updates(updatedBook).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -133,9 +151,10 @@ func DeleteBook(c *gin.Context) {
 	}
 
 	if err := models.DB.Delete(&book).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
