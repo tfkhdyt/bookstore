@@ -1,6 +1,8 @@
 package models
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -11,7 +13,8 @@ func ConnectDatabase() {
 	database, err := gorm.Open("sqlite3", "test.db")
 
 	if err != nil {
-		panic("Failed to connect to database!")
+		// panic("Failed to connect to database!")
+		log.Fatal("Failed to connect to database!")
 	}
 
 	database.AutoMigrate(&Book{})
