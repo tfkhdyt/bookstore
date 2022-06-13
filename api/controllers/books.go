@@ -3,6 +3,8 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -40,6 +42,60 @@ func FindBooks(c *gin.Context) {
 		return
 	}
 
+	// query checking
+	var filteredBooks []models.Book
+	fmt.Println(c.Params)
+	if c.Query("title") != "" {
+		for _, book := range books {
+			if strings.Contains(strings.ToLower(book.Title), strings.ToLower(c.Query("title"))) {
+				filteredBooks = append(filteredBooks, book)
+			}
+		}
+	}
+	if c.Query("author") != "" {
+		for _, book := range books {
+			if strings.Contains(strings.ToLower(book.Author), strings.ToLower(c.Query("author"))) {
+				filteredBooks = append(filteredBooks, book)
+			}
+		}
+	}
+	if c.Query("isbn") != "" {
+		for _, book := range books {
+			if strings.Contains(strings.ToLower(book.ISBN), strings.ToLower(c.Query("isbn"))) {
+				filteredBooks = append(filteredBooks, book)
+			}
+		}
+	}
+	if c.Query("publisher") != "" {
+		for _, book := range books {
+			if strings.Contains(strings.ToLower(book.Publisher), strings.ToLower(c.Query("publisher"))) {
+				filteredBooks = append(filteredBooks, book)
+			}
+		}
+	}
+	if c.Query("number_of_pages") != "" {
+		numberOfPages, err := strconv.ParseInt(c.Query("number_of_pages"), 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+		}
+		for _, book := range books {
+			if book.NumberOfPages == uint(numberOfPages) {
+				filteredBooks = append(filteredBooks, book)
+			}
+		}
+	}
+
+	if len(filteredBooks) > 0 {
+		fmt.Println("Filtered books printed!")
+		c.JSON(http.StatusOK, gin.H{
+			"data": filteredBooks,
+		})
+		return
+	}
+
+	fmt.Println("All books printed!")
 	c.JSON(http.StatusOK, gin.H{
 		"data": books,
 	})
