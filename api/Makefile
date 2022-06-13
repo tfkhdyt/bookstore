@@ -3,6 +3,6 @@ dev:
 
 build: 
 	@rm -fr ./dist/* && \
-	go build -o "./dist/linux" . && \
-	GOOS=windows go build -o "./dist/windows.exe" . && \
-	GOOS=darwin go build -o "./dist/mac" .
+	go build -o "./dist/bookstore-linux" . && \
+	GOOS=windows go build -o "./dist/bookstore-windows.exe" . && \
+	GOOS=darwin go build -o "./dist/bookstore-mac" .
