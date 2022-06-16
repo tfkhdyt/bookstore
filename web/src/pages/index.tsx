@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import useSWR from 'swr';
 
 import Error from '../components/Error';
@@ -27,7 +28,14 @@ const Home: NextPage = () => {
 
   // console.log(data);
 
-  return <Table books={data} />;
+  return (
+    <>
+      <Head>
+        <title>Manage Books | Bookstore</title>
+      </Head>
+      <Table books={data} />
+    </>
+  );
 };
 
 export default Home;

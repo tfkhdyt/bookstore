@@ -20,7 +20,7 @@ const Table = ({ books }: TableProps) => {
         Manage Books
       </h2>
       <div className='overflow-x-auto'>
-        <table className='min-w-full text-xs'>
+        <table className='min-w-full text-sm'>
           <thead className='dark:bg-coolGray-700 rounded-t-lg'>
             <tr className='text-right'>
               <th title='ID' className='p-3 text-left'>
@@ -69,7 +69,7 @@ const Table = ({ books }: TableProps) => {
                     <td className='px-3 py-2'>
                       <span>{book.isbn}</span>
                     </td>
-                    <td className='px-3 py-2 text-left'>
+                    <td className='text-ellipsis px-3 py-2 text-left'>
                       <span>{book.description}</span>
                     </td>
                     <td className='px-3 py-2 text-left'>
@@ -81,13 +81,19 @@ const Table = ({ books }: TableProps) => {
                     <td className='space-x-2 py-2 text-center'>
                       <button
                         type='button'
-                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-yellow-500 px-8 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'
+                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-blue-500 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-blue-600 active:bg-blue-700'
+                      >
+                        Detail
+                      </button>
+                      <button
+                        type='button'
+                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-yellow-500 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'
                       >
                         Update
                       </button>
                       <button
                         type='button'
-                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-red-400 px-8 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
+                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-red-400 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
                       >
                         Delete
                       </button>
