@@ -1,11 +1,15 @@
+import Link from 'next/link';
+
 export interface Book {
-  id: number;
+  id?: number;
   title: string;
   author: string;
   isbn: string;
   description: string;
   publisher: string;
-  number_of_pages: number;
+  number_of_pages: number | string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 interface TableProps {
@@ -15,13 +19,13 @@ interface TableProps {
 const Table = ({ books }: TableProps) => {
   console.log(books);
   return (
-    <div className='dark:text-coolGray-100 dark:bg-coolGray-900 container mx-auto rounded-md p-2 sm:p-4'>
+    <div className='container mx-auto rounded-md p-2 sm:p-4'>
       <h2 className='mb-3 text-2xl font-semibold leading-tight'>
         Manage Books
       </h2>
-      <div className='overflow-x-auto'>
+      <div className='overflow-x-auto rounded-xl '>
         <table className='min-w-full text-sm'>
-          <thead className='dark:bg-coolGray-700 rounded-t-lg'>
+          <thead className='bg-slate-100 text-gray-600'>
             <tr className='text-right'>
               <th title='ID' className='p-3 text-left'>
                 ID
@@ -35,7 +39,7 @@ const Table = ({ books }: TableProps) => {
               <th title='ISBN' className='p-3'>
                 ISBN
               </th>
-              <th title='Description' className='p-3 text-left'>
+              <th title='Description' className='w-80 p-3 text-left'>
                 Description
               </th>
               <th title='Publisher' className='p-3 text-left'>
@@ -44,7 +48,7 @@ const Table = ({ books }: TableProps) => {
               <th title='Number of Pages' className='p-3'>
                 # Pages
               </th>
-              <th title='Actions' className='py-3 text-center'>
+              <th title='Actions' className='p-3 text-center'>
                 Actions
               </th>
             </tr>
@@ -55,45 +59,46 @@ const Table = ({ books }: TableProps) => {
                 return (
                   <tr
                     key={index}
-                    className='dark:border-coolGray-700 dark:bg-coolGray-800 border-b border-opacity-20 text-right'
+                    className='border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right'
                   >
-                    <td className='px-3 py-2 text-left'>
+                    <td className='px-3 py-1 text-left'>
                       <span>{book.id}</span>
                     </td>
-                    <td className='px-3 py-2 text-left'>
+                    <td className='px-3 py-1 text-left'>
                       <span>{book.title}</span>
                     </td>
-                    <td className='px-3 py-2 text-left'>
+                    <td className='px-3 py-1 text-left'>
                       <span>{book.author}</span>
                     </td>
-                    <td className='px-3 py-2'>
+                    <td className='px-3 py-1'>
                       <span>{book.isbn}</span>
                     </td>
-                    <td className='text-ellipsis px-3 py-2 text-left'>
-                      <span>{book.description}</span>
+                    <td className='px-3 py-1 text-left'>
+                      <span>
+                        {book.description.split(' ').slice(0, 20).join(' ')}
+                        {book.description.split(' ').length >= 20 && '...'}
+                      </span>
                     </td>
-                    <td className='px-3 py-2 text-left'>
+                    <td className='px-3 py-1 text-left'>
                       <span>{book.publisher}</span>
                     </td>
-                    <td className='px-3 py-2'>
+                    <td className='px-3 py-1'>
                       <span>{book.number_of_pages}</span>
                     </td>
-                    <td className='space-x-2 py-2 text-center'>
+                    <td className='grid gap-2 p-3'>
+                      <Link href={`/books/${book.id}`}>
+                        <a className='mx-auto w-full rounded bg-blue-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-blue-600 active:bg-blue-700'>
+                          Detail
+                        </a>
+                      </Link>
+                      <Link href={`/books/${book.id}/update`}>
+                        <a className='mx-auto w-full rounded bg-yellow-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'>
+                          Update
+                        </a>
+                      </Link>
                       <button
                         type='button'
-                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-blue-500 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-blue-600 active:bg-blue-700'
-                      >
-                        Detail
-                      </button>
-                      <button
-                        type='button'
-                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-yellow-500 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'
-                      >
-                        Update
-                      </button>
-                      <button
-                        type='button'
-                        className='dark:bg-coolGray-100 dark:text-coolGray-800 rounded-full bg-red-400 px-4 py-3 font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
+                        className='mx-auto w-full rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
                       >
                         Delete
                       </button>
