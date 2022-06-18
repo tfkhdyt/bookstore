@@ -1,10 +1,13 @@
 import { useFormik } from 'formik';
 import Head from 'next/head';
+import { ChangeEvent, useState } from 'react';
 import * as Yup from 'yup';
 
 import { axiosInstance } from '../lib/axios';
+import { uploadImage } from '../lib/uploadImage';
 
 const AddBook = () => {
+  const [coverImage, setCoverImage] = useState<File>();
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -12,7 +15,8 @@ const AddBook = () => {
       isbn: '',
       description: '',
       publisher: '',
-      number_of_pages: 0,
+      numberOfPages: 0,
+      coverImage: '',
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Required'),
@@ -20,15 +24,22 @@ const AddBook = () => {
       isbn: Yup.string().required('Required'),
       description: Yup.string().required('Required'),
       publisher: Yup.string().required('Required'),
-      number_of_pages: Yup.number()
+      numberOfPages: Yup.number()
         .required('Required')
         .min(1, 'Must be more than 0'),
     }),
     onSubmit: async (values) => {
-      console.log(values);
-      const result = await axiosInstance.post('/books', values).catch((err) => {
-        console.error(err);
-      });
+      // console.log(values);
+      const { url } = await uploadImage(coverImage as File);
+
+      const result = await axiosInstance
+        .post('/books', {
+          ...values,
+          coverImage: url,
+        })
+        .catch((err) => {
+          console.error(err);
+        });
 
       if (result?.data) {
         alert(`${values.title} added successfully!`);
@@ -43,7 +54,7 @@ const AddBook = () => {
       </Head>
       <section className='container w-full rounded-md p-2 sm:p-4'>
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
           <div className='mt-4 grid grid-cols-2 gap-6'>
             <div>
               <label
@@ -129,17 +140,16 @@ const AddBook = () => {
               >
                 Number of Pages
               </label>
-              {formik.touched.number_of_pages &&
-                formik.errors.number_of_pages && (
-                  <label className='float-right font-bold italic text-red-500'>
-                    {formik.errors.number_of_pages}
-                  </label>
-                )}
+              {formik.touched.numberOfPages && formik.errors.numberOfPages && (
+                <label className='float-right font-bold italic text-red-500'>
+                  {formik.errors.numberOfPages}
+                </label>
+              )}
               <input
-                id='number_of_pages'
+                id='numberOfPages'
                 type='number'
                 min={0}
-                {...formik.getFieldProps('number_of_pages')}
+                {...formik.getFieldProps('numberOfPages')}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -159,6 +169,25 @@ const AddBook = () => {
                 id='description'
                 {...formik.getFieldProps('description')}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
+              />
+            </div>
+            <div>
+              <label
+                className='text-gray-700 dark:text-gray-200'
+                htmlFor='coverImage'
+              >
+                Cover Image
+              </label>
+              <input
+                id='coverImage'
+                type='file'
+                name='coverImage'
+                className='mt-2 block'
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  if (!event.target.files) return;
+                  const image = event.target.files[0];
+                  setCoverImage(image);
+                }}
               />
             </div>
           </div>

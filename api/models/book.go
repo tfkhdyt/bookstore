@@ -11,7 +11,8 @@ type Book struct {
 	ISBN          string    `json:"isbn"`
 	Description   string    `json:"description"`
 	Publisher     string    `json:"publisher"`
-	NumberOfPages uint      `json:"number_of_pages"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
+	NumberOfPages uint      `json:"numberOfPages"`
+	CoverImage    string    `json:"coverImage"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }

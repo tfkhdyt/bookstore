@@ -7,9 +7,10 @@ export interface Book {
   isbn: string;
   description: string;
   publisher: string;
-  number_of_pages: number | string;
-  created_at?: Date;
-  updated_at?: Date;
+  numberOfPages: number | string;
+  coverImage: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface TableProps {
@@ -83,7 +84,7 @@ const Table = ({ books }: TableProps) => {
                       <span>{book.publisher}</span>
                     </td>
                     <td className='px-3 py-1'>
-                      <span>{book.number_of_pages}</span>
+                      <span>{book.numberOfPages}</span>
                     </td>
                     <td className='grid gap-2 p-3'>
                       <Link href={`/books/${book.id}`}>

@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -42,45 +43,64 @@ const Detail = () => {
         <h1 className='mb-3 text-2xl font-semibold leading-tight'>
           Book Detail: {data.title}
         </h1>
-        <div className='grid grid-cols-2 gap-4'>
-          <div className='ml-8 text-lg'>
-            <ul className='list-disc'>
-              <li>Title : {data.title}</li>
-              <li>Author : {data.author}</li>
-              <li>ISBN : {data.isbn}</li>
-              <li>Description :</li>
+        <div className='grid grid-cols-2 gap-4 '>
+          <div className='text-lg'>
+            <ul>
+              <li>Title: </li>
+              <p>{data.title}</p>
+              <li>Author: </li>
+              <p>{data.author}</p>
+              <li>ISBN: </li>
+              <p>{data.isbn}</p>
+              <li>Description:</li>
               <p className='text-base'>{data.description}</p>
-              <li>Publisher : {data.publisher}</li>
-              <li>Number of pages : {data.number_of_pages}</li>
-              <li>
-                Created at :{' '}
+              <li>Publisher: </li>
+              <p>{data.publisher}</p>
+              <li>Number of pages: </li>
+              <p>{data.numberOfPages}</p>
+              <li>Created at: </li>
+              <p>
+                {' '}
                 {format(
-                  new Date(data.created_at as Date),
+                  new Date(data.createdAt as Date),
                   'iiii, d MMMM y H:mm:ss'
                 )}
-              </li>
-              <li>
-                Updated at :{' '}
+              </p>
+              <li>Updated at: </li>
+              <p>
+                {' '}
                 {format(
-                  new Date(data.updated_at as Date),
+                  new Date(data.updatedAt as Date),
                   'iiii, d MMMM y H:mm:ss'
                 )}
-              </li>
+              </p>
             </ul>
           </div>
-          <div className='flex w-2/12 flex-col space-y-4'>
-            <Link href={`/books/${data.id}/update`}>
-              <a className='mx-auto w-full rounded bg-yellow-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'>
-                Update
-              </a>
-            </Link>
-            <button
-              type='button'
-              className='mx-auto w-full rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
-            >
-              Delete
-            </button>
+          <div>
+            <div className='relative h-full w-full'>
+              {data.coverImage && (
+                <Image
+                  src={data.coverImage}
+                  alt={`${data.title} cover image`}
+                  layout='fill'
+                  objectFit='contain'
+                />
+              )}
+            </div>
           </div>
+        </div>
+        <div className='float-left mt-4 flex space-x-4'>
+          <Link href={`/books/${data.id}/update`}>
+            <a className='mx-auto rounded bg-yellow-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'>
+              Update
+            </a>
+          </Link>
+          <button
+            type='button'
+            className='mx-auto rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
+          >
+            Delete
+          </button>
         </div>
       </div>
     </>

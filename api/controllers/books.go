@@ -18,7 +18,8 @@ type CreateBookInput struct {
 	ISBN          string `json:"isbn" binding:"required"`
 	Description   string `json:"description" binding:"required"`
 	Publisher     string `json:"publisher" binding:"required"`
-	NumberOfPages uint   `json:"number_of_pages" binding:"required"`
+	NumberOfPages uint   `json:"numberOfPages" binding:"required"`
+	CoverImage    string `json:"coverImage" binding:"required"`
 }
 
 type UpdateBookInput struct {
@@ -27,7 +28,7 @@ type UpdateBookInput struct {
 	ISBN          string `json:"isbn"`
 	Description   string `json:"description"`
 	Publisher     string `json:"publisher"`
-	NumberOfPages uint   `json:"number_of_pages"`
+	NumberOfPages uint   `json:"numberOfPages"`
 }
 
 // GET /books
@@ -73,8 +74,8 @@ func FindBooks(c *gin.Context) {
 			}
 		}
 	}
-	if c.Query("number_of_pages") != "" {
-		numberOfPages, err := strconv.ParseInt(c.Query("number_of_pages"), 10, 64)
+	if c.Query("numberOfPages") != "" {
+		numberOfPages, err := strconv.ParseInt(c.Query("numberOfPages"), 10, 64)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -121,6 +122,7 @@ func CreateBook(c *gin.Context) {
 		Description:   input.Description,
 		Publisher:     input.Publisher,
 		NumberOfPages: input.NumberOfPages,
+		CoverImage:    input.CoverImage,
 	}
 
 	if err := models.DB.Create(&book).Error; err != nil {
