@@ -20,7 +20,7 @@ interface TableProps {
 const Table = ({ books }: TableProps) => {
   console.log(books);
   return (
-    <div className='container mx-auto rounded-md p-2 sm:p-4'>
+    <>
       <h2 className='mb-3 text-2xl font-semibold leading-tight'>
         Manage Books
       </h2>
@@ -60,7 +60,7 @@ const Table = ({ books }: TableProps) => {
                 return (
                   <tr
                     key={index}
-                    className='border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right'
+                    className='border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right transition-colors duration-300 ease-in-out hover:bg-gray-200'
                   >
                     <td className='px-3 py-1 text-left'>
                       <span>{book.id}</span>
@@ -110,7 +110,7 @@ const Table = ({ books }: TableProps) => {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 };
 

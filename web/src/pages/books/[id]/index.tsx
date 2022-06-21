@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
+import Breadcrumb from '../../../components/Breadcrumb';
 import Error from '../../../components/Error';
 import Loading from '../../../components/Loading';
 import { Book } from '../../../components/Table';
@@ -39,11 +40,23 @@ const Detail = () => {
       <Head>
         <title>{data.title} | Book Detail</title>
       </Head>
-      <div className='container mx-auto rounded-md p-2 sm:p-4'>
+      <div>
+        <Breadcrumb
+          content={[
+            {
+              link: '/',
+              label: 'Manage Books',
+            },
+            {
+              link: `/books/${data.id}`,
+              label: data.title,
+            },
+          ]}
+        />
         <h1 className='mb-3 text-2xl font-semibold leading-tight'>
           Book Detail: {data.title}
         </h1>
-        <div className='grid grid-cols-2 gap-4 '>
+        <div className='grid grid-cols-2 gap-4'>
           <div className='text-lg'>
             <ul>
               <li>Title: </li>

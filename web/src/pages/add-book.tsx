@@ -52,7 +52,7 @@ const AddBook = () => {
       <Head>
         <title>Add Book | Bookstore</title>
       </Head>
-      <section className='container w-full rounded-md p-2 sm:p-4'>
+      <section>
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
         <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
           <div className='mt-4 grid grid-cols-2 gap-6'>
