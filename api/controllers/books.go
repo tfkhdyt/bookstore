@@ -29,6 +29,7 @@ type UpdateBookInput struct {
 	Description   string `json:"description"`
 	Publisher     string `json:"publisher"`
 	NumberOfPages uint   `json:"numberOfPages"`
+	CoverImage    string `json:"coverImage" binding:"required"`
 }
 
 // GET /books
@@ -182,6 +183,7 @@ func UpdateBook(c *gin.Context) {
 		Description:   input.Description,
 		Publisher:     input.Publisher,
 		NumberOfPages: input.NumberOfPages,
+		CoverImage:    input.CoverImage,
 		UpdatedAt:     time.Now(),
 	}
 
