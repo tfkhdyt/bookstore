@@ -1,51 +1,42 @@
-import { useFormik } from 'formik';
 import Head from 'next/head';
-import { ChangeEvent, useState } from 'react';
-import * as Yup from 'yup';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { Book } from '../components/Table';
 import { axiosInstance } from '../lib/axios';
 import { uploadImage } from '../lib/uploadImage';
 
 const AddBook = () => {
   const [coverImage, setCoverImage] = useState<File>();
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      author: '',
-      isbn: '',
-      description: '',
-      publisher: '',
-      numberOfPages: 0,
-      coverImage: '',
-    },
-    validationSchema: Yup.object({
-      title: Yup.string().required('Required'),
-      author: Yup.string().required('Required'),
-      isbn: Yup.string().required('Required'),
-      description: Yup.string().required('Required'),
-      publisher: Yup.string().required('Required'),
-      numberOfPages: Yup.number()
-        .required('Required')
-        .min(1, 'Must be more than 0'),
-    }),
-    onSubmit: async (values) => {
-      // console.log(values);
-      const { secure_url } = await uploadImage(coverImage as File);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<Book>();
 
-      const result = await axiosInstance
-        .post('/books', {
-          ...values,
-          coverImage: secure_url,
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+  const onSubmit = async (data: Book) => {
+    const { secure_url } = await uploadImage(coverImage as File);
 
-      if (result?.data) {
-        alert(`${values.title} added successfully!`);
-      }
-    },
-  });
+    const result = await axiosInstance
+      .post('/books', {
+        ...data,
+        numberOfPages: Number(data.numberOfPages),
+        coverImage: secure_url,
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    if (result?.data) {
+      alert(`${data.title} added successfully!`);
+    }
+  };
+
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitSuccessful]);
 
   return (
     <>
@@ -54,7 +45,7 @@ const AddBook = () => {
       </Head>
       <main>
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
-        <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
             <div>
               <label
@@ -63,15 +54,16 @@ const AddBook = () => {
               >
                 Title
               </label>
-              {formik.touched.title && formik.errors.title && (
+              {errors.title && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.title}
+                  Title is required
                 </label>
               )}
               <input
-                id='title'
                 type='text'
-                {...formik.getFieldProps('title')}
+                {...register('title', {
+                  required: true,
+                })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -82,15 +74,14 @@ const AddBook = () => {
               >
                 Author
               </label>
-              {formik.touched.author && formik.errors.author && (
+              {errors.author && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.author}
+                  Author is required
                 </label>
               )}
               <input
-                id='author'
                 type='text'
-                {...formik.getFieldProps('author')}
+                {...register('author', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -101,15 +92,14 @@ const AddBook = () => {
               >
                 ISBN
               </label>
-              {formik.touched.isbn && formik.errors.isbn && (
+              {errors.isbn && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.isbn}
+                  ISBN is required
                 </label>
               )}
               <input
-                id='isbn'
                 type='text'
-                {...formik.getFieldProps('isbn')}
+                {...register('isbn', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -121,15 +111,14 @@ const AddBook = () => {
               >
                 Publisher
               </label>
-              {formik.touched.publisher && formik.errors.publisher && (
+              {errors.publisher && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.publisher}
+                  Publisher is required
                 </label>
               )}
               <input
-                id='publisher'
                 type='text'
-                {...formik.getFieldProps('publisher')}
+                {...register('publisher', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -140,16 +129,20 @@ const AddBook = () => {
               >
                 Number of Pages
               </label>
-              {formik.touched.numberOfPages && formik.errors.numberOfPages && (
+              {errors.numberOfPages?.type === 'min' && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.numberOfPages}
+                  Number of pages should be more than 0
+                </label>
+              )}
+              {errors.numberOfPages?.type === 'required' && (
+                <label className='float-right font-bold italic text-red-500'>
+                  Number of pages is required
                 </label>
               )}
               <input
-                id='numberOfPages'
                 type='number'
                 min={0}
-                {...formik.getFieldProps('numberOfPages')}
+                {...register('numberOfPages', { required: true, min: 0 })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -160,14 +153,14 @@ const AddBook = () => {
               >
                 Description
               </label>
-              {formik.touched.description && formik.errors.description && (
+              {errors.description && (
                 <label className='float-right font-bold italic text-red-500'>
-                  {formik.errors.description}
+                  Description is required
                 </label>
               )}
               <textarea
                 id='description'
-                {...formik.getFieldProps('description')}
+                {...register('description', { required: true })}
                 className='mt-2 block h-32 w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
@@ -198,9 +191,9 @@ const AddBook = () => {
             <button
               className='flex transform items-center justify-center space-x-2 rounded-md bg-gray-700 px-6 py-2 leading-5 text-white transition duration-200 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none disabled:cursor-not-allowed'
               type='submit'
-              disabled={formik.isSubmitting}
+              disabled={isSubmitting}
             >
-              {formik.isSubmitting && (
+              {isSubmitting && (
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   width='24'

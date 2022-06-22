@@ -7,7 +7,7 @@ export interface Book {
   isbn: string;
   description: string;
   publisher: string;
-  numberOfPages: number | string;
+  numberOfPages: number;
   coverImage: string;
   createdAt?: Date;
   updatedAt?: Date;
