@@ -44,9 +44,9 @@ const Table = ({ books }: TableProps) => {
               <th title='ISBN' className='p-3'>
                 ISBN
               </th>
-              <th title='Description' className='w-80 p-3 text-left'>
+              {/* <th title='Description' className='w-80 p-3 text-left'>
                 Description
-              </th>
+              </th> */}
               <th title='Publisher' className='p-3 text-left'>
                 Publisher
               </th>
@@ -90,12 +90,12 @@ const Table = ({ books }: TableProps) => {
                     <td className='px-3 py-1'>
                       <span>{book.isbn}</span>
                     </td>
-                    <td className='px-3 py-1 text-left'>
+                    {/* <td className='px-3 py-1 text-left'>
                       <span>
                         {book.description.split(' ').slice(0, 20).join(' ')}
                         {book.description.split(' ').length >= 20 && '...'}
                       </span>
-                    </td>
+                    </td> */}
                     <td className='px-3 py-1 text-left'>
                       <span>{book.publisher}</span>
                     </td>
