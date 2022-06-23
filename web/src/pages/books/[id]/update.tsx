@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
