@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export interface Book {
@@ -30,6 +31,9 @@ const Table = ({ books }: TableProps) => {
             <tr className='text-right'>
               <th title='ID' className='p-3 text-left'>
                 ID
+              </th>
+              <th title='Cover Image' className='p-3 text-left'>
+                Cover Image
               </th>
               <th title='Title' className='p-3 text-left'>
                 Title
@@ -64,6 +68,18 @@ const Table = ({ books }: TableProps) => {
                   >
                     <td className='px-3 py-1 text-left'>
                       <span>{book.id}</span>
+                    </td>
+                    <td className='relative px-3 py-1 text-left'>
+                      {book.coverImage ? (
+                        <Image
+                          src={book.coverImage}
+                          alt={`${book.title} cover image`}
+                          layout='fill'
+                          objectFit='contain'
+                        />
+                      ) : (
+                        <p>No image</p>
+                      )}
                     </td>
                     <td className='px-3 py-1 text-left'>
                       <span>{book.title}</span>
