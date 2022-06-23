@@ -22,7 +22,7 @@ const sideBarMenus: SideBarMenu[] = [
 
 const Sidebar = () => {
   return (
-    <div className='flex h-screen w-64 flex-col border-r border-t-2 bg-slate-100   dark:border-gray-600 dark:bg-gray-800'>
+    <div className='fixed top-[4.3rem] left-0 z-10 flex h-full w-64 flex-col border-r border-t-2 bg-slate-100   dark:border-gray-600 dark:bg-gray-800'>
       <div className='flex flex-1 flex-col justify-between'>
         <nav>
           {sideBarMenus.map((menu) => (

@@ -13,8 +13,8 @@ const Layout = ({ children }: LayoutProps) => {
       <Navbar />
       <div className='flex'>
         <Sidebar />
-        <main className='flex flex-1 p-6'>
-          <div className='container mx-auto rounded-md p-2 sm:p-4'>
+        <main className='flex flex-1 p-6 pt-24'>
+          <div className='container mx-auto ml-64 w-full rounded-md p-2 sm:p-4'>
             {children}
           </div>
         </main>
