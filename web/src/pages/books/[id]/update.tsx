@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 import useSWR from 'swr';
 
 import Breadcrumb from '../../../components/Breadcrumb';
@@ -42,6 +44,13 @@ const Update = () => {
   }
 
   const onSubmit = async (values: Book) => {
+    Swal.fire({
+      title: 'Loading...',
+      icon: 'info',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     if (coverImage) {
       const newCoverImage = await uploadImage(coverImage as File);
       const result = await axiosInstance
@@ -55,7 +64,12 @@ const Update = () => {
         });
 
       if (result?.data) {
-        alert(`${values.title} updated successfully!`);
+        Swal.close();
+        Swal.fire({
+          title: 'Success!',
+          icon: 'success',
+          text: `${data.title} updated successfully`,
+        });
       }
     } else {
       const result = await axiosInstance
@@ -68,7 +82,12 @@ const Update = () => {
         });
 
       if (result?.data) {
-        alert(`${values.title} updated successfully!`);
+        Swal.close();
+        Swal.fire({
+          title: 'Success!',
+          icon: 'success',
+          text: `${data.title} updated successfully`,
+        });
       }
     }
   };
@@ -223,13 +242,25 @@ const Update = () => {
                 className='mt-2 block h-32 w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
             </div>
-            <div>
+            <div className='w-fit'>
               <label
                 className='text-gray-700 dark:text-gray-200'
                 htmlFor='coverImage'
               >
                 Cover Image
               </label>
+              <div className='relative h-32 w-32'>
+                <Image
+                  src={
+                    coverImage
+                      ? URL.createObjectURL(coverImage as File)
+                      : data.coverImage
+                  }
+                  alt={`${data.title} cover image`}
+                  layout='fill'
+                  objectFit='contain'
+                />
+              </div>
               <input
                 id='coverImage'
                 type='file'

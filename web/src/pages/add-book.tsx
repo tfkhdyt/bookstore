@@ -1,6 +1,8 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 import { Book } from '../components/Table';
 import { axiosInstance } from '../lib/axios';
@@ -16,6 +18,13 @@ const AddBook = () => {
   } = useForm<Book>();
 
   const onSubmit = async (data: Book) => {
+    Swal.fire({
+      title: 'Loading...',
+      icon: 'info',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     const { secure_url } = await uploadImage(coverImage as File);
 
     const result = await axiosInstance
@@ -29,7 +38,12 @@ const AddBook = () => {
       });
 
     if (result?.data) {
-      alert(`${data.title} added successfully!`);
+      Swal.close();
+      Swal.fire({
+        title: 'Success!',
+        icon: 'success',
+        text: `${data.title} added successfully`,
+      });
     }
   };
 
@@ -171,6 +185,16 @@ const AddBook = () => {
               >
                 Cover Image
               </label>
+              {coverImage && (
+                <div className='relative h-32 w-32'>
+                  <Image
+                    src={URL.createObjectURL(coverImage as File)}
+                    alt='cover image'
+                    layout='fill'
+                    objectFit='contain'
+                  />
+                </div>
+              )}
               <input
                 id='coverImage'
                 type='file'
