@@ -29,7 +29,7 @@ type UpdateBookInput struct {
 	Description   string `json:"description"`
 	Publisher     string `json:"publisher"`
 	NumberOfPages uint   `json:"numberOfPages"`
-	CoverImage    string `json:"coverImage" binding:"required"`
+	CoverImage    string `json:"coverImage"`
 }
 
 // GET /books
@@ -176,6 +176,11 @@ func UpdateBook(c *gin.Context) {
 		return
 	}
 
+	var coverImage string = book.CoverImage
+	if input.CoverImage != "" {
+		coverImage = input.CoverImage
+	}
+
 	updatedBook := models.Book{
 		Title:         input.Title,
 		Author:        input.Author,
@@ -183,7 +188,7 @@ func UpdateBook(c *gin.Context) {
 		Description:   input.Description,
 		Publisher:     input.Publisher,
 		NumberOfPages: input.NumberOfPages,
-		CoverImage:    input.CoverImage,
+		CoverImage:    coverImage,
 		UpdatedAt:     time.Now(),
 	}
 
