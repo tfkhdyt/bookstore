@@ -60,8 +60,8 @@ func FindBooks(c *gin.Context) {
 
 		fmt.Println("Paginated books printed!")
 		c.JSON(http.StatusOK, gin.H{
-			"data":   books,
-			"length": len(books),
+			"data":      books,
+			"totalData": getTotalData(),
 		})
 		return
 	}
@@ -254,4 +254,14 @@ func DeleteBook(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": fmt.Sprintf("Book with id %v deleted successfully", c.Param("id")),
 	})
+}
+
+func getTotalData() any {
+	var books []models.Book
+
+	if err := models.DB.Find(&books).Error; err != nil {
+		return err.Error()
+	}
+
+	return len(books)
 }
