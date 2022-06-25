@@ -11,11 +11,15 @@ import Loading from '../../../components/Loading';
 import { Book } from '../../../components/Table';
 import { fetcher } from '../../../lib/fetcher';
 
+interface IFetcher {
+  data: Book;
+}
+
 const Detail = () => {
   const router = useRouter();
   const query = router.query;
 
-  const { data, error } = useSWR<Book>(`/books/${query.id}`, fetcher);
+  const { data, error } = useSWR<IFetcher>(`/books/${query.id}`, fetcher);
 
   if (!data) {
     return (
@@ -33,12 +37,12 @@ const Detail = () => {
     );
   }
 
-  console.log(data);
+  const book = data.data;
 
   return (
     <>
       <Head>
-        <title>{data.title} | Book Detail</title>
+        <title>{book.title} | Book Detail</title>
       </Head>
       <div>
         <Breadcrumb
@@ -48,53 +52,47 @@ const Detail = () => {
               label: 'Manage Books',
             },
             {
-              link: `/books/${data.id}`,
-              label: data.title,
+              link: `/books/${book.id}`,
+              label: book.title,
             },
           ]}
         />
         <h1 className='mb-3 text-2xl font-semibold leading-tight'>
-          Book Detail: {data.title}
+          Book Detail: {book.title}
         </h1>
         <div className='grid grid-cols-2 gap-4'>
           <div className='text-lg'>
             <ul>
               <li>Title: </li>
-              <p>{data.title}</p>
+              <p>{book.title}</p>
               <li>Author: </li>
-              <p>{data.author}</p>
+              <p>{book.author}</p>
               <li>ISBN: </li>
-              <p>{data.isbn}</p>
+              <p>{book.isbn}</p>
               <li>Description:</li>
-              <p className='text-base'>{data.description}</p>
+              <p className='text-base'>{book.description}</p>
               <li>Publisher: </li>
-              <p>{data.publisher}</p>
+              <p>{book.publisher}</p>
               <li>Number of pages: </li>
-              <p>{data.numberOfPages}</p>
+              <p>{book.numberOfPages}</p>
               <li>Created at: </li>
               <p>
                 {' '}
-                {format(
-                  new Date(data.createdAt as Date),
-                  'iiii, d MMMM y H:mm:ss'
-                )}
+                {format(new Date(book.createdAt), 'iiii, d MMMM y H:mm:ss')}
               </p>
               <li>Updated at: </li>
               <p>
                 {' '}
-                {format(
-                  new Date(data.updatedAt as Date),
-                  'iiii, d MMMM y H:mm:ss'
-                )}
+                {format(new Date(book.updatedAt), 'iiii, d MMMM y H:mm:ss')}
               </p>
             </ul>
           </div>
           <div>
             <div className='relative h-full w-full'>
-              {data.coverImage && (
+              {book.coverImage && (
                 <Image
-                  src={data.coverImage}
-                  alt={`${data.title} cover image`}
+                  src={book.coverImage}
+                  alt={`${book.title} cover image`}
                   layout='fill'
                   objectFit='contain'
                 />
@@ -103,7 +101,7 @@ const Detail = () => {
           </div>
         </div>
         <div className='float-left mt-4 flex space-x-4'>
-          <Link href={`/books/${data.id}/update`}>
+          <Link href={`/books/${book.id}/update`}>
             <a className='mx-auto rounded bg-yellow-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'>
               Update
             </a>

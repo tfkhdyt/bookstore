@@ -15,6 +15,10 @@ import { axiosInstance } from '../../../lib/axios';
 import { fetcher } from '../../../lib/fetcher';
 import { uploadImage } from '../../../lib/uploadImage';
 
+interface IFetcher {
+  data: Book;
+}
+
 const Update = () => {
   const [coverImage, setCoverImage] = useState<File>();
   const {
@@ -25,7 +29,7 @@ const Update = () => {
   const router = useRouter();
   const query = router.query;
 
-  const { data, error } = useSWR<Book>(`/books/${query.id}`, fetcher);
+  const { data, error } = useSWR<IFetcher>(`/books/${query.id}`, fetcher);
 
   if (!data) {
     return (
@@ -43,6 +47,8 @@ const Update = () => {
     );
   }
 
+  const book = data.data;
+
   const onSubmit = async (values: Book) => {
     Swal.fire({
       title: 'Loading...',
@@ -54,7 +60,7 @@ const Update = () => {
     if (coverImage) {
       const newCoverImage = await uploadImage(coverImage as File);
       const result = await axiosInstance
-        .patch(`/books/${data.id}`, {
+        .patch(`/books/${book.id}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
           coverImage: newCoverImage.secure_url,
@@ -68,12 +74,12 @@ const Update = () => {
         Swal.fire({
           title: 'Success!',
           icon: 'success',
-          text: `${data.title} updated successfully`,
+          text: `${book.title} updated successfully`,
         });
       }
     } else {
       const result = await axiosInstance
-        .patch(`/books/${data.id}`, {
+        .patch(`/books/${book.id}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
         })
@@ -86,7 +92,7 @@ const Update = () => {
         Swal.fire({
           title: 'Success!',
           icon: 'success',
-          text: `${data.title} updated successfully`,
+          text: `${book.title} updated successfully`,
         });
       }
     }
@@ -95,7 +101,7 @@ const Update = () => {
   return (
     <>
       <Head>
-        <title>{data.title} | Update Book</title>
+        <title>{book.title} | Update Book</title>
       </Head>
       <main>
         <Breadcrumb
@@ -105,17 +111,17 @@ const Update = () => {
               label: 'Manage Books',
             },
             {
-              link: `/books/${data.id}`,
-              label: data.title,
+              link: `/books/${book.id}`,
+              label: book.title,
             },
             {
-              link: `/books/${data.id}/update`,
+              link: `/books/${book.id}/update`,
               label: 'Update',
             },
           ]}
         />
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>
-          Update {data.title}
+          Update {book.title}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
@@ -133,7 +139,7 @@ const Update = () => {
               )}
               <input
                 type='text'
-                defaultValue={data.title}
+                defaultValue={book.title}
                 {...register('title', {
                   required: true,
                 })}
@@ -154,7 +160,7 @@ const Update = () => {
               )}
               <input
                 type='text'
-                defaultValue={data.author}
+                defaultValue={book.author}
                 {...register('author', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
@@ -173,7 +179,7 @@ const Update = () => {
               )}
               <input
                 type='text'
-                defaultValue={data.isbn}
+                defaultValue={book.isbn}
                 {...register('isbn', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
@@ -193,7 +199,7 @@ const Update = () => {
               )}
               <input
                 type='text'
-                defaultValue={data.publisher}
+                defaultValue={book.publisher}
                 {...register('publisher', { required: true })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
@@ -218,7 +224,7 @@ const Update = () => {
               <input
                 type='number'
                 min={0}
-                defaultValue={data.numberOfPages}
+                defaultValue={book.numberOfPages}
                 {...register('numberOfPages', { required: true, min: 0 })}
                 className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
@@ -237,7 +243,7 @@ const Update = () => {
               )}
               <textarea
                 id='description'
-                defaultValue={data.description}
+                defaultValue={book.description}
                 {...register('description', { required: true })}
                 className='mt-2 block h-32 w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
               />
@@ -254,9 +260,9 @@ const Update = () => {
                   src={
                     coverImage
                       ? URL.createObjectURL(coverImage as File)
-                      : data.coverImage
+                      : book.coverImage
                   }
-                  alt={`${data.title} cover image`}
+                  alt={`${book.title} cover image`}
                   layout='fill'
                   objectFit='contain'
                 />

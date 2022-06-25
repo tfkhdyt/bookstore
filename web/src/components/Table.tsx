@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import Pagination from './Pagination';
+
 export interface Book {
   id?: number;
   title: string;
@@ -10,16 +12,18 @@ export interface Book {
   publisher: string;
   numberOfPages: number;
   coverImage: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface TableProps {
   books: Book[];
+  totalData: number;
 }
 
-const Table = ({ books }: TableProps) => {
-  console.log(books);
+const Table = ({ books, totalData }: TableProps) => {
+  // console.log(books);
+
   return (
     <>
       <h2 className='mb-3 text-2xl font-semibold leading-tight'>
@@ -124,6 +128,10 @@ const Table = ({ books }: TableProps) => {
                 );
               })}
           </tbody>
+          <Pagination
+            totalData={totalData}
+            numberOfCurrentPageData={books.length}
+          />
         </table>
       </div>
     </>
