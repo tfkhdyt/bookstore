@@ -52,7 +52,6 @@ const Update = () => {
   const onSubmit = async (values: Book) => {
     Swal.fire({
       title: 'Loading...',
-      icon: 'info',
       didOpen: () => {
         Swal.showLoading();
       },
@@ -74,7 +73,7 @@ const Update = () => {
         Swal.fire({
           title: 'Success!',
           icon: 'success',
-          text: `${book.title} updated successfully`,
+          text: `"${book.title}" updated successfully`,
         });
       }
     } else {
@@ -92,7 +91,7 @@ const Update = () => {
         Swal.fire({
           title: 'Success!',
           icon: 'success',
-          text: `${book.title} updated successfully`,
+          text: `"${book.title}" updated successfully`,
         });
       }
     }
