@@ -20,7 +20,6 @@ const AddBook = () => {
   const onSubmit = async (data: Book) => {
     Swal.fire({
       title: 'Loading...',
-      icon: 'info',
       didOpen: () => {
         Swal.showLoading();
       },
@@ -42,13 +41,14 @@ const AddBook = () => {
       Swal.fire({
         title: 'Success!',
         icon: 'success',
-        text: `${data.title} added successfully`,
+        text: `"${data.title}" added successfully`,
       });
     }
   };
 
   useEffect(() => {
     reset();
+    setCoverImage(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitSuccessful]);
 
