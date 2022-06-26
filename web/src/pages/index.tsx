@@ -15,12 +15,13 @@ interface IFetcher {
 
 const Home: NextPage = () => {
   const { page, limit } = usePaginationStore((state) => state);
-  // const [page, setPage] = useState(1);
-  // const limit = 5;
-  const { data, error } = useSWR<IFetcher>(
+  // const { setMutate } = useTableStore((state) => state);
+  const { data, error, mutate } = useSWR<IFetcher>(
     `/books?limit=${limit}&page=${page}`,
     fetcher
   );
+
+  // setMutate(mutate);
 
   if (!data) {
     return (
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Manage Books | Bookstore</title>
       </Head>
-      <Table books={data.data} totalData={data.totalData} />
+      <Table books={data.data} totalData={data.totalData} mutate={mutate} />
     </>
   );
 };

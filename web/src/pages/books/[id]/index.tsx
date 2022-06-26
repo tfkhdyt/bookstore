@@ -9,6 +9,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import Error from '../../../components/Error';
 import Loading from '../../../components/Loading';
 import { Book } from '../../../components/Table';
+import { deleteBook } from '../../../lib/deleteBook';
 import { fetcher } from '../../../lib/fetcher';
 
 interface IFetcher {
@@ -19,7 +20,10 @@ const Detail = () => {
   const router = useRouter();
   const query = router.query;
 
-  const { data, error } = useSWR<IFetcher>(`/books/${query.id}`, fetcher);
+  const { data, error, mutate } = useSWR<IFetcher>(
+    `/books/${query.id}`,
+    fetcher
+  );
 
   if (!data) {
     return (
@@ -109,6 +113,15 @@ const Detail = () => {
           <button
             type='button'
             className='mx-auto rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
+            onClick={async () => {
+              const { success } = await deleteBook(
+                book.id as number,
+                book.title,
+                mutate
+              );
+              // await mutate();
+              if (success) router.push('/');
+            }}
           >
             Delete
           </button>

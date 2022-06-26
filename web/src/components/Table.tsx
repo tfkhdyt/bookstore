@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { deleteBook } from '../lib/deleteBook';
 import Pagination from './Pagination';
 
 export interface Book {
@@ -19,10 +20,11 @@ export interface Book {
 interface TableProps {
   books: Book[];
   totalData: number;
+  mutate: () => void;
 }
 
-const Table = ({ books, totalData }: TableProps) => {
-  // console.log(books);
+const Table = ({ books, totalData, mutate }: TableProps) => {
+  // const { mutate } = useTableStore((state) => state);
 
   return (
     <>
@@ -57,7 +59,7 @@ const Table = ({ books, totalData }: TableProps) => {
               <th title='Number of Pages' className='p-3'>
                 # Pages
               </th>
-              <th title='Actions' className='p-3 text-center'>
+              <th title='Actions' className='w-12 p-3 text-center'>
                 Actions
               </th>
             </tr>
@@ -120,6 +122,13 @@ const Table = ({ books, totalData }: TableProps) => {
                       <button
                         type='button'
                         className='mx-auto w-full rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
+                        onClick={async () => {
+                          await deleteBook(
+                            book.id as number,
+                            book.title,
+                            mutate as () => void
+                          );
+                        }}
                       >
                         Delete
                       </button>
