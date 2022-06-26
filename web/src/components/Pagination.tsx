@@ -56,10 +56,15 @@ const Pagination = ({
               </div>
 
               <div className='text-gray-500 dark:text-gray-400'>
-                <span className='font-medium text-gray-700 dark:text-gray-100'>
-                  {firstRecord} - {lastRecord}
-                </span>{' '}
-                of {totalData} records
+                {totalData > 0 && (
+                  <>
+                    <span className='font-medium text-gray-700 dark:text-gray-100'>
+                      {firstRecord} - {lastRecord}
+                    </span>{' '}
+                    of
+                  </>
+                )}{' '}
+                {totalData} records
               </div>
             </div>
           </div>
