@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/tfkhdyt/bookstore/api/controllers"
+	"github.com/tfkhdyt/bookstore/api/controllers/books"
 	"github.com/tfkhdyt/bookstore/api/models"
 )
 
@@ -31,11 +31,11 @@ func main() {
 		})
 	})
 
-	r.GET("/books", controllers.FindBooks)
-	r.GET("/books/:id", controllers.FindBook)
-	r.POST("/books", controllers.CreateBook)
-	r.PATCH("/books/:id", controllers.UpdateBook)
-	r.DELETE("/books/:id", controllers.DeleteBook)
+	r.GET("/books", books.FindAll)
+	r.GET("/books/:id", books.FindOne)
+	r.POST("/books", books.CreateBook)
+	r.PATCH("/books/:id", books.UpdateBook)
+	r.DELETE("/books/:id", books.DeleteBook)
 
 	r.Run()
 }
