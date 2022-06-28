@@ -21,8 +21,6 @@ func ConnectDatabase() {
 	dbPwd := os.Getenv("DB_PWD")
 	dbName := os.Getenv("DB_NAME")
 
-	fmt.Println(dbHost, dbUser, dbPwd, dbName)
-
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPwd, dbName)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	// database, err := gorm.Open("sqlite3", "test.db")
