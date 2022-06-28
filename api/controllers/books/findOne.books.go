@@ -12,7 +12,8 @@ import (
 func FindOne(c *gin.Context) {
 	var book models.Book
 
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
+	if err := models.DB.First(&book, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
