@@ -29,7 +29,10 @@ const Update = () => {
   const router = useRouter();
   const query = router.query;
 
-  const { data, error } = useSWR<IFetcher>(`/books/${query.id}`, fetcher);
+  const { data, error, mutate } = useSWR<IFetcher>(
+    `/books/${query.id}`,
+    fetcher
+  );
 
   if (!data) {
     return (
@@ -88,6 +91,7 @@ const Update = () => {
 
       if (result?.data) {
         Swal.close();
+        mutate();
         Swal.fire({
           title: 'Success!',
           icon: 'success',
