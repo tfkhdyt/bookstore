@@ -1,6 +1,8 @@
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { variants } from '../animations/variants';
 import { deleteBook } from '../lib/deleteBook';
 import Pagination from './Pagination';
 
@@ -27,7 +29,13 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
   // const { mutate } = useTableStore((state) => state);
 
   return (
-    <>
+    <motion.main
+      variants={variants}
+      initial='hidden'
+      animate='enter'
+      exit='exit'
+      transition={{ type: 'tween', ease: 'easeInOut' }}
+    >
       <h2 className='mb-3 text-2xl font-semibold leading-tight'>
         Manage Books
       </h2>
@@ -143,7 +151,7 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
           />
         </table>
       </div>
-    </>
+    </motion.main>
   );
 };
 

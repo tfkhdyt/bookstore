@@ -1,10 +1,12 @@
 import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
+import { variants } from '../../../animations/variants';
 import Breadcrumb from '../../../components/Breadcrumb';
 import Error from '../../../components/Error';
 import Loading from '../../../components/Loading';
@@ -48,11 +50,17 @@ const Detail = () => {
       <Head>
         <title>{book.title} | Book Detail</title>
       </Head>
-      <div>
+      <motion.main
+        variants={variants}
+        initial='hidden'
+        animate='enter'
+        exit='exit'
+        transition={{ type: 'tween', ease: 'easeInOut' }}
+      >
         <Breadcrumb
           content={[
             {
-              link: '/',
+              link: '/manage-books',
               label: 'Manage Books',
             },
             {
@@ -126,7 +134,7 @@ const Detail = () => {
             Delete
           </button>
         </div>
-      </div>
+      </motion.main>
     </>
   );
 };

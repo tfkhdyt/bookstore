@@ -1,9 +1,11 @@
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
+import { variants } from '../animations/variants';
 import { Book } from '../components/Table';
 import { axiosInstance } from '../lib/axios';
 import { uploadImage } from '../lib/uploadImage';
@@ -57,7 +59,13 @@ const AddBook = () => {
       <Head>
         <title>Add Book | Bookstore</title>
       </Head>
-      <main>
+      <motion.main
+        variants={variants}
+        initial='hidden'
+        animate='enter'
+        exit='exit'
+        transition={{ type: 'tween', ease: 'easeInOut' }}
+      >
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
@@ -233,7 +241,7 @@ const AddBook = () => {
             </button>
           </div>
         </form>
-      </main>
+      </motion.main>
     </>
   );
 };
