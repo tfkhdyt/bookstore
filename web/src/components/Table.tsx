@@ -1,8 +1,15 @@
+import { m } from 'framer-motion';
 import Image from 'next/image';
+import useSWR from 'swr';
 
+import { variants } from '../animations/variants';
+import Error from '../components/Error';
+import { fetcher } from '../lib/fetcher';
+import { usePaginationStore } from '../store/pagination';
 import DeleteButton from './Buttons/Delete';
 import DetailButton from './Buttons/Detail';
 import UpdateButton from './Buttons/Update';
+import Loading from './Loading';
 import Pagination from './Pagination';
 
 export interface Book {
@@ -18,14 +25,35 @@ export interface Book {
   updatedAt: Date;
 }
 
-interface TableProps {
-  books: Book[];
+// interface TableProps {
+//   books: Book[];
+//   totalData: number;
+//   mutate: () => void;
+// }
+
+interface IFetcher {
+  data: Book[];
   totalData: number;
-  mutate: () => void;
 }
 
-const Table = ({ books, totalData, mutate }: TableProps) => {
-  // const { mutate } = useTableStore((state) => state);
+const Table = () => {
+  const { page, limit, activePage } = usePaginationStore((state) => state);
+  const { data, error, mutate } = useSWR<IFetcher>(
+    page && limit ? `/books?limit=${limit}&page=${page}` : null,
+    page && limit ? fetcher : null
+  );
+
+  if (error) {
+    return (
+      <div className='grid min-h-full min-w-full place-items-center'>
+        <Error />
+      </div>
+    );
+  }
+
+  if (!data) return <Loading title='Loading... | Manage Books' />;
+
+  const books = data.data;
 
   return (
     <>
@@ -33,7 +61,14 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
         Manage Books
       </h2>
       <div className='overflow-x-auto rounded-xl '>
-        <table className='min-w-full text-sm'>
+        <m.table
+          className='min-w-full text-sm'
+          variants={variants}
+          initial='hidden'
+          animate='enter'
+          exit='exit'
+          key={activePage}
+        >
           <thead className='bg-slate-100 text-gray-600'>
             <tr className='text-right'>
               <th title='ID' className='p-3 text-left'>
@@ -123,10 +158,10 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
               })}
           </tbody>
           <Pagination
-            totalData={totalData}
+            totalData={data.totalData}
             numberOfCurrentPageData={books.length}
           />
-        </table>
+        </m.table>
       </div>
     </>
   );
