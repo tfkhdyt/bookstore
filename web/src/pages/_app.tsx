@@ -10,8 +10,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     <Layout>
       <AnimatePresence
         exitBeforeEnter
-        // initial={false}
-        // onExitComplete={() => window.scrollTo(0, 0)}
+        initial={false}
+        onExitComplete={() => window.scrollTo(0, 0)}
       >
         <Component {...pageProps} key={router.pathname} />
       </AnimatePresence>
