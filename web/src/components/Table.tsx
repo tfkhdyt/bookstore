@@ -1,5 +1,6 @@
 import { m } from 'framer-motion';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import { variants } from '../animations/variants';
@@ -42,6 +43,10 @@ const Table = () => {
     page && limit ? `/books?limit=${limit}&page=${page}` : null,
     page && limit ? fetcher : null
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activePage]);
 
   if (error) {
     return (
