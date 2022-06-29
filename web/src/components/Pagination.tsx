@@ -25,7 +25,7 @@ const PageButton = ({ pageNumber }: PageButtonProps) => {
     <button
       title={pageNumber !== activePage ? `Go to page ${pageNumber}` : undefined}
       className={`mx-2 inline-flex transform items-center justify-center rounded-lg  px-4 py-2 text-gray-700 transition-colors duration-200 dark:bg-gray-700 dark:text-white ${
-        activePage === pageNumber && 'bg-gray-200'
+        activePage === pageNumber && 'bg-gray-100 font-bold text-gray-800'
       }`}
       onClick={() => handleChangePage(pageNumber)}
     >
