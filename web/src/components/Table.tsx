@@ -1,9 +1,8 @@
-import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 
-import { variants } from '../animations/variants';
-import { deleteBook } from '../lib/deleteBook';
+import DeleteButton from './Buttons/Delete';
+import DetailButton from './Buttons/Detail';
+import UpdateButton from './Buttons/Update';
 import Pagination from './Pagination';
 
 export interface Book {
@@ -29,13 +28,7 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
   // const { mutate } = useTableStore((state) => state);
 
   return (
-    <motion.main
-      variants={variants}
-      initial='hidden'
-      animate='enter'
-      exit='exit'
-      transition={{ type: 'tween', ease: 'easeInOut' }}
-    >
+    <>
       <h2 className='mb-3 text-2xl font-semibold leading-tight'>
         Manage Books
       </h2>
@@ -46,7 +39,7 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
               <th title='ID' className='p-3 text-left'>
                 ID
               </th>
-              <th title='Cover Image' className='p-3 text-left'>
+              <th title='Cover Image' className='p-3 text-center'>
                 Cover Image
               </th>
               <th title='Title' className='p-3 text-left'>
@@ -81,7 +74,7 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
                     className='border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right transition-colors duration-300 ease-in-out hover:bg-gray-200'
                   >
                     <td className='px-3 py-1 text-left'>
-                      <span>{book.id}</span>
+                      <span className='font-semibold'>{book.id}</span>
                     </td>
                     <td className='relative px-3 py-1 text-left'>
                       {book.coverImage ? (
@@ -117,29 +110,13 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
                       <span>{book.numberOfPages}</span>
                     </td>
                     <td className='grid gap-2 p-3'>
-                      <Link href={`/books/${book.id}`}>
-                        <a className='mx-auto w-full rounded bg-blue-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-blue-600 active:bg-blue-700'>
-                          Detail
-                        </a>
-                      </Link>
-                      <Link href={`/books/${book.id}/update`}>
-                        <a className='mx-auto w-full rounded bg-yellow-500 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-yellow-600 active:bg-yellow-700'>
-                          Update
-                        </a>
-                      </Link>
-                      <button
-                        type='button'
-                        className='mx-auto w-full rounded bg-red-400 px-3 py-2 text-center font-semibold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 active:bg-red-600'
-                        onClick={async () => {
-                          await deleteBook(
-                            book.id as number,
-                            book.title,
-                            mutate as () => void
-                          );
-                        }}
-                      >
-                        Delete
-                      </button>
+                      <DetailButton bookID={book.id as number} />
+                      <UpdateButton bookID={book.id as number} />
+                      <DeleteButton
+                        id={book.id as number}
+                        title={book.title}
+                        mutate={mutate}
+                      />
                     </td>
                   </tr>
                 );
@@ -151,7 +128,7 @@ const Table = ({ books, totalData, mutate }: TableProps) => {
           />
         </table>
       </div>
-    </motion.main>
+    </>
   );
 };
 

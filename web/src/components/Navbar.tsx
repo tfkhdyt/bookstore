@@ -35,7 +35,7 @@ const Navbar = () => {
         {/* <!-- Mobile Menu open: "block", Menu closed: "hidden" --> */}
         <div className='items-center md:flex'>
           <div className='flex flex-col md:mx-6 md:flex-row'>
-            <Link href='https://github.com/tfkhdyt/bookstore'>
+            <Link href='https://github.com/tfkhdyt/bookstore' scroll={false}>
               <a
                 className='flex transform items-center space-x-2 text-sm font-semibold text-gray-700 transition-colors duration-200 hover:text-blue-500 dark:text-gray-200 dark:hover:text-blue-400 md:mx-4 md:my-0'
                 target='_blank'
@@ -53,7 +53,7 @@ const Navbar = () => {
                 <text>Source Code</text>
               </a>
             </Link>
-            <Link href='https://www.tfkhdyt.my.id'>
+            <Link href='https://www.tfkhdyt.my.id' scroll={false}>
               <a
                 className='flex transform items-center space-x-2 text-sm font-semibold text-gray-700 transition-colors duration-200 hover:text-blue-500 dark:text-gray-200 dark:hover:text-blue-400 md:mx-4 md:my-0'
                 target='_blank'

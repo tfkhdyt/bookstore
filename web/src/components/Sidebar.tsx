@@ -26,7 +26,7 @@ const Sidebar = () => {
       <div className='flex flex-1 flex-col justify-between'>
         <nav>
           {sideBarMenus.map((menu) => (
-            <Link key={menu.title} href={menu.link}>
+            <Link key={menu.title} href={menu.link} scroll={false}>
               <a className='flex transform items-center px-8 py-5 text-gray-600 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200'>
                 <svg
                   width='24'

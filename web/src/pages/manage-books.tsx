@@ -1,7 +1,9 @@
+import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import useSWR from 'swr';
 
+import { variants } from '../animations/variants';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 import Table, { Book } from '../components/Table';
@@ -15,13 +17,10 @@ interface IFetcher {
 
 const ManageBooks: NextPage = () => {
   const { page, limit } = usePaginationStore((state) => state);
-  // const { setMutate } = useTableStore((state) => state);
   const { data, error, mutate } = useSWR<IFetcher>(
-    `/books?limit=${limit}&page=${page}`,
+    page && limit ? `/books?limit=${limit}&page=${page}` : null,
     fetcher
   );
-
-  // setMutate(mutate);
 
   if (!data) {
     return (
@@ -46,7 +45,15 @@ const ManageBooks: NextPage = () => {
       <Head>
         <title>Manage Books | Bookstore</title>
       </Head>
-      <Table books={data.data} totalData={data.totalData} mutate={mutate} />
+      <motion.main
+        variants={variants}
+        initial='hidden'
+        animate='enter'
+        exit='exit'
+        transition={{ type: 'tween', ease: 'easeInOut' }}
+      >
+        <Table books={data.data} totalData={data.totalData} mutate={mutate} />
+      </motion.main>
     </>
   );
 };
