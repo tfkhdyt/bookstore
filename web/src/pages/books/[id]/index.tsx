@@ -66,7 +66,7 @@ const Detail = () => {
         <h1 className='mb-3 text-2xl font-semibold leading-tight'>
           Book Detail: {book.title}
         </h1>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 gap-8'>
           <div className='text-lg'>
             <ul>
               <li>Title: </li>
