@@ -1,6 +1,9 @@
+import 'react-medium-image-zoom/dist/styles.css';
+
 import { m } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import Zoom from 'react-medium-image-zoom';
 import useSWR from 'swr';
 
 import { variants } from '../animations/variants';
@@ -76,10 +79,10 @@ const Table = () => {
         >
           <thead className='bg-slate-100 text-gray-600'>
             <tr className='text-right'>
-              <th title='ID' className='p-3 text-left'>
+              <th title='ID' className='w-2 p-3 text-left'>
                 ID
               </th>
-              <th title='Cover Image' className='p-3 text-center'>
+              <th title='Cover Image' className='w-24 p-3 text-center'>
                 Cover Image
               </th>
               <th title='Title' className='p-3 text-left'>
@@ -111,19 +114,21 @@ const Table = () => {
                 return (
                   <tr
                     key={index}
-                    className='border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right transition-colors duration-300 ease-in-out hover:bg-gray-200'
+                    className='h-4 border-b-2 border-slate-400 border-opacity-20 bg-gray-50 text-right transition-colors duration-300 ease-in-out hover:bg-gray-200'
                   >
                     <td className='px-3 py-1 text-left'>
                       <span className='font-semibold'>{book.id}</span>
                     </td>
-                    <td className='relative px-3 py-1 text-left'>
+                    <td className='text-center'>
                       {book.coverImage ? (
-                        <Image
-                          src={book.coverImage}
-                          alt={`${book.title} cover image`}
-                          layout='fill'
-                          objectFit='contain'
-                        />
+                        <Zoom>
+                          <img
+                            src={book.coverImage}
+                            alt={`${book.title} cover image`}
+                            width={100}
+                            height={100}
+                          />
+                        </Zoom>
                       ) : (
                         <p>No image</p>
                       )}
