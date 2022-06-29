@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import SaveButton from '../components/Buttons/Save';
 import { Book } from '../components/Table';
 import { axiosInstance } from '../lib/axios';
-import { loadingAlert } from '../lib/sweetalert2/loading';
 import { uploadImage } from '../lib/uploadImage';
 
 const AddBook = () => {
@@ -20,7 +19,14 @@ const AddBook = () => {
   } = useForm<Book>();
 
   const onSubmit = async (data: Book) => {
-    await loadingAlert();
+    Swal.fire({
+      title: 'Loading...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     const { secure_url } = await uploadImage(coverImage as File);
 

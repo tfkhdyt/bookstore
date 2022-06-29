@@ -13,7 +13,6 @@ import Loading from '../../../components/Loading';
 import { Book } from '../../../components/Table';
 import { axiosInstance } from '../../../lib/axios';
 import { fetcher } from '../../../lib/fetcher';
-import { loadingAlert } from '../../../lib/sweetalert2/loading';
 import { uploadImage } from '../../../lib/uploadImage';
 
 interface IFetcher {
@@ -56,7 +55,14 @@ const Update = () => {
   const book = data.data;
 
   const onSubmit = async (values: Book) => {
-    await loadingAlert();
+    Swal.fire({
+      title: 'Loading...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     if (coverImage) {
       const newCoverImage = await uploadImage(coverImage as File);
