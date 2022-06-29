@@ -14,8 +14,8 @@ const Breadcrumb = ({ content }: BreadcrumbProps) => {
     <div className='-mt-6 italic text-blue-600 transition-colors duration-300 ease-in-out'>
       {content.map((value, index) => {
         return (
-          <>
-            <Link href={value.link} key={index}>
+          <div key={index} className='inline'>
+            <Link href={value.link} scroll={false}>
               <a className='cursor-pointer font-bold hover:text-blue-800'>
                 {value.label}
               </a>
@@ -23,7 +23,7 @@ const Breadcrumb = ({ content }: BreadcrumbProps) => {
             {index !== content.length - 1 && (
               <span className='mx-1'>{`>`}</span>
             )}
-          </>
+          </div>
         );
       })}
     </div>
