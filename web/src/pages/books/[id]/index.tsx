@@ -76,7 +76,7 @@ const Detail = () => {
               <li>ISBN: </li>
               <p>{book.isbn}</p>
               <li>Description:</li>
-              <p className='text-base'>{book.description}</p>
+              <p className='text-justify text-base'>{book.description}</p>
               <li>Publisher: </li>
               <p>{book.publisher}</p>
               <li>Number of pages: </li>
