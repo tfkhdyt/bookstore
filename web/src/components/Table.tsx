@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import 'react-medium-image-zoom/dist/styles.css';
 
 import { m } from 'framer-motion';
-import Image from 'next/image';
 import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
 import useSWR from 'swr';
@@ -76,6 +76,7 @@ const Table = () => {
           animate='enter'
           exit='exit'
           key={activePage}
+          transition={{ type: 'tween', ease: 'easeInOut' }}
         >
           <thead className='bg-slate-100 text-gray-600'>
             <tr className='text-right'>
