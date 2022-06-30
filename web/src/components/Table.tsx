@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
 import useSWR from 'swr';
 
-import { variants } from '../animations/variants';
 import Error from '../components/Error';
 import { fetcher } from '../lib/fetcher';
 import { usePaginationStore } from '../store/pagination';
@@ -70,11 +69,9 @@ const Table = () => {
       </h2>
       <div className='overflow-x-auto rounded-xl '>
         <m.table
-          className='min-w-full text-sm'
-          variants={variants}
-          initial='hidden'
-          animate='enter'
-          exit='exit'
+          className='min-w-full overflow-y-hidden text-sm'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           key={activePage}
           transition={{ type: 'tween', ease: 'easeInOut' }}
         >
