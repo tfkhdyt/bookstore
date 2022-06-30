@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           onExitComplete={() => window.scrollTo(0, 0)}
         >
           <m.div
-            key={router.route}
+            key={router.asPath}
             variants={variants}
             initial='hidden'
             animate='enter'
