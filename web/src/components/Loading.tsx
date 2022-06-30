@@ -1,7 +1,4 @@
-import { m } from 'framer-motion';
 import Head from 'next/head';
-
-import { variants } from '../animations/variants';
 
 interface LoadingProps {
   title?: string;
