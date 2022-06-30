@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import useSWR from 'swr';
 
 import Breadcrumb from '../../../components/Breadcrumb';
@@ -19,10 +20,11 @@ interface IFetcher {
 const Detail = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [bookID] = useState(id);
 
   const { data, error, mutate } = useSWR<IFetcher>(
-    id ? `/books/${id}` : null,
-    id ? fetcher : null
+    bookID ? `/books/${bookID}` : null,
+    bookID ? fetcher : null
   );
 
   // if (!data) {

@@ -28,10 +28,11 @@ const Update = () => {
   } = useForm<Book>();
   const router = useRouter();
   const { id } = router.query;
+  const [bookID] = useState(id);
 
   const { data, error, mutate } = useSWR<IFetcher>(
-    id ? `/books/${id}` : null,
-    id ? fetcher : null
+    bookID ? `/books/${bookID}` : null,
+    bookID ? fetcher : null
   );
 
   // if (!data) {
