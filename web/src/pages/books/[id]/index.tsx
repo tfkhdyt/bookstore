@@ -96,7 +96,7 @@ const Detail = () => {
             </ul>
           </div>
           <div>
-            <div className='relative h-full w-full'>
+            <div className='relative h-screen w-full'>
               {book.coverImage && (
                 <Image
                   src={book.coverImage}
