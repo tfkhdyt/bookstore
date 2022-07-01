@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 
+import { MantineProvider } from '@mantine/core';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import type { AppProps } from 'next/app';
 
@@ -8,26 +9,28 @@ import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
-    <Layout>
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence
-          exitBeforeEnter
-          initial={false}
-          onExitComplete={() => window.scrollTo(0, 0)}
-        >
-          <m.div
-            key={router.asPath}
-            variants={variants}
-            initial='hidden'
-            animate='enter'
-            exit='exit'
-            transition={{ type: 'tween', ease: 'easeInOut' }}
+    <MantineProvider>
+      <Layout>
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence
+            exitBeforeEnter
+            initial={false}
+            onExitComplete={() => window.scrollTo(0, 0)}
           >
-            <Component {...pageProps} />
-          </m.div>
-        </AnimatePresence>
-      </LazyMotion>
-    </Layout>
+            <m.div
+              key={router.asPath}
+              variants={variants}
+              initial='hidden'
+              animate='enter'
+              exit='exit'
+              transition={{ type: 'tween', ease: 'easeInOut' }}
+            >
+              <Component {...pageProps} />
+            </m.div>
+          </AnimatePresence>
+        </LazyMotion>
+      </Layout>
+    </MantineProvider>
   );
 }
 
