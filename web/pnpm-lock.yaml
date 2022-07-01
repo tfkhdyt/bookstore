@@ -9,6 +9,7 @@ specifiers:
   '@mantine/next': ^4.2.11
   '@mantine/notifications': ^4.2.11
   '@mantine/rte': ^4.2.11
+  '@radix-ui/react-icons': ^1.1.1
   '@tailwindcss/forms': ^0.5.2
   '@types/node': 17.0.42
   '@types/react': 18.0.12
@@ -46,6 +47,7 @@ dependencies:
   '@mantine/next': 4.2.11_ugozhzud2rvsomrlqrfi6277sy
   '@mantine/notifications': 4.2.11_45wnwammrig6lwixsu6vs2c76y
   '@mantine/rte': 4.2.11_45wnwammrig6lwixsu6vs2c76y
+  '@radix-ui/react-icons': 1.1.1_react@18.1.0
   axios: 0.27.2
   date-fns: 2.28.0
   framer-motion: 6.3.16_ef5jwxihqo6n7gxfmzogljlgcm
@@ -533,6 +535,14 @@ packages:
       react: ^16.8 || ^17.0
     dependencies:
       '@babel/runtime': 7.18.6
+      react: 18.1.0
+    dev: false
+
+  /@radix-ui/react-icons/1.1.1_react@18.1.0:
+    resolution: {integrity: sha512-xc3wQC59rsFylVbSusQCrrM+6695ppF730Q6yqzhRdqDcRNWIm2R6ngpzBoSOQMcwnq4p805F+Gr7xo4fmtN1A==}
+    peerDependencies:
+      react: ^16.x || ^17.x || ^18.x
+    dependencies:
       react: 18.1.0
     dev: false
 
