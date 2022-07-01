@@ -36,8 +36,7 @@ function MyHeader() {
             size='xl'
             weight={700}
             style={{
-              fontFamily: 'Greycliff CF, sans-serif',
-              fontSize: '1.5em',
+              fontSize: '1.7em',
             }}
           >
             Bookstore

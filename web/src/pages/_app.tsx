@@ -9,7 +9,10 @@ import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
-    <MantineProvider>
+    <MantineProvider
+      theme={{ fontFamily: 'Fira Sans, sans-serif' }}
+      withGlobalStyles
+    >
       <Layout>
         <LazyMotion features={domAnimation}>
           <AnimatePresence
