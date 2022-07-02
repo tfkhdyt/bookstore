@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     <MantineProvider
       theme={{ fontFamily: 'Fira Sans, sans-serif' }}
       withGlobalStyles
+      emotionOptions={{ key: 'mantine', prepend: false }}
     >
       <Layout>
         <LazyMotion features={domAnimation}>
