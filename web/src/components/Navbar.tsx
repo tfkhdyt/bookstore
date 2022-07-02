@@ -10,12 +10,12 @@ const navbarItem: IMenuItem[] = [
   {
     title: 'Manage Books',
     link: '/manage-books',
-    icon: <DashboardIcon />,
+    icon: <DashboardIcon style={{ transform: 'scale(1.2)' }} />,
   },
   {
     title: 'Add Book',
     link: '/add-book',
-    icon: <PlusCircledIcon />,
+    icon: <PlusCircledIcon style={{ transform: 'scale(1.2)' }} />,
   },
 ];
 
@@ -33,18 +33,25 @@ export default function MyNavbar() {
         <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
           <div>
             {headerItems.map((item, index) => (
-              <Link href={item.link} key={index}>
+              <Link href={item.link} key={index} passHref>
                 <Button
                   component='a'
                   variant='subtle'
+                  target='_blank'
                   size='md'
                   leftIcon={item.icon}
                   sx={(theme) => ({
                     display: 'flex',
                     justifyContent: 'start',
-                    color: theme.colors.dark[3],
+                    color:
+                      theme.colorScheme === 'dark'
+                        ? theme.colors.dark[2]
+                        : theme.colors.dark[3],
                     '&:hover': {
-                      backgroundColor: theme.colors.gray[2],
+                      backgroundColor:
+                        theme.colorScheme === 'dark'
+                          ? theme.colors.dark[5]
+                          : theme.colors.gray[2],
                     },
                   })}
                 >
@@ -68,9 +75,15 @@ export default function MyNavbar() {
               sx={(theme) => ({
                 display: 'flex',
                 justifyContent: 'start',
-                color: theme.colors.dark[3],
+                color:
+                  theme.colorScheme === 'dark'
+                    ? theme.colors.dark[2]
+                    : theme.colors.dark[3],
                 '&:hover': {
-                  backgroundColor: theme.colors.gray[2],
+                  backgroundColor:
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.dark[5]
+                      : theme.colors.gray[2],
                 },
               })}
             >

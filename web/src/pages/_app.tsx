@@ -1,6 +1,11 @@
 import '../styles/globals.css';
 
-import { MantineProvider } from '@mantine/core';
+import {
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineProvider,
+} from '@mantine/core';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import type { AppProps } from 'next/app';
 
@@ -8,33 +13,48 @@ import { variants } from '../animations/variants';
 import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+  useHotkeys([['mod+J', () => toggleColorScheme()]]);
+
   return (
-    <MantineProvider
-      theme={{ fontFamily: 'Fira Sans, sans-serif' }}
-      withGlobalStyles
-      emotionOptions={{ key: 'mantine', prepend: false }}
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
     >
-      <Layout>
-        <LazyMotion features={domAnimation}>
-          <AnimatePresence
-            exitBeforeEnter
-            initial={false}
-            onExitComplete={() => window.scrollTo(0, 0)}
-          >
-            <m.div
-              key={router.asPath}
-              variants={variants}
-              initial='hidden'
-              animate='enter'
-              exit='exit'
-              transition={{ type: 'tween', ease: 'easeInOut' }}
+      <MantineProvider
+        theme={{ fontFamily: 'Fira Sans, sans-serif', colorScheme }}
+        withGlobalStyles
+        withNormalizeCSS
+        emotionOptions={{ key: 'mantine', prepend: false }}
+      >
+        <Layout>
+          <LazyMotion features={domAnimation}>
+            <AnimatePresence
+              exitBeforeEnter
+              initial={false}
+              onExitComplete={() => window.scrollTo(0, 0)}
             >
-              <Component {...pageProps} />
-            </m.div>
-          </AnimatePresence>
-        </LazyMotion>
-      </Layout>
-    </MantineProvider>
+              <m.div
+                key={router.asPath}
+                variants={variants}
+                initial='hidden'
+                animate='enter'
+                exit='exit'
+                transition={{ type: 'tween', ease: 'easeInOut' }}
+              >
+                <Component {...pageProps} />
+              </m.div>
+            </AnimatePresence>
+          </LazyMotion>
+        </Layout>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }
 
