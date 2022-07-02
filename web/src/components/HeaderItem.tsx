@@ -1,5 +1,5 @@
 import { Button, Group, MediaQuery } from '@mantine/core';
-import { CodeIcon, PersonIcon } from '@radix-ui/react-icons';
+import { GitHubLogoIcon, PersonIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 import { IMenuItem } from '../types/IMenuItem';
@@ -8,7 +8,7 @@ export const headerItems: IMenuItem[] = [
   {
     title: 'Source Code',
     link: 'https://github.com/tfkhdyt/bookstore',
-    icon: <CodeIcon />,
+    icon: <GitHubLogoIcon />,
   },
   {
     title: 'About Me',
@@ -29,12 +29,14 @@ export function HeaderItem() {
               variant='subtle'
               size='md'
               leftIcon={item.icon}
-              styles={{
-                root: {
-                  paddingLeft: 10,
-                  paddingRight: 10,
+              sx={(theme) => ({
+                paddingLeft: 10,
+                paddingRight: 10,
+                color: theme.colors.dark[3],
+                '&:hover': {
+                  backgroundColor: theme.colors.gray[2],
                 },
-              }}
+              })}
             >
               {item.title}
             </Button>

@@ -1,5 +1,5 @@
 import { Button, Divider, MediaQuery, Navbar, Stack } from '@mantine/core';
-import { PlusCircledIcon, ReaderIcon } from '@radix-ui/react-icons';
+import { DashboardIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 import { useNavbarSidebarStore } from '../store/navbar-sidebar';
@@ -10,7 +10,7 @@ const navbarItem: IMenuItem[] = [
   {
     title: 'Manage Books',
     link: '/manage-books',
-    icon: <ReaderIcon />,
+    icon: <DashboardIcon />,
   },
   {
     title: 'Add Book',
@@ -27,7 +27,7 @@ export default function MyNavbar() {
       p='md'
       hiddenBreakpoint='sm'
       hidden={!opened}
-      width={{ sm: 200, lg: 300 }}
+      width={{ sm: 200, lg: 250 }}
     >
       <Stack align='stretch' justify='flex-start' spacing='xs'>
         <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
