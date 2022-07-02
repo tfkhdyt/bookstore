@@ -34,6 +34,11 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         emotionOptions={{ key: 'mantine', prepend: false }}
       >
         <Layout>
+          <style>
+            {`html {
+                color-scheme: ${colorScheme}
+              }`}
+          </style>
           <LazyMotion features={domAnimation}>
             <AnimatePresence
               exitBeforeEnter
