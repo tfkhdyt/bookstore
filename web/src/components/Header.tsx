@@ -32,7 +32,7 @@ function MyHeader() {
             component='span'
             // align='center'
             variant='gradient'
-            gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+            gradient={{ from: 'violet', to: 'pink', deg: 45 }}
             size='xl'
             weight={700}
             style={{
