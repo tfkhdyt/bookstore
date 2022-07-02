@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import 'react-medium-image-zoom/dist/styles.css';
 
-import { Button, Center, Stack, Table } from '@mantine/core';
+import { Box, Center, Space, Stack, Table } from '@mantine/core';
 import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
-import { mutate } from 'swr';
 
 import { usePaginationStore } from '../store/pagination';
 import DeleteButton from './Buttons/Delete';
 import DetailButton from './Buttons/Detail';
 import UpdateButton from './Buttons/Update';
+import MyPagination from './Pagination';
 
 export interface Book {
   id?: number;
@@ -57,69 +57,88 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
   }, [activePage]);
 
   return (
-    <Table
-      fontSize='md'
-      // highlightOnHover
-      striped
-      sx={{
-        overflowX: 'auto',
-      }}
-    >
-      <thead>
-        <tr>
-          {table.column.map((col, index) => (
-            <th key={index}>{col}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {books.map((row, index) => (
-          <tr key={index}>
-            <td>{row.id}</td>
-            <td>
-              {' '}
-              <Center
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  justifyContent: 'start',
-                }}
-              >
-                {row.coverImage ? (
-                  <Zoom>
-                    <img
-                      src={row.coverImage}
-                      alt={`${row.title} cover image`}
-                      width={100}
-                      height={100}
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          overflowX: 'auto',
+          flexDirection: 'column',
+        }}
+      >
+        <Table
+          fontSize='md'
+          highlightOnHover
+          striped
+          sx={(theme) => ({
+            width: '100%',
+            backgroundColor: theme.colorScheme === 'dark' ? 'dark' : 'white',
+          })}
+        >
+          <thead>
+            <tr>
+              {table.column.map((col, index) => (
+                <th key={index}>{col}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {books.map((row, index) => (
+              <tr key={index}>
+                <td>{row.id}</td>
+                <td>
+                  {' '}
+                  <Center
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'start',
+                    }}
+                  >
+                    {row.coverImage ? (
+                      <Zoom
+                        overlayBgColorEnd='rgba(0, 0, 0, 0.5)'
+                        overlayBgColorStart='rgba(0, 0, 0, 0)'
+                      >
+                        <img
+                          src={row.coverImage}
+                          alt={`${row.title} cover image`}
+                          height='100'
+                          width='100'
+                        />
+                      </Zoom>
+                    ) : (
+                      <p>No image</p>
+                    )}
+                  </Center>
+                </td>
+                <td>{row.title}</td>
+                <td>{row.author}</td>
+                <td>{row.isbn}</td>
+                <td>{row.publisher}</td>
+                <td>{row.numberOfPages}</td>
+                <td>
+                  <Stack spacing='xs'>
+                    <DetailButton id={row.id as number} />
+                    <UpdateButton id={row.id as number} />
+                    <DeleteButton
+                      id={row.id as number}
+                      title={row.title}
+                      mutate={mutate}
                     />
-                  </Zoom>
-                ) : (
-                  <p>No image</p>
-                )}
-              </Center>
-            </td>
-            <td>{row.title}</td>
-            <td>{row.author}</td>
-            <td>{row.isbn}</td>
-            <td>{row.publisher}</td>
-            <td>{row.numberOfPages}</td>
-            <td>
-              <Stack spacing='xs'>
-                <DetailButton id={row.id as number} />
-                <UpdateButton id={row.id as number} />
-                <DeleteButton
-                  id={row.id as number}
-                  title={row.title}
-                  mutate={mutate}
-                />
-              </Stack>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+                  </Stack>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Box>
+      <Space h='lg' />
+      <MyPagination
+        totalData={totalData}
+        numberOfCurrentPageData={books.length}
+      />
+    </>
   );
 }
 
