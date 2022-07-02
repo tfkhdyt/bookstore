@@ -27,7 +27,7 @@ export default function Layout({ children }: LayoutProps) {
       header={<MyHeader />}
       navbar={<MyNavbar />}
     >
-      <Container size='xl'>{children}</Container>
+      <Container fluid>{children}</Container>
     </AppShell>
   );
 }
