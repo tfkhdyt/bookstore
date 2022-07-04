@@ -3,9 +3,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import useSWR from 'swr';
 
-import Table, { Book } from '../components/Table';
-import { fetcher } from '../lib/fetcher';
-import { usePaginationStore } from '../store/pagination';
+import Table, { Book } from '@/components/Table';
+import { fetcher } from '@/lib/fetcher';
+import { usePaginationStore } from '@/store/pagination';
 
 interface IFetcher {
   data: Book[];

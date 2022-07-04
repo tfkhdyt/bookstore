@@ -1,6 +1,6 @@
 import { Pagination } from '@mantine/core';
 
-import { usePaginationStore } from '../store/pagination';
+import { usePaginationStore } from '@/store/pagination';
 
 interface PaginationProps {
   totalData: number;

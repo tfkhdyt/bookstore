@@ -7,13 +7,13 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useSWR from 'swr';
 
-import Breadcrumb from '../../../components/Breadcrumb';
-import Error from '../../../components/Error';
-import Loading from '../../../components/Loading';
-import { Book } from '../../../components/Table';
-import { axiosInstance } from '../../../lib/axios';
-import { fetcher } from '../../../lib/fetcher';
-import { uploadImage } from '../../../lib/uploadImage';
+import Breadcrumb from '@/components/Breadcrumb';
+import Error from '@/components/Error';
+import Loading from '@/components/Loading';
+import { Book } from '@/components/Table';
+import { axiosInstance } from '@/lib/axios';
+import { fetcher } from '@/lib/fetcher';
+import { uploadImage } from '@/lib/uploadImage';
 
 interface IFetcher {
   data: Book;

@@ -4,10 +4,10 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
-import SaveButton from '../components/Buttons/Save';
-import { Book } from '../components/Table';
-import { axiosInstance } from '../lib/axios';
-import { uploadImage } from '../lib/uploadImage';
+import SaveButton from '@/components/Buttons/Save';
+import { Book } from '@/components/Table';
+import { axiosInstance } from '@/lib/axios';
+import { uploadImage } from '@/lib/uploadImage';
 
 const AddBook = () => {
   const [coverImage, setCoverImage] = useState<File>();

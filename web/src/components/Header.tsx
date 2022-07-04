@@ -7,7 +7,8 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 
-import { useNavbarSidebarStore } from '../store/navbar-sidebar';
+import { useNavbarSidebarStore } from '@/store/navbar-sidebar';
+
 import { HeaderItem } from './HeaderItem';
 
 function MyHeader() {

@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-import { Book } from '../components/Table';
+import { Book } from '@/components/Table';
 
 interface IFetcher {
   data: Book[];

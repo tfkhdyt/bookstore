@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import { TrashIcon } from '@radix-ui/react-icons';
 
-import { deleteBook } from '../../lib/deleteBook';
+import { deleteBook } from '@/lib/deleteBook';
 
 interface DeleteButtonProps {
   id: number;

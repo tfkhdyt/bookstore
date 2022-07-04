@@ -13,7 +13,7 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
-import { IMenuItem } from '../types/IMenuItem';
+import { IMenuItem } from '@/types/IMenuItem';
 
 export const headerItems: IMenuItem[] = [
   {

@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '@/styles/globals.css';
 
 import {
   ColorScheme,
@@ -9,8 +9,8 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import type { AppProps } from 'next/app';
 
-import { variants } from '../animations/variants';
-import Layout from '../components/Layout';
+import { variants } from '@/animations/variants';
+import Layout from '@/components/Layout';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({

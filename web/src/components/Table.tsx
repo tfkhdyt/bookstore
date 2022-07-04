@@ -5,7 +5,8 @@ import { Box, Center, Space, Stack, Table } from '@mantine/core';
 import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
 
-import { usePaginationStore } from '../store/pagination';
+import { usePaginationStore } from '@/store/pagination';
+
 import DeleteButton from './Buttons/Delete';
 import DetailButton from './Buttons/Detail';
 import UpdateButton from './Buttons/Update';

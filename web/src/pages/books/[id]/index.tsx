@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
 
-import Breadcrumb from '../../../components/Breadcrumb';
-import DeleteButton from '../../../components/Buttons/Delete';
-import UpdateButton from '../../../components/Buttons/Update';
-import Error from '../../../components/Error';
-import Loading from '../../../components/Loading';
-import { Book } from '../../../components/Table';
-import { fetcher } from '../../../lib/fetcher';
+import Breadcrumb from '@/components/Breadcrumb';
+import DeleteButton from '@/components/Buttons/Delete';
+import UpdateButton from '@/components/Buttons/Update';
+import Error from '@/components/Error';
+import Loading from '@/components/Loading';
+import { Book } from '@/components/Table';
+import { fetcher } from '@/lib/fetcher';
 
 interface IFetcher {
   data: Book;
@@ -109,7 +109,7 @@ const Detail = () => {
           </div>
         </div>
         <div className='float-left mt-4 flex space-x-2'>
-          <UpdateButton bookID={book.id as number} />
+          <UpdateButton id={book.id as number} />
           <DeleteButton
             id={book.id as number}
             title={book.title}
