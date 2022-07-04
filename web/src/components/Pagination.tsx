@@ -37,9 +37,10 @@ interface PaginationProps {
 // };
 
 const MyPagination = ({ totalData }: PaginationProps) => {
-  const { limit, activePage, setActivePage } = usePaginationStore(
-    (state) => state
-  );
+  const limit = usePaginationStore((state) => state.limit);
+  const activePage = usePaginationStore((state) => state.activePage);
+  const setActivePage = usePaginationStore((state) => state.setActivePage);
+
   const pages = Math.ceil(totalData / limit);
   // const firstRecord = limit * (page - 1) + 1;
   // const lastRecord = limit * (page - 1) + numberOfCurrentPageData;

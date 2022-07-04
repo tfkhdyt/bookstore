@@ -51,7 +51,7 @@ interface MyTableProps {
 }
 
 function MyTable({ books, totalData, mutate }: MyTableProps) {
-  const { activePage } = usePaginationStore((state) => state);
+  const activePage = usePaginationStore((state) => state.activePage);
 
   useEffect(() => {
     window.scrollTo(0, 0);

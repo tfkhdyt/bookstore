@@ -23,7 +23,9 @@ const ManageBooks: NextPage = () => {
 
   // console.log(data);
 
-  const { activePage, limit } = usePaginationStore((state) => state);
+  const activePage = usePaginationStore((state) => state.activePage);
+  const limit = usePaginationStore((state) => state.limit);
+
   const { data, error, mutate } = useSWR<IFetcher>(
     activePage && limit ? `/books?limit=${limit}&page=${activePage}` : null,
     activePage && limit ? fetcher : null

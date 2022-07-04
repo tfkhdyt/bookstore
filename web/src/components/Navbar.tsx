@@ -21,7 +21,8 @@ const navbarItem: IMenuItem[] = [
 ];
 
 export default function MyNavbar() {
-  const { opened, toggleOpened } = useNavbarSidebarStore((state) => state);
+  const opened = useNavbarSidebarStore((state) => state.opened);
+  const toggleOpened = useNavbarSidebarStore((state) => state.toggleOpened);
 
   return (
     <Navbar

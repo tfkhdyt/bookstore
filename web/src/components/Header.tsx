@@ -13,7 +13,8 @@ import { HeaderItem } from './HeaderItem';
 
 function MyHeader() {
   const theme = useMantineTheme();
-  const { opened, toggleOpened } = useNavbarSidebarStore((state) => state);
+  const opened = useNavbarSidebarStore((state) => state.opened);
+  const toggleOpened = useNavbarSidebarStore((state) => state.toggleOpened);
 
   return (
     <Header height={70} p='md'>
