@@ -116,7 +116,7 @@ const Update = () => {
         <Breadcrumb
           content={[
             {
-              link: '/manage-books',
+              link: '/books',
               label: 'Manage Books',
             },
             {

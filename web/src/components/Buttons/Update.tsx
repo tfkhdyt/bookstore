@@ -1,6 +1,7 @@
 import { Button } from '@mantine/core';
-import { Pencil2Icon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+
+import PencilIcon from '../Icons/Pencil';
 
 interface UpdateButtonProps {
   id: number;
@@ -12,7 +13,7 @@ const UpdateButton = ({ id }: UpdateButtonProps) => {
       <Button
         color='green'
         component='a'
-        leftIcon={<Pencil2Icon />}
+        leftIcon={<PencilIcon />}
         variant='subtle'
       >
         Edit

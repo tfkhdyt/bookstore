@@ -5,26 +5,25 @@ import {
   MediaQuery,
   useMantineColorScheme,
 } from '@mantine/core';
-import {
-  GitHubLogoIcon,
-  MoonIcon,
-  PersonIcon,
-  SunIcon,
-} from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 import { IMenuItem } from '@/types/IMenuItem';
+
+import GitHubIcon from './Icons/GitHub';
+import MoonIcon from './Icons/Moon';
+import PersonIcon from './Icons/Person';
+import SunIcon from './Icons/Sun';
 
 export const headerItems: IMenuItem[] = [
   {
     title: 'Source Code',
     link: 'https://github.com/tfkhdyt/bookstore',
-    icon: <GitHubLogoIcon style={{ transform: 'scale(1.2)' }} />,
+    icon: <GitHubIcon />,
   },
   {
     title: 'About Me',
     link: 'https://www.tfkhdyt.my.id',
-    icon: <PersonIcon style={{ transform: 'scale(1.2)' }} />,
+    icon: <PersonIcon />,
   },
 ];
 

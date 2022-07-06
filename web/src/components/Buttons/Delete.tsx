@@ -1,7 +1,8 @@
 import { Button } from '@mantine/core';
-import { TrashIcon } from '@radix-ui/react-icons';
 
 import { deleteBook } from '@/lib/deleteBook';
+
+import TrashCanIcon from '../Icons/TrashCan';
 
 interface DeleteButtonProps {
   id: number;
@@ -16,7 +17,7 @@ const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
         await deleteBook(id, title, mutate);
       }}
       color='red'
-      leftIcon={<TrashIcon />}
+      leftIcon={<TrashCanIcon />}
       variant='subtle'
     >
       Delete

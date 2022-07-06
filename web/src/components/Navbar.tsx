@@ -6,17 +6,13 @@ import { useNavbarSidebarStore } from '@/store/navbar-sidebar';
 import { IMenuItem } from '@/types/IMenuItem';
 
 import { headerItems } from './HeaderItem';
+import BookIcon from './Icons/Book';
 
 const navbarItem: IMenuItem[] = [
   {
     title: 'Manage Books',
-    link: '/manage-books',
-    icon: <DashboardIcon style={{ transform: 'scale(1.2)' }} />,
-  },
-  {
-    title: 'Add Book',
-    link: '/add-book',
-    icon: <PlusCircledIcon style={{ transform: 'scale(1.2)' }} />,
+    link: '/books',
+    icon: <BookIcon />,
   },
 ];
 
