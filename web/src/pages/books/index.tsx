@@ -1,9 +1,9 @@
-import { Box, Button, Center, Loader, Space, Text, Title } from '@mantine/core';
+import { Box, Center, Loader, Space, Text, Title } from '@mantine/core';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import useSWR from 'swr';
 
-import PlusIcon from '@/components/Icons/Plus';
+import AddButton from '@/components/Buttons/Add';
 import Table, { Book } from '@/components/Table';
 import { fetcher } from '@/lib/fetcher';
 import { usePaginationStore } from '@/store/pagination';
@@ -41,8 +41,8 @@ const ManageBooks: NextPage = () => {
       <main>
         <Title order={2}>Manage Books</Title>
         <Space h='md' />
-        <Button leftIcon={<PlusIcon />}>Add Book</Button>
-        <Space h='md' />
+        <AddButton />
+        <Space h='sm' />
         <Box>
           {error && (
             <Center sx={{ width: '100%' }}>
