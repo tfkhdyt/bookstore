@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { Anchor, Breadcrumbs } from '@mantine/core';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useSWR from 'swr';
 
-import Breadcrumb from '@/components/Breadcrumb';
 import Error from '@/components/Error';
 import Loading from '@/components/Loading';
 import { Book } from '@/components/Table';
@@ -113,8 +114,8 @@ const Update = () => {
         <title>{book.title} | Update Book</title>
       </Head>
       <main>
-        <Breadcrumb
-          content={[
+        <Breadcrumbs>
+          {[
             {
               link: '/books',
               label: 'Manage Books',
@@ -127,8 +128,13 @@ const Update = () => {
               link: `/books/${book.id}/update`,
               label: 'Update',
             },
-          ]}
-        />
+          ].map((item, index) => (
+            <Link href={item.link} key={index}>
+              <Anchor sx={{ fontWeight: 700 }}>{item.label}</Anchor>
+            </Link>
+          ))}
+        </Breadcrumbs>
+
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>
           Update {book.title}
         </h2>

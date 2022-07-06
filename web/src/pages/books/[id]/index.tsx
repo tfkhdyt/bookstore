@@ -1,11 +1,12 @@
+import { Anchor, Breadcrumbs } from '@mantine/core';
 import { format } from 'date-fns';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
 
-import Breadcrumb from '@/components/Breadcrumb';
 import DeleteButton from '@/components/Buttons/Delete';
 import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
@@ -53,7 +54,23 @@ const Detail = () => {
         <title>{book.title} | Book Detail</title>
       </Head>
       <main>
-        <Breadcrumb
+        <Breadcrumbs>
+          {[
+            {
+              link: '/books',
+              label: 'Manage Books',
+            },
+            {
+              link: `/books/${book.id}`,
+              label: book.title,
+            },
+          ].map((item, index) => (
+            <Link href={item.link} key={index}>
+              <Anchor sx={{ fontWeight: 700 }}>{item.label}</Anchor>
+            </Link>
+          ))}
+        </Breadcrumbs>
+        {/* <Breadcrumb
           content={[
             {
               link: '/books',
@@ -64,7 +81,7 @@ const Detail = () => {
               label: book.title,
             },
           ]}
-        />
+        /> */}
         <h1 className='mb-3 text-2xl font-semibold leading-tight'>
           Book Detail: {book.title}
         </h1>

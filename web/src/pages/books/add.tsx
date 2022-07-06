@@ -1,5 +1,7 @@
+import { Anchor, Breadcrumbs } from '@mantine/core';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -62,6 +64,22 @@ const AddBook = () => {
         <title>Add Book | Bookstore</title>
       </Head>
       <main>
+        <Breadcrumbs>
+          {[
+            {
+              link: '/books',
+              label: 'Manage Books',
+            },
+            {
+              link: `/books/add`,
+              label: 'Add Book',
+            },
+          ].map((item, index) => (
+            <Link href={item.link} key={index}>
+              <Anchor sx={{ fontWeight: 700 }}>{item.label}</Anchor>
+            </Link>
+          ))}
+        </Breadcrumbs>
         <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
