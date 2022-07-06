@@ -9,17 +9,17 @@ import (
 )
 
 // DELETE /books/:id
-func DeleteBook(c *gin.Context) {
+func (repo BooksRepository) DeleteBook(c *gin.Context) {
 	var book models.Book
 
-	if err := models.DB.First(&book, c.Param("id")).Error; err != nil {
+	if err := repo.DB.First(&book, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	if err := models.DB.Delete(&book).Error; err != nil {
+	if err := repo.DB.Delete(&book).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

@@ -19,7 +19,7 @@ type CreateBookInput struct {
 
 // POST /books
 // Create a new book
-func CreateBook(c *gin.Context) {
+func (repo BooksRepository) CreateBook(c *gin.Context) {
 	// validate input
 	var input CreateBookInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -40,7 +40,7 @@ func CreateBook(c *gin.Context) {
 		CoverImage:    input.CoverImage,
 	}
 
-	if err := models.DB.Create(&book).Error; err != nil {
+	if err := repo.DB.Create(&book).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})

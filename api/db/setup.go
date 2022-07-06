@@ -1,36 +1,28 @@
-package models
+package db
 
 import (
 	"fmt"
-	"log"
-	"os"
 
-	"github.com/joho/godotenv"
+	"github.com/tfkhdyt/bookstore/api/config"
+	"github.com/tfkhdyt/bookstore/api/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	// _ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var DB *gorm.DB
-
-func ConnectDatabase() {
-	godotenv.Load()
-
-	dbHost := os.Getenv("DB_HOST")
-	dbUser := os.Getenv("DB_USER")
-	dbPwd := os.Getenv("DB_PWD")
-	dbName := os.Getenv("DB_NAME")
+func ConnectDatabase() (*gorm.DB, error) {
+	dbHost, dbUser, dbPwd, dbName := config.GetDBInfo()
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPwd, dbName)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	// database, err := gorm.Open("sqlite3", "test.db")
 
-	if err != nil {
-		log.Fatal("Failed to connect to database!")
-		return
-	}
+	// if err != nil {
+	// 	log.Fatal("Failed to connect to database!")
+	// 	return
+	// }
 
-	db.AutoMigrate(&Book{})
+	db.AutoMigrate(&models.Book{})
 
-	DB = db
+	return db, err
 }

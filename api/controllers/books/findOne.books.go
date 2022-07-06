@@ -9,11 +9,11 @@ import (
 
 // GET /books/:id
 // Find a book
-func FindOne(c *gin.Context) {
+func (repo BooksRepository) FindOne(c *gin.Context) {
 	var book models.Book
 
 	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
-	if err := models.DB.First(&book, c.Param("id")).Error; err != nil {
+	if err := repo.DB.First(&book, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})

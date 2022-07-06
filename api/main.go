@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/controllers/books"
-	"github.com/tfkhdyt/bookstore/api/models"
+	"github.com/tfkhdyt/bookstore/api/db"
 )
 
 func main() {
@@ -23,7 +24,12 @@ func main() {
 
 	r.Use(cors.Default())
 
-	models.ConnectDatabase()
+	db, err := db.ConnectDatabase()
+
+	if err != nil {
+		log.Fatal("Failed to connect to database!")
+		return
+	}
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
@@ -31,11 +37,13 @@ func main() {
 		})
 	})
 
-	r.GET("/books", books.FindAll)
-	r.GET("/books/:id", books.FindOne)
-	r.POST("/books", books.CreateBook)
-	r.PATCH("/books/:id", books.UpdateBook)
-	r.DELETE("/books/:id", books.DeleteBook)
+	booksRepo := books.BooksRepository{DB: db}
+
+	r.GET("/books", booksRepo.FindAll)
+	r.GET("/books/:id", booksRepo.FindOne)
+	r.POST("/books", booksRepo.CreateBook)
+	r.PATCH("/books/:id", booksRepo.UpdateBook)
+	r.DELETE("/books/:id", booksRepo.DeleteBook)
 
 	r.Run()
 }

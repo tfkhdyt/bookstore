@@ -20,10 +20,10 @@ type UpdateBookInput struct {
 
 // PATCH /books/:id
 // Update book
-func UpdateBook(c *gin.Context) {
+func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	// get model if exist
 	var book models.Book
-	if err := models.DB.First(&book, c.Param("id")).Error; err != nil {
+	if err := repo.DB.First(&book, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
@@ -55,7 +55,7 @@ func UpdateBook(c *gin.Context) {
 		UpdatedAt:     time.Now(),
 	}
 
-	if err := models.DB.Model(&book).Updates(updatedBook).Error; err != nil {
+	if err := repo.DB.Model(&book).Updates(updatedBook).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

@@ -7,13 +7,12 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tfkhdyt/bookstore/api/lib"
 	"github.com/tfkhdyt/bookstore/api/models"
 )
 
 // GET /books
 // Get all books
-func FindAll(c *gin.Context) {
+func (repo BooksRepository) FindAll(c *gin.Context) {
 	var books []models.Book
 
 	page := c.Query("page")
@@ -30,7 +29,7 @@ func FindAll(c *gin.Context) {
 			log.Panicln(err.Error())
 		}
 
-		if err := models.DB.Limit(limit).Offset(limit * (page - 1)).Order("id ASC").Find(&books).Error; err != nil {
+		if err := repo.DB.Limit(limit).Offset(limit * (page - 1)).Order("id ASC").Find(&books).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
@@ -40,12 +39,12 @@ func FindAll(c *gin.Context) {
 		fmt.Println("Paginated books printed!")
 		c.JSON(http.StatusOK, gin.H{
 			"data":      books,
-			"totalData": lib.GetTotalData(),
+			"totalData": repo.getTotalData(),
 		})
 		return
 	}
 
-	if err := models.DB.Find(&books).Order("id ASC").Error; err != nil {
+	if err := repo.DB.Find(&books).Order("id ASC").Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -109,4 +108,14 @@ func FindAll(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": books,
 	})
+}
+
+func (repo BooksRepository) getTotalData() any {
+	var books []models.Book
+
+	if err := repo.DB.Find(&books).Error; err != nil {
+		return err.Error()
+	}
+
+	return len(books)
 }
