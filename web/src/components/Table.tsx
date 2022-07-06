@@ -6,24 +6,12 @@ import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
 
 import { usePaginationStore } from '@/store/pagination';
+import { Book } from '@/types/Book';
 
 import DeleteButton from './Buttons/Delete';
 import DetailButton from './Buttons/Detail';
 import UpdateButton from './Buttons/Update';
 import MyPagination from './Pagination';
-
-export interface Book {
-  id?: number;
-  title: string;
-  author: string;
-  isbn: string;
-  description: string;
-  publisher: string;
-  numberOfPages: number;
-  coverImage: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 // interface TableProps {
 //   books: Book[];
@@ -85,7 +73,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
           <tbody>
             {books.map((row, index) => (
               <tr key={index}>
-                <td>{row.id}</td>
+                <td>{row.ID}</td>
                 <td>
                   {' '}
                   <Center
@@ -120,10 +108,10 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                 <td>{row.numberOfPages}</td>
                 <td>
                   <Stack spacing='xs'>
-                    <DetailButton id={row.id as number} />
-                    <UpdateButton id={row.id as number} />
+                    <DetailButton id={row.ID as number} />
+                    <UpdateButton id={row.ID as number} />
                     <DeleteButton
-                      id={row.id as number}
+                      id={row.ID as number}
                       title={row.title}
                       mutate={mutate}
                     />

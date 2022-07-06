@@ -4,9 +4,10 @@ import Head from 'next/head';
 import useSWR from 'swr';
 
 import AddButton from '@/components/Buttons/Add';
-import Table, { Book } from '@/components/Table';
+import Table from '@/components/Table';
 import { fetcher } from '@/lib/fetcher';
 import { usePaginationStore } from '@/store/pagination';
+import { Book } from '@/types/Book';
 
 interface IFetcher {
   data: Book[];

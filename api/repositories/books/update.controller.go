@@ -2,7 +2,6 @@ package books
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/models"
@@ -52,7 +51,6 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 		Publisher:     input.Publisher,
 		NumberOfPages: input.NumberOfPages,
 		CoverImage:    coverImage,
-		UpdatedAt:     time.Now(),
 	}
 
 	if err := repo.DB.Model(&book).Updates(updatedBook).Error; err != nil {

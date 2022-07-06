@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/tfkhdyt/bookstore/api/controllers/books"
 	"github.com/tfkhdyt/bookstore/api/db"
+	"github.com/tfkhdyt/bookstore/api/repositories/books"
 )
 
 func main() {

@@ -9,12 +9,13 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useSWR from 'swr';
 
+import SaveButton from '@/components/Buttons/Save';
 import Error from '@/components/Error';
 import Loading from '@/components/Loading';
-import { Book } from '@/components/Table';
 import { axiosInstance } from '@/lib/axios';
 import { fetcher } from '@/lib/fetcher';
 import { uploadImage } from '@/lib/uploadImage';
+import { Book } from '@/types/Book';
 
 interface IFetcher {
   data: Book;
@@ -69,7 +70,7 @@ const Update = () => {
     if (coverImage) {
       const newCoverImage = await uploadImage(coverImage as File);
       const result = await axiosInstance
-        .patch(`/books/${book.id}`, {
+        .patch(`/books/${book.ID}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
           coverImage: newCoverImage.secure_url,
@@ -88,7 +89,7 @@ const Update = () => {
       }
     } else {
       const result = await axiosInstance
-        .patch(`/books/${book.id}`, {
+        .patch(`/books/${book.ID}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
         })
@@ -121,11 +122,11 @@ const Update = () => {
               label: 'Manage Books',
             },
             {
-              link: `/books/${book.id}`,
+              link: `/books/${book.ID}`,
               label: book.title,
             },
             {
-              link: `/books/${book.id}/update`,
+              link: `/books/${book.ID}/update`,
               label: 'Update',
             },
           ].map((item, index) => (
@@ -298,25 +299,7 @@ const Update = () => {
           </div>
 
           <div className='mt-6 flex justify-end'>
-            <button
-              className='flex transform items-center justify-center space-x-2 rounded-md bg-gray-700 px-6 py-2 leading-5 text-white transition duration-200 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none disabled:cursor-not-allowed'
-              type='submit'
-              disabled={isSubmitting}
-            >
-              {isSubmitting && (
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='currentColor'
-                  className='h-4 w-4 animate-spin'
-                >
-                  <path d='M20.944 12.979c-.489 4.509-4.306 8.021-8.944 8.021-2.698 0-5.112-1.194-6.763-3.075l1.245-1.633c1.283 1.645 3.276 2.708 5.518 2.708 3.526 0 6.444-2.624 6.923-6.021h-2.923l4-5.25 4 5.25h-3.056zm-15.864-1.979c.487-3.387 3.4-6 6.92-6 2.237 0 4.228 1.059 5.51 2.698l1.244-1.632c-1.65-1.876-4.061-3.066-6.754-3.066-4.632 0-8.443 3.501-8.941 8h-3.059l4 5.25 4-5.25h-2.92z' />
-                </svg>
-              )}
-              <span>Save</span>
-            </button>
+            <SaveButton isSubmitting={isSubmitting} />
           </div>
         </form>
       </main>

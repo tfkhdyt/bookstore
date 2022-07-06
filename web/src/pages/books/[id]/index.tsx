@@ -11,8 +11,8 @@ import DeleteButton from '@/components/Buttons/Delete';
 import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
 import Loading from '@/components/Loading';
-import { Book } from '@/components/Table';
 import { fetcher } from '@/lib/fetcher';
+import { Book } from '@/types/Book';
 
 interface IFetcher {
   data: Book;
@@ -61,7 +61,7 @@ const Detail = () => {
               label: 'Manage Books',
             },
             {
-              link: `/books/${book.id}`,
+              link: `/books/${book.ID}`,
               label: book.title,
             },
           ].map((item, index) => (
@@ -103,12 +103,12 @@ const Detail = () => {
               <li>Created at: </li>
               <p>
                 {' '}
-                {format(new Date(book.createdAt), 'iiii, d MMMM y H:mm:ss')}
+                {format(new Date(book.CreatedAt), 'iiii, d MMMM y H:mm:ss')}
               </p>
               <li>Updated at: </li>
               <p>
                 {' '}
-                {format(new Date(book.updatedAt), 'iiii, d MMMM y H:mm:ss')}
+                {format(new Date(book.UpdatedAt), 'iiii, d MMMM y H:mm:ss')}
               </p>
             </ul>
           </div>
@@ -126,9 +126,9 @@ const Detail = () => {
           </div>
         </div>
         <div className='float-left mt-4 flex space-x-2'>
-          <UpdateButton id={book.id as number} />
+          <UpdateButton id={book.ID as number} />
           <DeleteButton
-            id={book.id as number}
+            id={book.ID as number}
             title={book.title}
             mutate={mutate}
           />

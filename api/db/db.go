@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/tfkhdyt/bookstore/api/config"
+	"github.com/tfkhdyt/bookstore/api/configs"
 	"github.com/tfkhdyt/bookstore/api/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -11,7 +11,7 @@ import (
 )
 
 func ConnectDatabase() (db *gorm.DB, err error) {
-	dbHost, dbUser, dbPwd, dbName := config.GetDBInfo()
+	dbHost, dbUser, dbPwd, dbName := configs.GetDBInfo()
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPwd, dbName)
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})

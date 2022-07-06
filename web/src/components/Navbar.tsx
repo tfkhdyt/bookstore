@@ -1,5 +1,4 @@
 import { Button, Divider, MediaQuery, Navbar, Stack } from '@mantine/core';
-import { DashboardIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 import { useNavbarSidebarStore } from '@/store/navbar-sidebar';
