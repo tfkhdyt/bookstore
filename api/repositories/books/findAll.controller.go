@@ -11,8 +11,6 @@ import (
 	booksServices "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
-// GET /books
-// Get all books
 func (repo BooksRepository) FindAll(c *gin.Context) {
 	var books []models.Book
 
