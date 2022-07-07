@@ -11,7 +11,9 @@ import (
 	booksServices "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
-func (repo BooksRepository) FindAll(c *gin.Context) {
+// GET /books
+// Find all books
+func (repo *BooksRepository) FindAll(c *gin.Context) {
 	var books []models.Book
 
 	page := c.Query("page")

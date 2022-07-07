@@ -12,7 +12,7 @@ import (
 
 // GET /books/:id
 // Find a book
-func (repo BooksRepository) FindOne(c *gin.Context) {
+func (repo *BooksRepository) FindOne(c *gin.Context) {
 	var book models.Book
 
 	id, err := strconv.Atoi(c.Param("id"))
