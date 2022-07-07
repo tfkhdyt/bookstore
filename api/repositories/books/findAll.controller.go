@@ -28,7 +28,7 @@ func (repo BooksRepository) FindAll(c *gin.Context) {
 			log.Panicln(err.Error())
 		}
 
-		if err := booksServices.FindAllWithLimit(repo.DB, &books, page, limit); err != nil {
+		if err := booksServices.FindAllBooksWithLimit(repo.DB, &books, page, limit); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
@@ -43,7 +43,7 @@ func (repo BooksRepository) FindAll(c *gin.Context) {
 		return
 	}
 
-	if err := booksServices.FindAllWithoutLimit(repo.DB, &books); err != nil {
+	if err := booksServices.FindAllBooksWithoutLimit(repo.DB, &books); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
