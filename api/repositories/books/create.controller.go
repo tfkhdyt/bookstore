@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/models"
+	booksService "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
 type CreateBookInput struct {
@@ -19,7 +20,7 @@ type CreateBookInput struct {
 
 // POST /books
 // Create a new book
-func (repo BooksRepository) CreateBook(c *gin.Context) {
+func (repo *BooksRepository) CreateBook(c *gin.Context) {
 	// validate input
 	var input CreateBookInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -40,7 +41,7 @@ func (repo BooksRepository) CreateBook(c *gin.Context) {
 		CoverImage:    input.CoverImage,
 	}
 
-	if err := repo.DB.Create(&book).Error; err != nil {
+	if err := booksService.CreateBook(repo.DB, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
