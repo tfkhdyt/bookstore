@@ -1,10 +1,13 @@
 package books
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/models"
+	booksService "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
 // GET /books/:id
@@ -12,8 +15,14 @@ import (
 func (repo BooksRepository) FindOne(c *gin.Context) {
 	var book models.Book
 
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatalln(err.Error())
+		return
+	}
+
 	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
-	if err := repo.DB.First(&book, c.Param("id")).Error; err != nil {
+	if err := booksService.FindBook(repo.DB, &book, id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
