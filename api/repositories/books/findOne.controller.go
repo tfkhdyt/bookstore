@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/models"
-	booksService "github.com/tfkhdyt/bookstore/api/services/books"
+	booksServices "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
 // GET /books/:id
@@ -22,7 +22,7 @@ func (repo *BooksRepository) FindOne(c *gin.Context) {
 	}
 
 	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
-	if err := booksService.FindBook(repo.DB, &book, id); err != nil {
+	if err := booksServices.FindBook(repo.DB, &book, id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
