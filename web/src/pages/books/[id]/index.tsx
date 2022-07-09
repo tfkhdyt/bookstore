@@ -35,7 +35,7 @@ const Detail = () => {
   const [bookID] = useState(id);
   const isBreakpointSm = useMediaQuery('(max-width: 768px)');
 
-  const { data, error, mutate } = useSWR<IFetcher>(
+  const { data, error } = useSWR<IFetcher>(
     bookID ? `/books/${bookID}` : null,
     bookID ? fetcher : null
   );
@@ -188,7 +188,7 @@ const Detail = () => {
           <DeleteButton
             id={book.ID as number}
             title={book.title}
-            mutate={mutate}
+            // mutate={mutate}
           />
         </Box>
         {/* <div className='grid grid-cols-2 gap-8'>

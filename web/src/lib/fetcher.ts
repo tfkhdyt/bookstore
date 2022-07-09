@@ -1,8 +1,10 @@
 import { axiosInstance } from './axios';
 
 export const fetcher = async (url: string) => {
-  const { data } = await axiosInstance.get(url).catch((err) => {
-    return err.message;
-  });
-  return data;
+  try {
+    const { data } = await axiosInstance.get(url);
+    return data;
+  } catch (err) {
+    return err;
+  }
 };

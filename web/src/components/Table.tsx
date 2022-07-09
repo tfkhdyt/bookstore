@@ -38,7 +38,7 @@ interface MyTableProps {
   mutate: () => void;
 }
 
-function MyTable({ books, totalData, mutate }: MyTableProps) {
+function MyTable({ books, totalData }: MyTableProps) {
   const activePage = usePaginationStore((state) => state.activePage);
 
   useEffect(() => {
@@ -113,7 +113,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                     <DeleteButton
                       id={row.ID as number}
                       title={row.title}
-                      mutate={mutate}
+                      // mutate={mutate}
                     />
                   </Stack>
                 </td>

@@ -4,17 +4,17 @@ import { useModals } from '@mantine/modals';
 import { showNotification, updateNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 
-import { deleteBook } from '@/lib/deleteBook';
+import { axiosInstance } from '@/lib/axios';
 
 import TrashCanIcon from '../Icons/TrashCan';
 
 interface DeleteButtonProps {
   id: number;
   title: string;
-  mutate: () => void;
+  // mutate: () => void;
 }
 
-const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
+const DeleteButton = ({ id, title }: DeleteButtonProps) => {
   const modals = useModals();
   const router = useRouter();
 
@@ -28,10 +28,9 @@ const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
       disallowClose: true,
     });
 
-    const { success } = await deleteBook(id);
-    if (success) {
-      mutate();
-      router.push('/books');
+    try {
+      await axiosInstance.delete(`/books/${id}`);
+      // mutate();
       updateNotification({
         id: 'delete-data',
         color: 'green',
@@ -39,7 +38,8 @@ const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
         message: `${title} deleted successfully`,
         autoClose: 2000,
       });
-    } else {
+      router.push('/books');
+    } catch (err) {
       updateNotification({
         id: 'delete-data',
         color: 'red',

@@ -68,36 +68,30 @@ const Update = () => {
     });
 
     if (coverImage) {
-      const newCoverImage = await uploadImage(coverImage as File);
-      const result = await axiosInstance
-        .patch(`/books/${book.ID}`, {
+      try {
+        const { secure_url } = await uploadImage(coverImage as File);
+        await axiosInstance.patch(`/books/${book.ID}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
-          coverImage: newCoverImage.secure_url,
-        })
-        .catch((err) => {
-          console.error(err);
+          coverImage: secure_url,
         });
 
-      if (result?.data) {
         Swal.close();
         Swal.fire({
           title: 'Success!',
           icon: 'success',
           text: `"${book.title}" updated successfully`,
         });
+      } catch (err) {
+        console.error(err);
       }
     } else {
-      const result = await axiosInstance
-        .patch(`/books/${book.ID}`, {
+      try {
+        await axiosInstance.patch(`/books/${book.ID}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
-        })
-        .catch((err) => {
-          console.error(err);
         });
 
-      if (result?.data) {
         Swal.close();
         mutate();
         Swal.fire({
@@ -105,6 +99,8 @@ const Update = () => {
           icon: 'success',
           text: `"${book.title}" updated successfully`,
         });
+      } catch (err) {
+        console.error(err);
       }
     }
   };

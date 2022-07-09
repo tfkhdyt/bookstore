@@ -30,25 +30,22 @@ const AddBook = () => {
       },
     });
 
-    const { secure_url } = await uploadImage(coverImage as File);
-
-    const result = await axiosInstance
-      .post('/books', {
+    try {
+      const { secure_url } = await uploadImage(coverImage as File);
+      await axiosInstance.post('/books', {
         ...data,
         numberOfPages: Number(data.numberOfPages),
         coverImage: secure_url,
-      })
-      .catch((err) => {
-        console.error(err);
       });
 
-    if (result?.data) {
       Swal.close();
       Swal.fire({
         title: 'Success!',
         icon: 'success',
         text: `"${data.title}" added successfully`,
       });
+    } catch (err) {
+      console.error(err);
     }
   };
 

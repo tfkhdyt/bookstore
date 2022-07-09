@@ -1,4 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+
+interface UploadImageResult {
+  secure_url: string;
+}
 
 export const uploadImage = async (image: File) => {
   const UPLOAD_PRESET = process.env
@@ -10,15 +14,23 @@ export const uploadImage = async (image: File) => {
   data.append('upload_preset', UPLOAD_PRESET);
   data.append('cloud_name', CLOUD_NAME);
 
-  const result = await axios
-    .post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data)
-    .catch((err) => {
-      console.error(err);
-    });
+  let result: AxiosResponse;
 
-  if (result?.data) {
-    console.log(result.data);
-
-    return result.data;
+  try {
+    result = await axios.post(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+      data
+    );
+  } catch (err) {
+    console.error(err);
   }
+
+  return new Promise<UploadImageResult>((resolve, reject) => {
+    if (result.status === 200) {
+      console.log(result.data);
+      resolve(result.data);
+    } else {
+      reject('Upload image failed');
+    }
+  });
 };
