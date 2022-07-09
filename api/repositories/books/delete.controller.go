@@ -2,7 +2,6 @@ package books
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -16,7 +15,9 @@ func (repo BooksRepository) DeleteBook(c *gin.Context) {
 	var book models.Book
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		log.Fatalln(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 

@@ -1,7 +1,6 @@
 package books
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -17,7 +16,9 @@ func (repo *BooksRepository) FindOne(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		log.Fatalln(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 

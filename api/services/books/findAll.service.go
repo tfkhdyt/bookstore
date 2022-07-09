@@ -13,12 +13,12 @@ func FindAllBooksWithoutLimit(db *gorm.DB, books *[]models.Book) error {
 	return db.Order("id ASC").Find(books).Error
 }
 
-func GetTotalData(db *gorm.DB) any {
+func GetTotalData(db *gorm.DB) (int, error) {
 	var books []models.Book
 
 	if err := db.Find(&books).Error; err != nil {
-		return err.Error()
+		return 0, err
 	}
 
-	return len(books)
+	return len(books), nil
 }

@@ -27,8 +27,7 @@ func main() {
 	db, err := db.ConnectDatabase()
 
 	if err != nil {
-		log.Fatal("Failed to connect to database!")
-		return
+		log.Panic("Failed to connect to database!")
 	}
 
 	r.GET("/", func(ctx *gin.Context) {

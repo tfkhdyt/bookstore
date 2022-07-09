@@ -2,7 +2,6 @@ package books
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -22,12 +21,18 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 	if page != "" && limit != "" {
 		page, err := strconv.Atoi(page)
 		if err != nil {
-			log.Panicln(err.Error())
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
 		}
 
 		limit, err := strconv.Atoi(limit)
 		if err != nil {
-			log.Panicln(err.Error())
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
 		}
 
 		if err := booksServices.FindAllBooksWithLimit(repo.DB, &books, page, limit); err != nil {
@@ -38,9 +43,17 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 		}
 
 		fmt.Println("Paginated books printed!")
+		totalData, err := booksServices.GetTotalData(repo.DB)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
 		c.JSON(http.StatusOK, gin.H{
 			"data":      books,
-			"totalData": booksServices.GetTotalData(repo.DB),
+			"totalData": totalData,
 		})
 		return
 	}

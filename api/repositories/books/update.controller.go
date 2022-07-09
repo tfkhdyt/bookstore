@@ -1,7 +1,6 @@
 package books
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -27,7 +26,9 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	var book models.Book
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		log.Panicln(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
