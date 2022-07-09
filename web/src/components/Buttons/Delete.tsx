@@ -1,4 +1,8 @@
-import { Button } from '@mantine/core';
+/* eslint-disable react/no-unescaped-entities */
+import { Button, Text } from '@mantine/core';
+import { useModals } from '@mantine/modals';
+import { showNotification, updateNotification } from '@mantine/notifications';
+import { useRouter } from 'next/router';
 
 import { deleteBook } from '@/lib/deleteBook';
 
@@ -11,11 +15,64 @@ interface DeleteButtonProps {
 }
 
 const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
+  const modals = useModals();
+  const router = useRouter();
+
+  const handleOnConfirm = async () => {
+    showNotification({
+      id: 'delete-data',
+      loading: true,
+      title: 'Deleting',
+      message: 'Delete is in progress...',
+      autoClose: false,
+      disallowClose: true,
+    });
+
+    const { success } = await deleteBook(id);
+    if (success) {
+      mutate();
+      router.push('/books');
+      updateNotification({
+        id: 'delete-data',
+        color: 'green',
+        title: `Delete book success!`,
+        message: `${title} deleted successfully`,
+        autoClose: 2000,
+      });
+    } else {
+      updateNotification({
+        id: 'delete-data',
+        color: 'red',
+        title: `Delete book failed!`,
+        message: `${title} failed to delete`,
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: `Delete ${title}`,
+      centered: true,
+      children: (
+        <Text size='sm'>
+          Are you sure you want to delete <b>{title}</b>? This action is
+          destructive and you can't restore your data.
+        </Text>
+      ),
+      labels: { confirm: 'Delete book', cancel: "No, don't delete it" },
+      confirmProps: { color: 'red' },
+      // onCancel: () => console.log('Cancel'),
+      onConfirm: handleOnConfirm,
+    });
+
+  const handleDelete = async () => {
+    openDeleteModal();
+  };
+
   return (
     <Button
-      onClick={async () => {
-        await deleteBook(id, title, mutate);
-      }}
+      onClick={handleDelete}
       color='red'
       leftIcon={<TrashCanIcon />}
       variant='subtle'

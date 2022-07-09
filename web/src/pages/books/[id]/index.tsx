@@ -2,8 +2,10 @@ import {
   Anchor,
   Box,
   Breadcrumbs,
+  Center,
   Grid,
   List,
+  Loader,
   Space,
   Text,
   Title,
@@ -20,7 +22,6 @@ import useSWR from 'swr';
 import DeleteButton from '@/components/Buttons/Delete';
 import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
-import Loading from '@/components/Loading';
 import { fetcher } from '@/lib/fetcher';
 import { Book } from '@/types/Book';
 
@@ -55,7 +56,12 @@ const Detail = () => {
     );
   }
 
-  if (!data) return <Loading title='Book Detail' />;
+  if (!data)
+    return (
+      <Center style={{ width: '100%', height: '75vh' }}>
+        <Loader />
+      </Center>
+    );
 
   const book = data.data;
 
@@ -156,23 +162,25 @@ const Detail = () => {
             </List>
           </Grid.Col>
           {/* Book Cover */}
-          <Grid.Col
-            xs={12}
-            lg={6}
-            sx={{
-              justifySelf: 'flex-start',
-              position: 'relative',
-              height: isBreakpointSm ? 400 : 700,
-            }}
-          >
-            {book.coverImage && (
-              <Image
-                src={book.coverImage}
-                alt={`${book.title} cover image`}
-                layout='fill'
-                objectFit='contain'
-              />
-            )}
+          <Grid.Col xs={12} lg={6} sx={{ justifySelf: 'flex-start' }}>
+            <Box
+              sx={{
+                justifySelf: 'flex-start',
+                position: 'relative',
+                width: '100%',
+                height: isBreakpointSm ? 400 : 600,
+              }}
+            >
+              {book.coverImage && (
+                <Image
+                  src={book.coverImage}
+                  alt={`${book.title} cover image`}
+                  layout='fill'
+                  objectFit='contain'
+                  objectPosition='top'
+                />
+              )}
+            </Box>
           </Grid.Col>
         </Grid>
         <Box sx={{ marginTop: isBreakpointSm ? '3.5rem' : '1rem' }}>

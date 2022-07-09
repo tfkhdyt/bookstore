@@ -6,6 +6,8 @@ import {
   MantineProvider,
 } from '@mantine/core';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { ModalsProvider } from '@mantine/modals';
+import { NotificationsProvider } from '@mantine/notifications';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import type { AppProps } from 'next/app';
 
@@ -33,31 +35,35 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         withNormalizeCSS
         emotionOptions={{ key: 'mantine', prepend: false }}
       >
-        <Layout>
-          <style>
-            {`html {
+        <ModalsProvider>
+          <NotificationsProvider>
+            <Layout>
+              <style>
+                {`html {
                 color-scheme: ${colorScheme}
               }`}
-          </style>
-          <LazyMotion features={domAnimation}>
-            <AnimatePresence
-              exitBeforeEnter
-              initial={false}
-              onExitComplete={() => window.scrollTo(0, 0)}
-            >
-              <m.div
-                key={router.asPath}
-                variants={variants}
-                initial='hidden'
-                animate='enter'
-                exit='exit'
-                transition={{ type: 'tween', ease: 'easeInOut' }}
-              >
-                <Component {...pageProps} />
-              </m.div>
-            </AnimatePresence>
-          </LazyMotion>
-        </Layout>
+              </style>
+              <LazyMotion features={domAnimation}>
+                <AnimatePresence
+                  exitBeforeEnter
+                  initial={false}
+                  onExitComplete={() => window.scrollTo(0, 0)}
+                >
+                  <m.div
+                    key={router.asPath}
+                    variants={variants}
+                    initial='hidden'
+                    animate='enter'
+                    exit='exit'
+                    transition={{ type: 'tween', ease: 'easeInOut' }}
+                  >
+                    <Component {...pageProps} />
+                  </m.div>
+                </AnimatePresence>
+              </LazyMotion>
+            </Layout>
+          </NotificationsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
