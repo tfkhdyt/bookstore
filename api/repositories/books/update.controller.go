@@ -1,10 +1,13 @@
 package books
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tfkhdyt/bookstore/api/models"
+	booksServices "github.com/tfkhdyt/bookstore/api/services/books"
 )
 
 type UpdateBookInput struct {
@@ -22,7 +25,13 @@ type UpdateBookInput struct {
 func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	// get model if exist
 	var book models.Book
-	if err := repo.DB.First(&book, c.Param("id")).Error; err != nil {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Panicln(err.Error())
+		return
+	}
+
+	if err := booksServices.FindBook(repo.DB, &book, id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Book not found",
 		})
@@ -38,8 +47,10 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 		return
 	}
 
-	var coverImage string = book.CoverImage
-	if input.CoverImage != "" {
+	var coverImage string
+	if input.CoverImage == "" {
+		coverImage = book.CoverImage
+	} else {
 		coverImage = input.CoverImage
 	}
 
@@ -53,7 +64,7 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 		CoverImage:    coverImage,
 	}
 
-	if err := repo.DB.Model(&book).Updates(updatedBook).Error; err != nil {
+	if err := booksServices.UpdateBook(repo.DB, &book, updatedBook); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
