@@ -22,7 +22,8 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 		page, err := strconv.Atoi(page)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
+				"error":   err.Error(),
+				"message": "Failed to convert page to int",
 			})
 			return
 		}
@@ -30,13 +31,14 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 		limit, err := strconv.Atoi(limit)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
+				"error":   err.Error(),
+				"message": "Failed to convert limit to int",
 			})
 			return
 		}
 
 		if err := booksServices.FindAllBooksWithLimit(repo.DB, &books, page, limit); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": err.Error(),
 			})
 			return
@@ -45,7 +47,7 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 		fmt.Println("Paginated books printed!")
 		totalData, err := booksServices.GetTotalData(repo.DB)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": err.Error(),
 			})
 			return
@@ -59,7 +61,7 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 	}
 
 	if err := booksServices.FindAllBooksWithoutLimit(repo.DB, &books); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		return

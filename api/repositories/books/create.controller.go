@@ -25,7 +25,8 @@ func (repo *BooksRepository) CreateBook(c *gin.Context) {
 	var input CreateBookInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+			"error":   err.Error(),
+			"message": "Failed to bind json",
 		})
 		return
 	}
@@ -43,7 +44,8 @@ func (repo *BooksRepository) CreateBook(c *gin.Context) {
 
 	if err := booksService.CreateBook(repo.DB, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+			"error":   err.Error(),
+			"message": "Failed to create book",
 		})
 		return
 	}

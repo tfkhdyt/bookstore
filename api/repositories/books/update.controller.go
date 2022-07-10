@@ -27,14 +27,16 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+			"error":   err.Error(),
+			"message": "Failed to convert id to int",
 		})
 		return
 	}
 
 	if err := booksServices.FindBook(repo.DB, &book, id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Book not found",
+			"error":   err.Error(),
+			"message": "Book not found",
 		})
 		return
 	}
@@ -43,7 +45,8 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	var input UpdateBookInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+			"error":   err.Error(),
+			"message": "Failed to bind json",
 		})
 		return
 	}
@@ -66,8 +69,9 @@ func (repo BooksRepository) UpdateBook(c *gin.Context) {
 	}
 
 	if err := booksServices.UpdateBook(repo.DB, &book, updatedBook); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   err.Error(),
+			"message": "Failed to update book",
 		})
 		return
 	}

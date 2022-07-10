@@ -17,7 +17,8 @@ func (repo *BooksRepository) FindOne(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+			"error":   err.Error(),
+			"message": "Failed to convert id to int",
 		})
 		return
 	}
@@ -25,7 +26,8 @@ func (repo *BooksRepository) FindOne(c *gin.Context) {
 	// if err := models.DB.Where("id = ?", c.Param("id")).First(&book).Error; err != nil {
 	if err := booksServices.FindBook(repo.DB, &book, id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Book not found",
+			"error":   err.Error(),
+			"message": "Book not found",
 		})
 		return
 	}
