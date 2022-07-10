@@ -22,18 +22,18 @@ specifiers:
   eslint-config-next: 12.1.6
   eslint-plugin-react: ^7.30.1
   eslint-plugin-simple-import-sort: ^7.0.0
-  framer-motion: ^6.4.1
+  framer-motion: ^6.4.3
   next: 12.1.6
   postcss: ^8.4.14
   prettier: ^2.7.1
-  prettier-plugin-tailwindcss: ^0.1.11
+  prettier-plugin-tailwindcss: ^0.1.12
   react: 18.1.0
   react-dom: 18.1.0
   react-hook-form: ^7.33.1
   react-medium-image-zoom: ^4.4.3
   sweetalert2: ^11.4.20
   swr: 1.1.2
-  tailwindcss: ^3.1.4
+  tailwindcss: ^3.1.5
   typescript: 4.7.3
   zustand: 4.0.0-rc.1
 
@@ -48,7 +48,7 @@ dependencies:
   '@mantine/rte': 4.2.12_6iaz5tn5srlyy5ycla7uohtjuu
   axios: 0.27.2
   date-fns: 2.28.0
-  framer-motion: 6.4.1_ef5jwxihqo6n7gxfmzogljlgcm
+  framer-motion: 6.4.3_ef5jwxihqo6n7gxfmzogljlgcm
   next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
@@ -59,7 +59,7 @@ dependencies:
   zustand: 4.0.0-rc.1_react@18.1.0
 
 devDependencies:
-  '@tailwindcss/forms': 0.5.2_tailwindcss@3.1.4
+  '@tailwindcss/forms': 0.5.2_tailwindcss@3.1.5
   '@types/node': 17.0.42
   '@types/react': 18.0.12
   '@types/react-dom': 18.0.5
@@ -72,8 +72,8 @@ devDependencies:
   eslint-plugin-simple-import-sort: 7.0.0_eslint@8.17.0
   postcss: 8.4.14
   prettier: 2.7.1
-  prettier-plugin-tailwindcss: 0.1.11_prettier@2.7.1
-  tailwindcss: 3.1.4
+  prettier-plugin-tailwindcss: 0.1.12_prettier@2.7.1
+  tailwindcss: 3.1.5
   typescript: 4.7.3
 
 packages:
@@ -82,7 +82,7 @@ packages:
     resolution: {integrity: sha512-cOu5wH2JFBgMjje+a+fz2JNIWU4GzYpl05oSob3UDvBEh6EuIn+TXFHMmBbhSb+k/4HMzgKCQfEEDArAWNF9Cw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      core-js-pure: 3.23.3
+      core-js-pure: 3.23.4
       regenerator-runtime: 0.13.9
     dev: true
 
@@ -390,8 +390,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@motionone/dom/10.11.0:
-    resolution: {integrity: sha512-ST56HBslkeoeDwqRFWafkD+JT5FEwlHqB2K2KGaQh6wo6zfKQ9xwjQcqgDiBv2gg6s8ycjHAdFS6dnMHQ5hXKw==}
+  /@motionone/dom/10.11.2:
+    resolution: {integrity: sha512-0SX4acPV1srcnzi0ZKzeq/aqDq86Wwd2G2RiLbLhIGFB3zZB/rJ46yNW3AUhSPKEQLCL20J3e8V4hyfPdEZ5TA==}
     dependencies:
       '@motionone/animation': 10.10.1
       '@motionone/generators': 10.9.0
@@ -668,13 +668,13 @@ packages:
     resolution: {integrity: sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA==}
     dev: true
 
-  /@tailwindcss/forms/0.5.2_tailwindcss@3.1.4:
+  /@tailwindcss/forms/0.5.2_tailwindcss@3.1.5:
     resolution: {integrity: sha512-pSrFeJB6Bg1Mrg9CdQW3+hqZXAKsBrSG9MAfFLKy1pVA4Mb4W7C0k7mEhlmS2Dfo/otxrQOET7NJiJ9RrS563w==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.1.4
+      tailwindcss: 3.1.5
     dev: true
 
   /@types/json-schema/7.0.11:
@@ -1030,8 +1030,8 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001363
-      electron-to-chromium: 1.4.180
-      node-releases: 2.0.5
+      electron-to-chromium: 1.4.185
+      node-releases: 2.0.6
       update-browserslist-db: 1.0.4_browserslist@4.21.1
     dev: true
 
@@ -1113,8 +1113,8 @@ packages:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
-  /core-js-pure/3.23.3:
-    resolution: {integrity: sha512-XpoouuqIj4P+GWtdyV8ZO3/u4KftkeDVMfvp+308eGMhCrA3lVDSmAxO0c6GGOcmgVlaKDrgWVMo49h2ab/TDA==}
+  /core-js-pure/3.23.4:
+    resolution: {integrity: sha512-lizxkcgj3XDmi7TUBFe+bQ1vNpD5E4t76BrBWI3HdUxdw/Mq1VF4CkiHzIKyieECKtcODK2asJttoofEeUKICQ==}
     requiresBuild: true
     dev: true
 
@@ -1297,8 +1297,8 @@ packages:
       readable-stream: 2.3.7
     dev: false
 
-  /electron-to-chromium/1.4.180:
-    resolution: {integrity: sha512-7at5ash3FD9U5gPa3/wPr6OdiZd/zBjvDZaaHBpcqFOFUhZiWnb7stkqk8xUFL9H9nk7Yok5vCCNK8wyC/+f8A==}
+  /electron-to-chromium/1.4.185:
+    resolution: {integrity: sha512-9kV/isoOGpKkBt04yYNaSWIBn3187Q5VZRtoReq8oz5NY/A4XmU6cAoqgQlDp7kKJCZMRjWZ8nsQyxfpFHvfyw==}
     dev: true
 
   /emoji-regex/9.2.2:
@@ -1491,7 +1491,7 @@ packages:
       emoji-regex: 9.2.2
       eslint: 8.17.0
       has: 1.0.3
-      jsx-ast-utils: 3.3.1
+      jsx-ast-utils: 3.3.2
       language-tags: 1.0.5
       minimatch: 3.1.2
       semver: 6.3.0
@@ -1517,7 +1517,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.17.0
       estraverse: 5.3.0
-      jsx-ast-utils: 3.3.1
+      jsx-ast-utils: 3.3.2
       minimatch: 3.1.2
       object.entries: 1.1.5
       object.fromentries: 2.0.5
@@ -1763,13 +1763,13 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
-  /framer-motion/6.4.1_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-JiVnG3p0mO9yWxjNx3xxJaKP4hTWdm6oIbzfMJZEMtoOahSNoDTRZA/mFPzfVNj2foKwFPOLFv/lw8UUZjyUqA==}
+  /framer-motion/6.4.3_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-prcyOGFkGjwGEgbxObIWteVz1ihuWaDLdR03626cbA1GxTaPRpLb8ioJfWPmP5mwcWC7TlhMOjS5kBYnuiktFA==}
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
       react-dom: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
     dependencies:
-      '@motionone/dom': 10.11.0
+      '@motionone/dom': 10.11.2
       framesync: 6.0.1
       hey-listen: 1.0.8
       popmotion: 11.0.3
@@ -2154,8 +2154,8 @@ packages:
       minimist: 1.2.6
     dev: true
 
-  /jsx-ast-utils/3.3.1:
-    resolution: {integrity: sha512-pxrjmNpeRw5wwVeWyEAk7QJu2GnBO3uzPFmHCKJJFPKK2Cy0cWL23krGtLdnMmbIi6/FjlrQpPyfQI19ByPOhQ==}
+  /jsx-ast-utils/3.3.2:
+    resolution: {integrity: sha512-4ZCADZHRkno244xlNnn4AOG6sRQ7iBZ5BbgZ4vW4y5IZw7cVUD1PPeblm1xx/nfmMxPdt/LHsXZW8z/j58+l9Q==}
     engines: {node: '>=4.0'}
     dependencies:
       array-includes: 3.1.5
@@ -2322,8 +2322,8 @@ packages:
       - '@babel/core'
       - babel-plugin-macros
 
-  /node-releases/2.0.5:
-    resolution: {integrity: sha512-U9h1NLROZTq9uE1SNffn6WuPDg8icmi3ns4rEl/oTfIle4iLjTliCzgTsbaIFMq/Xn078/lfY/BL0GWZ+psK4Q==}
+  /node-releases/2.0.6:
+    resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
     dev: true
 
   /normalize-path/3.0.0:
@@ -2525,9 +2525,9 @@ packages:
       postcss: 8.4.14
     dev: true
 
-  /postcss-load-config/3.1.4_postcss@8.4.14:
-    resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
-    engines: {node: '>= 10'}
+  /postcss-load-config/4.0.1_postcss@8.4.14:
+    resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
+    engines: {node: '>= 14'}
     peerDependencies:
       postcss: '>=8.0.9'
       ts-node: '>=9.0.0'
@@ -2539,7 +2539,7 @@ packages:
     dependencies:
       lilconfig: 2.0.5
       postcss: 8.4.14
-      yaml: 1.10.2
+      yaml: 2.1.1
     dev: true
 
   /postcss-nested/5.0.6_postcss@8.4.14:
@@ -2586,8 +2586,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-tailwindcss/0.1.11_prettier@2.7.1:
-    resolution: {integrity: sha512-a28+1jvpIZQdZ/W97wOXb6VqI762MKE/TxMMuibMEHhyYsSxQA8Ek30KObd5kJI2HF1ldtSYprFayXJXi3pz8Q==}
+  /prettier-plugin-tailwindcss/0.1.12_prettier@2.7.1:
+    resolution: {integrity: sha512-pEZ6tppwknCeq3ObR9g8t61AhWtVRRR3I0EQNeiRrrJ3D42FJGeUDxiFc/LJRYEeAx5JOxagsF0MICwuWOJa+w==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
       prettier: '>=2.2.0'
@@ -3026,8 +3026,8 @@ packages:
       react: 18.1.0
     dev: false
 
-  /tailwindcss/3.1.4:
-    resolution: {integrity: sha512-NrxbFV4tYsga/hpWbRyUfIaBrNMXDxx5BsHgBS4v5tlyjf+sDsgBg5m9OxjrXIqAS/uR9kicxLKP+bEHI7BSeQ==}
+  /tailwindcss/3.1.5:
+    resolution: {integrity: sha512-bC/2dy3dGPqxMWAqFSRgQxVCfmO/31ZbeEp8s9DMDh4zgPZ5WW1gxRJkbBkXcTUIzaSUdhWrcsrSOe32ccgB4w==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     dependencies:
@@ -3047,7 +3047,7 @@ packages:
       postcss: 8.4.14
       postcss-import: 14.1.0_postcss@8.4.14
       postcss-js: 4.0.0_postcss@8.4.14
-      postcss-load-config: 3.1.4_postcss@8.4.14
+      postcss-load-config: 4.0.1_postcss@8.4.14
       postcss-nested: 5.0.6_postcss@8.4.14
       postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
@@ -3249,9 +3249,9 @@ packages:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
 
-  /yaml/1.10.2:
-    resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
-    engines: {node: '>= 6'}
+  /yaml/2.1.1:
+    resolution: {integrity: sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==}
+    engines: {node: '>= 14'}
     dev: true
 
   /zustand/4.0.0-rc.1_react@18.1.0:
