@@ -1,9 +1,10 @@
-import { Box, Center, Loader, Space, Text, Title } from '@mantine/core';
+import { Box, Center, Loader, Space, Title } from '@mantine/core';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import useSWR from 'swr';
 
 import AddButton from '@/components/Buttons/Add';
+import Error from '@/components/Error';
 import Table from '@/components/Table';
 import { fetcher } from '@/lib/fetcher';
 import { usePaginationStore } from '@/store/pagination';
@@ -15,16 +16,6 @@ interface IFetcher {
 }
 
 const ManageBooks: NextPage = () => {
-  // if (!data) {
-  //   return (
-  //     <div className='grid min-h-full min-w-full place-items-center'>
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
-
-  // console.log(data);
-
   const activePage = usePaginationStore((state) => state.activePage);
   const limit = usePaginationStore((state) => state.limit);
 
@@ -45,13 +36,7 @@ const ManageBooks: NextPage = () => {
         <AddButton />
         <Space h='sm' />
         <Box>
-          {error && (
-            <Center sx={{ width: '100%' }}>
-              <Text color='red' weight='bold'>
-                Failed to fetch data
-              </Text>
-            </Center>
-          )}
+          {error && <Error />}
           {!data ? (
             <Center style={{ width: '100%', height: '75vh' }}>
               <Loader />
