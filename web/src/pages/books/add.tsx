@@ -18,11 +18,11 @@ import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import axios from 'axios';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 
 import MyDropzone from '@/components/Dropzone';
+import { PreviewImage } from '@/components/PreviewImage';
 import { axiosInstance } from '@/lib/axios';
 import {
   showCreateNotif,
@@ -39,22 +39,6 @@ interface IForm {
   numberOfPages: number | undefined;
   description: string;
 }
-
-interface MyImageProps {
-  coverImage: File;
-}
-
-const MyImage = memo(({ coverImage }: MyImageProps) => {
-  return (
-    <Image
-      src={URL.createObjectURL(coverImage)}
-      alt='cover image'
-      layout='fill'
-      objectFit='contain'
-      title={coverImage?.name}
-    />
-  );
-});
 
 const AddBook = () => {
   const [coverImage, setCoverImage] = useState<File>();
@@ -249,28 +233,31 @@ const AddBook = () => {
                 </Text>
               </Box>
               <Grid gutter='md' grow>
-                <Grid.Col xs={12} md={8}>
+                <Grid.Col xs={12} md={coverImage ? 8 : 12}>
                   <MyDropzone setCoverImage={setCoverImage} />
                 </Grid.Col>
-                <Grid.Col xs={12} md={4} p={isBreakpointMd ? undefined : 0}>
-                  <Center
-                    sx={{
-                      position: 'relative',
-                      width: '100%',
-                      height: isBreakpointMd
-                        ? '100%'
-                        : isBreakpointXs
-                        ? '15rem'
-                        : '15rem',
-                    }}
+                {coverImage && (
+                  <Grid.Col
+                    xs={12}
+                    md={4}
+                    // p={isBreakpointMd ? undefined : 0}
+                    sx={{ display: coverImage ? undefined : 'none' }}
                   >
-                    {coverImage ? (
-                      <MyImage coverImage={coverImage} />
-                    ) : (
-                      <Text>Cover image preview here</Text>
-                    )}
-                  </Center>
-                </Grid.Col>
+                    <Center
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: isBreakpointMd
+                          ? '100%'
+                          : isBreakpointXs
+                          ? '15rem'
+                          : '15rem',
+                      }}
+                    >
+                      <PreviewImage coverImage={coverImage} />
+                    </Center>
+                  </Grid.Col>
+                )}
               </Grid>
             </Grid.Col>
           </Grid>
