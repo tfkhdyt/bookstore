@@ -27,6 +27,6 @@ export const updateDeleteNotif = ({
     color,
     title,
     message,
-    autoClose: 2000,
+    autoClose: 5000,
   });
 };
