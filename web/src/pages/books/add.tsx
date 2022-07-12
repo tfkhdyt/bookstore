@@ -29,6 +29,7 @@ import {
   updateCreateNotif,
 } from '@/lib/notifications/create.notification';
 import { uploadImage } from '@/lib/uploadImage';
+import { ErrorData } from '@/types/FetchErrorData';
 
 interface IForm {
   title: string;
@@ -106,9 +107,6 @@ const AddBook = () => {
     } catch (err) {
       console.error(err);
       if (axios.isAxiosError(err)) {
-        type ErrorData = {
-          message: string;
-        };
         const message = err.response?.data as ErrorData;
         updateCreateNotif({
           color: 'red',

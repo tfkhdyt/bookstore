@@ -9,6 +9,7 @@ import {
   showDeleteNotif,
   updateDeleteNotif,
 } from '@/lib/notifications/delete.notification';
+import { ErrorData } from '@/types/FetchErrorData';
 
 import TrashCanIcon from '../Icons/TrashCan';
 
@@ -38,9 +39,6 @@ const DeleteButton = ({ id, title }: DeleteButtonProps) => {
     } catch (err) {
       console.error(err);
       if (axios.isAxiosError(err)) {
-        type ErrorData = {
-          message: string;
-        };
         const message = err.response?.data as ErrorData;
         updateDeleteNotif({
           color: 'red',
