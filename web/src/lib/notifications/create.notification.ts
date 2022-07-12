@@ -1,29 +1,29 @@
 import { showNotification, updateNotification } from '@mantine/notifications';
 
-export const showDeleteNotif = () => {
+export const showCreateNotif = () => {
   showNotification({
-    id: 'delete-data',
+    id: 'create-book',
     loading: true,
     title: 'Loading...',
-    message: 'Delete is in progress',
+    message: 'Add book is in progress',
     autoClose: false,
     disallowClose: true,
   });
 };
 
-interface UpdateDeleteNotifParams {
+interface UpdateCreateNotifParams {
   color: string;
   title: string;
   message: string;
 }
 
-export const updateDeleteNotif = ({
+export const updateCreateNotif = ({
   color,
   title,
   message,
-}: UpdateDeleteNotifParams) => {
+}: UpdateCreateNotifParams) => {
   updateNotification({
-    id: 'delete-data',
+    id: 'create-book',
     color,
     title,
     message,
