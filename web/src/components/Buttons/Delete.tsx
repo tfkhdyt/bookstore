@@ -30,40 +30,27 @@ const DeleteButton = ({ id, title }: DeleteButtonProps) => {
       // mutate();
       updateDeleteNotif({
         color: 'green',
-        title: 'Delete book success!',
+        title: 'Success',
         message: `${title} deleted successfully`,
       });
 
       router.push('/books');
     } catch (err) {
+      console.error(err);
       if (axios.isAxiosError(err)) {
-        switch (err.response?.status) {
-          case 400:
-            updateDeleteNotif({
-              color: 'red',
-              title: 'Failed to delete book!',
-              message: 'Failed to convert id to int',
-            });
-            break;
-          case 404:
-            updateDeleteNotif({
-              color: 'red',
-              title: 'Failed to delete book!',
-              message: 'Book not found',
-            });
-            break;
-          case 500:
-            updateDeleteNotif({
-              color: 'red',
-              title: 'Failed to delete book!',
-              message: 'Failed to delete book',
-            });
-            break;
-        }
+        type ErrorData = {
+          message: string;
+        };
+        const message = err.response?.data as ErrorData;
+        updateDeleteNotif({
+          color: 'red',
+          title: 'Failed',
+          message: `${message} | Error Code: ${err.response?.status}`,
+        });
       } else {
         updateDeleteNotif({
           color: 'red',
-          title: 'Failed to delete book!',
+          title: 'Failed to delete book',
           message: `${title} failed to delete`,
         });
       }
