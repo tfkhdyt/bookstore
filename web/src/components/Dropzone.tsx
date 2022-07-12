@@ -1,5 +1,6 @@
 import { Group, MantineTheme, Text, useMantineTheme } from '@mantine/core';
 import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { showNotification } from '@mantine/notifications';
 import { Icon as TablerIcon, Photo, Upload, X } from 'tabler-icons-react';
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
@@ -64,7 +65,20 @@ export default function MyDropzone({ setCoverImage }: MyDropzoneProps) {
     <Dropzone
       multiple={false}
       onDrop={(files) => setCoverImage(files[0])}
-      onReject={(files) => console.log('rejected files', files[0])}
+      onReject={(files) => {
+        console.error(files[0]);
+        files[0].errors.forEach((error, index) => {
+          let errorType = error.code.replaceAll('-', ' ');
+          errorType = errorType[0].toUpperCase() + errorType.slice(2);
+          showNotification({
+            id: `image-rejection-${index}`,
+            title: errorType,
+            message: error.message,
+            color: 'red',
+            autoClose: 5000,
+          });
+        });
+      }}
       maxSize={3 * 1024 ** 2}
       accept={IMAGE_MIME_TYPE}
     >
