@@ -1,17 +1,17 @@
 import { Button, Divider, MediaQuery, Navbar, Stack } from '@mantine/core';
 import Link from 'next/link';
+import { Book } from 'tabler-icons-react';
 
 import { useNavbarSidebarStore } from '@/store/navbar-sidebar';
 import { IMenuItem } from '@/types/IMenuItem';
 
 import { headerItems } from './HeaderItem';
-import BookIcon from './Icons/Book';
 
 const navbarItem: IMenuItem[] = [
   {
     title: 'Manage Books',
     link: '/books',
-    icon: <BookIcon />,
+    icon: <Book />,
   },
 ];
 

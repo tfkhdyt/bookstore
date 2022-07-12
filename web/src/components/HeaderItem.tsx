@@ -6,24 +6,20 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import Link from 'next/link';
+import { BrandGithub, Moon, Sun, User } from 'tabler-icons-react';
 
 import { IMenuItem } from '@/types/IMenuItem';
-
-import GitHubIcon from './Icons/GitHub';
-import MoonIcon from './Icons/Moon';
-import PersonIcon from './Icons/Person';
-import SunIcon from './Icons/Sun';
 
 export const headerItems: IMenuItem[] = [
   {
     title: 'Source Code',
     link: 'https://github.com/tfkhdyt/bookstore',
-    icon: <GitHubIcon />,
+    icon: <BrandGithub />,
   },
   {
     title: 'About Me',
     link: 'https://www.tfkhdyt.my.id',
-    icon: <PersonIcon />,
+    icon: <User />,
   },
 ];
 
@@ -73,7 +69,7 @@ export function HeaderItem() {
         ml={16}
         mr={8}
       >
-        {dark ? <SunIcon /> : <MoonIcon />}
+        {dark ? <Sun /> : <Moon color='#5c5f66' />}
       </ActionIcon>
     </>
   );

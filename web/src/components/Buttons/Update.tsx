@@ -1,7 +1,6 @@
 import { Button } from '@mantine/core';
 import Link from 'next/link';
-
-import PencilIcon from '../Icons/Pencil';
+import { Pencil } from 'tabler-icons-react';
 
 interface UpdateButtonProps {
   id: number;
@@ -13,7 +12,7 @@ const UpdateButton = ({ id }: UpdateButtonProps) => {
       <Button
         color='green'
         component='a'
-        leftIcon={<PencilIcon />}
+        leftIcon={<Pencil />}
         variant='subtle'
       >
         Edit

@@ -3,6 +3,7 @@ import { Button, Text } from '@mantine/core';
 import { useModals } from '@mantine/modals';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { Trash } from 'tabler-icons-react';
 
 import { axiosInstance } from '@/lib/axios';
 import {
@@ -10,8 +11,6 @@ import {
   updateDeleteNotif,
 } from '@/lib/notifications/delete.notification';
 import { ErrorData } from '@/types/FetchErrorData';
-
-import TrashCanIcon from '../Icons/TrashCan';
 
 interface DeleteButtonProps {
   id: number;
@@ -79,7 +78,7 @@ const DeleteButton = ({ id, title }: DeleteButtonProps) => {
     <Button
       onClick={handleDelete}
       color='red'
-      leftIcon={<TrashCanIcon />}
+      leftIcon={<Trash />}
       variant='subtle'
     >
       Delete

@@ -1,13 +1,12 @@
 import { Button } from '@mantine/core';
 import Link from 'next/link';
 import React from 'react';
-
-import PlusIcon from '../Icons/Plus';
+import { Plus } from 'tabler-icons-react';
 
 function AddButton() {
   return (
     <Link href='/books/add' passHref>
-      <Button leftIcon={<PlusIcon />}>Add Book</Button>
+      <Button leftIcon={<Plus />}>Add Book</Button>
     </Link>
   );
 }

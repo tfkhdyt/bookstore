@@ -20,6 +20,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import { DeviceFloppy } from 'tabler-icons-react';
 
 import MyDropzone from '@/components/Dropzone';
 import { PreviewImage } from '@/components/PreviewImage';
@@ -262,7 +263,9 @@ const AddBook = () => {
             </Grid.Col>
           </Grid>
           <Space h='lg' />
-          <Button type='submit'>Submit</Button>
+          <Button type='submit' leftIcon={<DeviceFloppy />} variant='light'>
+            Save
+          </Button>
         </form>
         {/* <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
