@@ -34,7 +34,8 @@ const Detail = () => {
   const router = useRouter();
   const { id } = router.query;
   const [bookID] = useState(id);
-  const isBreakpointSm = useMediaQuery('(max-width: 768px)');
+  const isBreakpointXs = useMediaQuery('(min-width: 576px)');
+  const isBreakpointMd = useMediaQuery('(min-width: 992px)');
 
   const { data, error } = useSWR<IFetcher>(
     bookID ? `/books/${bookID}` : null,
@@ -84,7 +85,7 @@ const Detail = () => {
         <Space h='md' />
         <Grid grow align='flex-start' gutter={60}>
           {/* Book Detail */}
-          <Grid.Col xs={12} lg={6}>
+          <Grid.Col xs={12} md={6}>
             <List spacing='sm'>
               <List.Item>
                 <Text size='lg' weight={600}>
@@ -143,28 +144,29 @@ const Detail = () => {
             </List>
           </Grid.Col>
           {/* Book Cover */}
-          <Grid.Col xs={12} lg={6} sx={{ justifySelf: 'flex-start' }}>
-            <Box
+          <Grid.Col xs={12} md={6} p={isBreakpointMd ? undefined : 0}>
+            <Center
               sx={{
-                justifySelf: 'flex-start',
                 position: 'relative',
                 width: '100%',
-                height: isBreakpointSm ? 400 : 600,
+                height: isBreakpointMd
+                  ? '32rem'
+                  : isBreakpointXs
+                  ? '15rem'
+                  : '15rem',
               }}
             >
-              {book.coverImage && (
-                <Image
-                  src={book.coverImage}
-                  alt={`${book.title} cover image`}
-                  layout='fill'
-                  objectFit='contain'
-                  objectPosition='top'
-                />
-              )}
-            </Box>
+              <Image
+                src={book.coverImage}
+                alt={`${book.title} cover image`}
+                layout='fill'
+                objectFit='contain'
+                objectPosition='top'
+              />
+            </Center>
           </Grid.Col>
         </Grid>
-        <Box sx={{ marginTop: isBreakpointSm ? '3.5rem' : '1rem' }}>
+        <Box sx={{ marginTop: isBreakpointMd ? '1rem' : '3.5rem' }}>
           <UpdateButton id={book.ID as number} />
           <DeleteButton
             id={book.ID as number}
