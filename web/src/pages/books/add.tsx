@@ -1,64 +1,176 @@
-import { Anchor, Breadcrumbs } from '@mantine/core';
+/* eslint-disable react/display-name */
+import {
+  Anchor,
+  Box,
+  Breadcrumbs,
+  Button,
+  Center,
+  Grid,
+  NumberInput,
+  Space,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+  Title,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useMediaQuery } from '@mantine/hooks';
+import axios from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
+import { memo, useState } from 'react';
 
-import SaveButton from '@/components/Buttons/Save';
+import MyDropzone from '@/components/Dropzone';
 import { axiosInstance } from '@/lib/axios';
+import {
+  showCreateNotif,
+  updateCreateNotif,
+} from '@/lib/notifications/create.notification';
 import { uploadImage } from '@/lib/uploadImage';
-import { Book } from '@/types/Book';
+
+interface IForm {
+  title: string;
+  author: string;
+  isbn: number | undefined;
+  publisher: string;
+  numberOfPages: number | undefined;
+  description: string;
+}
+
+interface MyImageProps {
+  coverImage: File;
+}
+
+const MyImage = memo(({ coverImage }: MyImageProps) => {
+  return (
+    <Image
+      src={URL.createObjectURL(coverImage)}
+      alt='cover image'
+      layout='fill'
+      objectFit='contain'
+      title={coverImage?.name}
+    />
+  );
+});
 
 const AddBook = () => {
   const [coverImage, setCoverImage] = useState<File>();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<Book>();
 
-  const onSubmit = async (data: Book) => {
-    Swal.fire({
-      title: 'Loading...',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      didOpen: () => {
-        Swal.showLoading();
+  const form = useForm<IForm>({
+    initialValues: {
+      title: '',
+      author: '',
+      isbn: undefined,
+      publisher: '',
+      numberOfPages: undefined,
+      description: '',
+    },
+    validate: {
+      title: (value) => (value !== '' ? null : 'Title is required'),
+      author: (value) => (value !== '' ? null : 'Author is required'),
+      isbn: (value) => (value !== undefined ? null : 'ISBN is required'),
+      publisher: (value) => (value !== '' ? null : 'Publisher is required'),
+      numberOfPages: (value) => {
+        if (value === undefined) return 'Number of pages is required';
+        if (value === 0) return 'Number of pages should be larger than 0';
+        return null;
       },
-    });
+      description: (value) => (value !== '' ? null : 'Description is required'),
+    },
+  });
+  const isBreakpointXs = useMediaQuery('(min-width: 576px)');
+  const isBreakpointMd = useMediaQuery('(min-width: 992px)');
+
+  const handleSubmit = async (values: IForm) => {
+    showCreateNotif();
 
     try {
       const { secure_url } = await uploadImage(coverImage as File);
       await axiosInstance.post('/books', {
-        ...data,
-        numberOfPages: Number(data.numberOfPages),
+        ...values,
+        isbn: String(values.isbn),
+        numberOfPages: Number(values.numberOfPages),
         coverImage: secure_url,
       });
 
-      Swal.close();
-      Swal.fire({
-        title: 'Success!',
-        icon: 'success',
-        text: `"${data.title}" added successfully`,
+      form.reset();
+      setCoverImage(undefined);
+
+      updateCreateNotif({
+        color: 'green',
+        title: 'Success',
+        message: `${values.title} added successfully`,
       });
     } catch (err) {
       console.error(err);
+      if (axios.isAxiosError(err)) {
+        type ErrorData = {
+          message: string;
+        };
+        const message = err.response?.data as ErrorData;
+        updateCreateNotif({
+          color: 'red',
+          title: 'Failed',
+          message: `${message} | Error Code: ${err.response?.status}`,
+        });
+      } else {
+        updateCreateNotif({
+          color: 'red',
+          title: 'Failed',
+          message: `${values.title} failed to add`,
+        });
+      }
     }
   };
 
-  useEffect(() => {
-    reset();
-    setCoverImage(undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmitSuccessful]);
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors, isSubmitting, isSubmitSuccessful },
+  // } = useForm<Book>();
+
+  // const onSubmit = async (data: Book) => {
+  //   Swal.fire({
+  //     title: 'Loading...',
+  //     allowOutsideClick: false,
+  //     allowEscapeKey: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //     },
+  //   });
+
+  //   try {
+  //     const { secure_url } = await uploadImage(coverImage as File);
+  //     await axiosInstance.post('/books', {
+  //       ...data,
+  //       numberOfPages: Number(data.numberOfPages),
+  //       coverImage: secure_url,
+  //     });
+
+  //     Swal.close();
+  //     Swal.fire({
+  //       title: 'Success!',
+  //       icon: 'success',
+  //       text: `"${data.title}" added successfully`,
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   form.reset();
+  //   setCoverImage(undefined);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isSubmitSuccessful]);
 
   return (
     <>
       <Head>
-        <title>Add Book | Bookstore</title>
+        <title>Add book | Bookstore</title>
       </Head>
       <main>
         <Breadcrumbs>
@@ -77,8 +189,97 @@ const AddBook = () => {
             </Link>
           ))}
         </Breadcrumbs>
-        <h2 className='mb-3 text-2xl font-semibold leading-tight'>Add Book</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Title order={2}>Add Book</Title>
+        <Space h='md' />
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Grid align='flex-start' gutter='md'>
+            <Grid.Col xs={12} md={4}>
+              <Stack>
+                <TextInput
+                  placeholder='Example: Cara Berternak Lele'
+                  label='Title'
+                  required
+                  {...form.getInputProps('title')}
+                />
+                <TextInput
+                  placeholder='Example: Taufik Hidayat'
+                  label='Author'
+                  required
+                  {...form.getInputProps('author')}
+                />
+                <NumberInput
+                  description='Without hyphen'
+                  min={0}
+                  placeholder='Example: 9799769420'
+                  label='ISBN'
+                  required
+                  hideControls
+                  {...form.getInputProps('isbn')}
+                />
+                <TextInput
+                  placeholder='Example: Gramedia Pustaka Utama'
+                  label='Publisher'
+                  required
+                  {...form.getInputProps('publisher')}
+                />
+                <NumberInput
+                  min={0}
+                  placeholder='Example: 420'
+                  label='Number of pages'
+                  required
+                  {...form.getInputProps('numberOfPages')}
+                />
+              </Stack>
+            </Grid.Col>
+            <Grid.Col xs={12} md={8}>
+              <Textarea
+                placeholder='Example: This book explains about how to become a catfish farmer'
+                label='Description'
+                autosize
+                minRows={2}
+                maxRows={2}
+                required
+                {...form.getInputProps('description')}
+              />
+              <Space h='lg' />
+              <Box sx={{ display: 'flex' }}>
+                <Text weight={500} size='sm' mb={4}>
+                  Cover Image
+                </Text>
+                <Text ml={2} color='red'>
+                  *
+                </Text>
+              </Box>
+              <Grid gutter='md' grow>
+                <Grid.Col xs={12} md={8}>
+                  <MyDropzone setCoverImage={setCoverImage} />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4} p={isBreakpointMd ? undefined : 0}>
+                  <Center
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      height: isBreakpointMd
+                        ? '100%'
+                        : isBreakpointXs
+                        ? '15rem'
+                        : '15rem',
+                    }}
+                  >
+                    {coverImage ? (
+                      <MyImage coverImage={coverImage} />
+                    ) : (
+                      <Text>Cover image preview here</Text>
+                    )}
+                  </Center>
+                </Grid.Col>
+              </Grid>
+            </Grid.Col>
+          </Grid>
+          <Space h='lg' />
+          <Button type='submit'>Submit</Button>
+        </form>
+        {/* <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mt-4 grid grid-cols-2 gap-6'>
             <div>
               <label
@@ -234,7 +435,7 @@ const AddBook = () => {
           <div className='mt-6 flex justify-end'>
             <SaveButton isSubmitting={isSubmitting} />
           </div>
-        </form>
+        </form> */}
       </main>
     </>
   );
