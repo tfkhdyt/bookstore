@@ -1,32 +1,32 @@
 import { showNotification, updateNotification } from '@mantine/notifications';
 import { ReactNode } from 'react';
 
-export const showDeleteNotif = () => {
+export const showUpdateNotif = () => {
   showNotification({
-    id: 'delete-data',
+    id: 'update-book',
     loading: true,
     title: 'Loading...',
-    message: 'Delete is in progress',
+    message: 'Update book is in progress',
     autoClose: false,
     disallowClose: true,
   });
 };
 
-interface UpdateDeleteNotifParams {
+interface mutateUpdateNotifParams {
   color: string;
   title: string;
   message: string;
   icon: ReactNode;
 }
 
-export const updateDeleteNotif = ({
+export const mutateUpdateNotif = ({
   color,
   title,
   message,
   icon,
-}: UpdateDeleteNotifParams) => {
+}: mutateUpdateNotifParams) => {
   updateNotification({
-    id: 'delete-data',
+    id: 'update-book',
     color,
     title,
     message,

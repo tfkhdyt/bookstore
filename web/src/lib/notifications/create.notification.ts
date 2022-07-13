@@ -1,4 +1,5 @@
 import { showNotification, updateNotification } from '@mantine/notifications';
+import { ReactNode } from 'react';
 
 export const showCreateNotif = () => {
   showNotification({
@@ -15,18 +16,21 @@ interface UpdateCreateNotifParams {
   color: string;
   title: string;
   message: string;
+  icon: ReactNode;
 }
 
 export const updateCreateNotif = ({
   color,
   title,
   message,
+  icon,
 }: UpdateCreateNotifParams) => {
   updateNotification({
     id: 'create-book',
     color,
     title,
     message,
+    icon,
     autoClose: 5000,
   });
 };

@@ -75,6 +75,7 @@ export default function MyDropzone({ setCoverImage }: MyDropzoneProps) {
             title: errorType,
             message: error.message,
             color: 'red',
+            icon: <X />,
             autoClose: 5000,
           });
         });
