@@ -260,8 +260,8 @@ const Update = () => {
                 placeholder='Example: This book explains about how to become a catfish farmer'
                 label='Description'
                 autosize
-                minRows={2}
-                maxRows={2}
+                minRows={isMd ? 2 : 3}
+                maxRows={isMd ? 2 : 4}
                 required
                 {...register('description', { required: true })}
                 defaultValue={book.description}
