@@ -1,4 +1,4 @@
-import { Pagination } from '@mantine/core';
+import { Center, Pagination, Text } from '@mantine/core';
 
 import { usePaginationStore } from '@/store/pagination';
 
@@ -44,6 +44,14 @@ const MyPagination = ({ totalData }: PaginationProps) => {
   const pages = Math.ceil(totalData / limit);
   // const firstRecord = limit * (page - 1) + 1;
   // const lastRecord = limit * (page - 1) + numberOfCurrentPageData;
+
+  if (totalData === 0) {
+    return (
+      <Center sx={{ width: '100%' }}>
+        <Text weight={600}>No data, please add some</Text>
+      </Center>
+    );
+  }
 
   return (
     <Pagination
