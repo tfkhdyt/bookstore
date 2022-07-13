@@ -1,21 +1,42 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Anchor, Breadcrumbs } from '@mantine/core';
+import {
+  Anchor,
+  Box,
+  Breadcrumbs,
+  Button,
+  Center,
+  Grid,
+  Loader,
+  Space,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+  Title,
+} from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import axios from 'axios';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
 import useSWR from 'swr';
+import { Check, DeviceFloppy, X } from 'tabler-icons-react';
 
-import SaveButton from '@/components/Buttons/Save';
+import MyDropzone from '@/components/Dropzone';
 import Error from '@/components/Error';
-import Loading from '@/components/Loading';
+import { PreviewImage } from '@/components/PreviewImage';
 import { axiosInstance } from '@/lib/axios';
+import { FetchError } from '@/lib/error/FetchError';
 import { fetcher } from '@/lib/fetcher';
+import {
+  mutateUpdateNotif,
+  showUpdateNotif,
+} from '@/lib/notifications/update.notification';
 import { uploadImage } from '@/lib/uploadImage';
 import { Book } from '@/types/Book';
+import { ErrorData } from '@/types/FetchErrorData';
 
 interface IFetcher {
   data: Book;
@@ -23,11 +44,6 @@ interface IFetcher {
 
 const Update = () => {
   const [coverImage, setCoverImage] = useState<File>();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Book>();
   const router = useRouter();
   const { id } = router.query;
   const [bookID] = useState(id);
@@ -37,35 +53,64 @@ const Update = () => {
     bookID ? fetcher : null
   );
 
-  // if (!data) {
-  //   return (
-  //     <div className='grid min-h-full min-w-full place-items-center'>
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
+  const { register, handleSubmit } = useForm<Book>();
+  // const form = useForm<IForm>({
+  //   initialValues: {
+  //     title: '',
+  //     author: '',
+  //     isbn: '',
+  //     publisher: '',
+  //     numberOfPages: undefined,
+  //     description: '',
+  //   },
+  //   validate: {
+  //     title: (value) => (value !== '' ? null : 'Title is required'),
+  //     author: (value) => (value !== '' ? null : 'Author is required'),
+  //     isbn: (value) => (value !== undefined ? null : 'ISBN is required'),
+  //     publisher: (value) => (value !== '' ? null : 'Publisher is required'),
+  //     numberOfPages: (value) => {
+  //       if (value === undefined) return 'Number of pages is required';
+  //       if (value === 0) return 'Number of pages should be larger than 0';
+  //       return null;
+  //     },
+  //     description: (value) => (value !== '' ? null : 'Description is required'),
+  //   },
+  // });
+
+  const isBreakpointXs = useMediaQuery('(min-width: 576px)');
+  const isBreakpointMd = useMediaQuery('(min-width: 992px)');
 
   if (error) {
-    return (
-      <div className='grid min-h-full min-w-full place-items-center'>
-        <Error />
-      </div>
-    );
+    if (error instanceof FetchError) {
+      return <Error message={error.message} status={error.status as number} />;
+    } else {
+      return <Error />;
+    }
   }
 
-  if (!data) return <Loading title='Update Book' />;
+  if (!data)
+    return (
+      <Center style={{ width: '100%', height: '75vh' }}>
+        <Loader />
+      </Center>
+    );
 
   const book = data.data;
 
+  // if (book && isFormFilled.current === false) {
+  //   form.setValues({
+  //     title: book.title,
+  //     author: book.author,
+  //     isbn: book.isbn,
+  //     description: book.description,
+  //     numberOfPages: book.numberOfPages,
+  //     publisher: book.publisher,
+  //   });
+  //   isFormFilled.current = true;
+  // }
+
   const onSubmit = async (values: Book) => {
-    Swal.fire({
-      title: 'Loading...',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    showUpdateNotif();
 
     if (coverImage) {
       try {
@@ -76,14 +121,32 @@ const Update = () => {
           coverImage: secure_url,
         });
 
-        Swal.close();
-        Swal.fire({
+        mutate();
+        mutateUpdateNotif({
+          color: 'green',
           title: 'Success!',
-          icon: 'success',
-          text: `"${book.title}" updated successfully`,
+          icon: <Check />,
+          message: `${values.title} updated successfully`,
         });
       } catch (err) {
         console.error(err);
+        if (axios.isAxiosError(err)) {
+          const { message } = err.response?.data as ErrorData;
+          // console.error('error:', errorData);
+          mutateUpdateNotif({
+            color: 'red',
+            title: 'Failed!',
+            icon: <X />,
+            message: `${message} | Error Code: ${err.response?.status}`,
+          });
+        } else {
+          mutateUpdateNotif({
+            color: 'red',
+            title: 'Failed!',
+            icon: <X />,
+            message: `${values.title} failed to update`,
+          });
+        }
       }
     } else {
       try {
@@ -92,15 +155,31 @@ const Update = () => {
           numberOfPages: Number(values.numberOfPages),
         });
 
-        Swal.close();
         mutate();
-        Swal.fire({
+        mutateUpdateNotif({
+          color: 'green',
           title: 'Success!',
-          icon: 'success',
-          text: `"${book.title}" updated successfully`,
+          icon: <Check />,
+          message: `${values.title} updated successfully`,
         });
       } catch (err) {
         console.error(err);
+        if (axios.isAxiosError(err)) {
+          const { message } = err.response?.data as ErrorData;
+          mutateUpdateNotif({
+            color: 'red',
+            title: 'Failed!',
+            icon: <X />,
+            message: `${message} | Error Code: ${err.response?.status}`,
+          });
+        } else {
+          mutateUpdateNotif({
+            color: 'red',
+            title: 'Failed!',
+            icon: <X />,
+            message: `${values.title} failed to update`,
+          });
+        }
       }
     }
   };
@@ -132,171 +211,112 @@ const Update = () => {
           ))}
         </Breadcrumbs>
 
-        <h2 className='mb-3 text-2xl font-semibold leading-tight'>
-          Update {book.title}
-        </h2>
+        <Title order={2}>Update Book: {book.title}</Title>
+        <Space h='md' />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='mt-4 grid grid-cols-2 gap-6'>
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='title'
-              >
-                Title
-              </label>
-              {errors.title && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Title is required
-                </label>
-              )}
-              <input
-                type='text'
-                defaultValue={book.title}
-                {...register('title', {
-                  required: true,
-                })}
-                className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='author'
-              >
-                Author
-              </label>
-              {errors.author && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Author is required
-                </label>
-              )}
-              <input
-                type='text'
-                defaultValue={book.author}
-                {...register('author', { required: true })}
-                className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='isbn'
-              >
-                ISBN
-              </label>
-              {errors.isbn && (
-                <label className='float-right font-bold italic text-red-500'>
-                  ISBN is required
-                </label>
-              )}
-              <input
-                type='text'
-                defaultValue={book.isbn}
-                {...register('isbn', { required: true })}
-                className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='publisher'
-              >
-                Publisher
-              </label>
-              {errors.publisher && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Publisher is required
-                </label>
-              )}
-              <input
-                type='text'
-                defaultValue={book.publisher}
-                {...register('publisher', { required: true })}
-                className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='numberOfPages'
-              >
-                Number of Pages
-              </label>
-              {errors.numberOfPages?.type === 'min' && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Number of pages should be more than 0
-                </label>
-              )}
-              {errors.numberOfPages?.type === 'required' && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Number of pages is required
-                </label>
-              )}
-              <input
-                type='number'
-                min={0}
-                defaultValue={book.numberOfPages}
-                {...register('numberOfPages', { required: true, min: 0 })}
-                className='mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-            <div>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='description'
-              >
-                Description
-              </label>
-              {errors.description && (
-                <label className='float-right font-bold italic text-red-500'>
-                  Description is required
-                </label>
-              )}
-              <textarea
-                id='description'
-                defaultValue={book.description}
-                {...register('description', { required: true })}
-                className='mt-2 block h-32 w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-blue-300'
-              />
-            </div>
-            <div className='w-fit'>
-              <label
-                className='text-gray-700 dark:text-gray-200'
-                htmlFor='coverImage'
-              >
-                Cover Image
-              </label>
-              <div className='relative h-32 w-32'>
-                <Image
-                  src={
-                    coverImage
-                      ? URL.createObjectURL(coverImage as File)
-                      : book.coverImage
-                  }
-                  alt={`${book.title} cover image`}
-                  layout='fill'
-                  objectFit='contain'
+          <Grid align='flex-start' gutter='md'>
+            <Grid.Col xs={12} md={4}>
+              <Stack>
+                <TextInput
+                  placeholder='Example: Cara Berternak Lele'
+                  label='Title'
+                  required
+                  {...register('title', { required: true })}
+                  defaultValue={book.title}
                 />
-              </div>
-              <input
-                id='coverImage'
-                type='file'
-                name='coverImage'
-                className='mt-2 block'
-                accept='image/*'
-                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                  if (!event.target.files) return;
-                  const image = event.target.files[0];
-                  setCoverImage(image);
-                }}
+                <TextInput
+                  placeholder='Example: Taufik Hidayat'
+                  label='Author'
+                  required
+                  {...register('author', { required: true })}
+                  defaultValue={book.author}
+                />
+                <TextInput
+                  placeholder='Example: 9799769420'
+                  label='ISBN'
+                  required
+                  {...register('isbn', { required: true })}
+                  defaultValue={book.isbn}
+                />
+                <TextInput
+                  placeholder='Example: Gramedia Pustaka Utama'
+                  label='Publisher'
+                  required
+                  {...register('publisher', { required: true })}
+                  defaultValue={book.publisher}
+                />
+                <TextInput
+                  type='number'
+                  min={0}
+                  placeholder='Example: 420'
+                  label='Number of pages'
+                  required
+                  {...register('numberOfPages', { required: true, min: 0 })}
+                  defaultValue={book.numberOfPages}
+                />
+              </Stack>
+            </Grid.Col>
+            <Grid.Col xs={12} md={8}>
+              <Textarea
+                placeholder='Example: This book explains about how to become a catfish farmer'
+                label='Description'
+                autosize
+                minRows={2}
+                maxRows={2}
+                required
+                {...register('description', { required: true })}
+                defaultValue={book.description}
               />
-            </div>
-          </div>
-
-          <div className='mt-6 flex justify-end'>
-            <SaveButton isSubmitting={isSubmitting} />
-          </div>
+              <Space h='lg' />
+              <Box sx={{ display: 'flex' }}>
+                <Text weight={500} size='sm' mb={4}>
+                  Cover Image
+                </Text>
+                <Text ml={2} color='red'>
+                  *
+                </Text>
+              </Box>
+              <Grid gutter='md' grow>
+                <Grid.Col xs={12} md={8}>
+                  <MyDropzone setCoverImage={setCoverImage} />
+                </Grid.Col>
+                <Grid.Col
+                  xs={12}
+                  md={4}
+                  // p={isBreakpointMd ? undefined : 0}
+                >
+                  <Center
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      height: isBreakpointMd
+                        ? '100%'
+                        : isBreakpointXs
+                        ? '15rem'
+                        : '15rem',
+                    }}
+                  >
+                    <PreviewImage
+                      coverImage={
+                        coverImage
+                          ? URL.createObjectURL(coverImage as File)
+                          : book.coverImage
+                      }
+                      title={
+                        coverImage
+                          ? URL.createObjectURL(coverImage as File)
+                          : undefined
+                      }
+                    />
+                  </Center>
+                </Grid.Col>
+              </Grid>
+            </Grid.Col>
+          </Grid>
+          <Space h='lg' />
+          <Button type='submit' leftIcon={<DeviceFloppy />} variant='light'>
+            Save
+          </Button>
         </form>
       </main>
     </>
