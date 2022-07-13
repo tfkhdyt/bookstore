@@ -1,18 +1,20 @@
 import Image from 'next/image';
-import { memo } from 'react';
+import { useMemo } from 'react';
 
 interface PreviewImageProps {
-  coverImage: File;
+  coverImage: string;
+  title: string | undefined;
 }
 // eslint-disable-next-line react/display-name
-export const PreviewImage = memo(({ coverImage }: PreviewImageProps) => {
+export const PreviewImage = ({ coverImage, title }: PreviewImageProps) => {
+  const image = useMemo(() => coverImage, [coverImage]);
   return (
     <Image
-      src={URL.createObjectURL(coverImage)}
+      src={image}
       alt='cover image'
       layout='fill'
       objectFit='contain'
-      title={coverImage?.name}
+      title={title}
     />
   );
-});
+};
