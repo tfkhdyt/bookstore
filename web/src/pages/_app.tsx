@@ -10,6 +10,7 @@ import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import { variants } from '@/animations/variants';
 import Layout from '@/components/Layout';
@@ -25,47 +26,55 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   useHotkeys([['mod+J', () => toggleColorScheme()]]);
 
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
-      <MantineProvider
-        theme={{ fontFamily: 'Fira Sans, sans-serif', colorScheme }}
-        withGlobalStyles
-        withNormalizeCSS
-        emotionOptions={{ key: 'mantine', prepend: false }}
+    <>
+      <Head>
+        <title>Bookstore</title>
+        <meta
+          name='viewport'
+          content='minimum-scale=1, initial-scale=1, width=device-width'
+        />
+      </Head>
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
       >
-        <ModalsProvider>
-          <NotificationsProvider>
-            <Layout>
-              <style>
-                {`html {
+        <MantineProvider
+          theme={{ fontFamily: 'Fira Sans, sans-serif', colorScheme }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
+          <ModalsProvider>
+            <NotificationsProvider>
+              <Layout>
+                <style>
+                  {`html {
                 color-scheme: ${colorScheme}
               }`}
-              </style>
-              <LazyMotion features={domAnimation}>
-                <AnimatePresence
-                  exitBeforeEnter
-                  initial={false}
-                  onExitComplete={() => window.scrollTo(0, 0)}
-                >
-                  <m.div
-                    key={router.asPath}
-                    variants={variants}
-                    initial='hidden'
-                    animate='enter'
-                    exit='exit'
-                    transition={{ type: 'tween', ease: 'easeInOut' }}
+                </style>
+                <LazyMotion features={domAnimation}>
+                  <AnimatePresence
+                    exitBeforeEnter
+                    initial={false}
+                    onExitComplete={() => window.scrollTo(0, 0)}
                   >
-                    <Component {...pageProps} />
-                  </m.div>
-                </AnimatePresence>
-              </LazyMotion>
-            </Layout>
-          </NotificationsProvider>
-        </ModalsProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
+                    <m.div
+                      key={router.asPath}
+                      variants={variants}
+                      initial='hidden'
+                      animate='enter'
+                      exit='exit'
+                      transition={{ type: 'tween', ease: 'easeInOut' }}
+                    >
+                      <Component {...pageProps} />
+                    </m.div>
+                  </AnimatePresence>
+                </LazyMotion>
+              </Layout>
+            </NotificationsProvider>
+          </ModalsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </>
   );
 }
 
