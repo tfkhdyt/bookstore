@@ -85,7 +85,7 @@ const Detail = () => {
         <Grid grow align='flex-start' gutter={60}>
           {/* Book Detail */}
           <Grid.Col xs={12} md={6}>
-            <List spacing='sm'>
+            <List spacing='sm' sx={{ listStyle: 'none' }}>
               <List.Item>
                 <Text size='lg' weight={600}>
                   Title:
