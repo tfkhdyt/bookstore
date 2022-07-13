@@ -75,13 +75,12 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
               <tr key={index}>
                 <td>{row.ID}</td>
                 <td>
-                  {' '}
                   <Center
                     style={{
                       width: '100%',
                       height: '100%',
                       display: 'flex',
-                      justifyContent: 'start',
+                      // justifyContent: 'start',
                     }}
                   >
                     {row.coverImage ? (
@@ -92,8 +91,8 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                         <img
                           src={row.coverImage}
                           alt={`${row.title} cover image`}
-                          height='100'
-                          width='100'
+                          height={150}
+                          width='auto'
                         />
                       </Zoom>
                     ) : (
