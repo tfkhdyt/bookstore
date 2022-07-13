@@ -3,7 +3,7 @@ import { Button, Text } from '@mantine/core';
 import { useModals } from '@mantine/modals';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Trash } from 'tabler-icons-react';
+import { Check, Trash, X } from 'tabler-icons-react';
 
 import { axiosInstance } from '@/lib/axios';
 import {
@@ -15,10 +15,10 @@ import { ErrorData } from '@/types/FetchErrorData';
 interface DeleteButtonProps {
   id: number;
   title: string;
-  // mutate: () => void;
+  mutate?: () => void;
 }
 
-const DeleteButton = ({ id, title }: DeleteButtonProps) => {
+const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
   const modals = useModals();
   const router = useRouter();
 
@@ -27,27 +27,30 @@ const DeleteButton = ({ id, title }: DeleteButtonProps) => {
 
     try {
       await axiosInstance.delete(`/books/${id}`);
-      // mutate();
       updateDeleteNotif({
         color: 'green',
-        title: 'Success',
+        title: 'Success!',
+        icon: <Check />,
         message: `${title} deleted successfully`,
       });
 
-      router.push('/books');
+      if (mutate) mutate();
+      else router.push('/books');
     } catch (err) {
       console.error(err);
       if (axios.isAxiosError(err)) {
         const message = err.response?.data as ErrorData;
         updateDeleteNotif({
           color: 'red',
-          title: 'Failed',
+          title: 'Failed!',
+          icon: <X />,
           message: `${message} | Error Code: ${err.response?.status}`,
         });
       } else {
         updateDeleteNotif({
           color: 'red',
-          title: 'Failed to delete book',
+          title: 'Failed!',
+          icon: <X />,
           message: `${title} failed to delete`,
         });
       }
