@@ -13,8 +13,8 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import axios from 'axios';
+import useBreakpoint from 'hooks/useBreakpoint';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -41,8 +41,7 @@ const AddBook = () => {
     formState: { errors },
   } = useForm<Book>();
 
-  const isBreakpointXs = useMediaQuery('(min-width: 576px)');
-  const isBreakpointMd = useMediaQuery('(min-width: 992px)');
+  const { isXs, isMd } = useBreakpoint();
 
   const onSubmit = async (values: Book) => {
     showCreateNotif();
@@ -221,18 +220,13 @@ const AddBook = () => {
                   <Grid.Col
                     xs={12}
                     md={4}
-                    // p={isBreakpointMd ? undefined : 0}
                     sx={{ display: coverImage ? undefined : 'none' }}
                   >
                     <Center
                       sx={{
                         position: 'relative',
                         width: '100%',
-                        height: isBreakpointMd
-                          ? '100%'
-                          : isBreakpointXs
-                          ? '15rem'
-                          : '15rem',
+                        height: isMd ? '100%' : isXs ? '15rem' : '15rem',
                       }}
                     >
                       <PreviewImage

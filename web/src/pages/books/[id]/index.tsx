@@ -10,8 +10,8 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { format } from 'date-fns';
+import useBreakpoint from 'hooks/useBreakpoint';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,8 +34,7 @@ const Detail = () => {
   const router = useRouter();
   const { id } = router.query;
   const [bookID] = useState(id);
-  const isBreakpointXs = useMediaQuery('(min-width: 576px)');
-  const isBreakpointMd = useMediaQuery('(min-width: 992px)');
+  const { isXs, isMd } = useBreakpoint();
 
   const { data, error } = useSWR<IFetcher>(
     bookID ? `/books/${bookID}` : null,
@@ -144,16 +143,12 @@ const Detail = () => {
             </List>
           </Grid.Col>
           {/* Book Cover */}
-          <Grid.Col xs={12} md={6} p={isBreakpointMd ? undefined : 0}>
+          <Grid.Col xs={12} md={6} p={isMd ? undefined : 0}>
             <Center
               sx={{
                 position: 'relative',
                 width: '100%',
-                height: isBreakpointMd
-                  ? '32rem'
-                  : isBreakpointXs
-                  ? '15rem'
-                  : '15rem',
+                height: isMd ? '32rem' : isXs ? '15rem' : '15rem',
               }}
             >
               <Image
@@ -166,7 +161,7 @@ const Detail = () => {
             </Center>
           </Grid.Col>
         </Grid>
-        <Box sx={{ marginTop: isBreakpointMd ? '1rem' : '3.5rem' }}>
+        <Box sx={{ marginTop: isMd ? '1rem' : '3.5rem' }}>
           <UpdateButton id={book.ID as number} />
           <DeleteButton
             id={book.ID as number}
