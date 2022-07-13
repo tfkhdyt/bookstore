@@ -13,7 +13,7 @@ import (
 func ConnectDatabase() (db *gorm.DB, err error) {
 	dbHost, dbUser, dbPwd, dbName := configs.GetDBInfo()
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPwd, dbName)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=require TimeZone=Asia/Jakarta", dbHost, dbUser, dbPwd, dbName)
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	// database, err := gorm.Open("sqlite3", "test.db")
 
