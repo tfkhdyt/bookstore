@@ -67,7 +67,12 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                 <th
                   key={index}
                   style={{
-                    textAlign: col === 'Cover Image' ? 'center' : undefined,
+                    textAlign: ['Cover Image', 'ID', 'Actions'].includes(col)
+                      ? 'center'
+                      : undefined,
+                    width: ['Cover Image', 'ID', 'Actions'].includes(col)
+                      ? 30
+                      : undefined,
                   }}
                 >
                   {col}
