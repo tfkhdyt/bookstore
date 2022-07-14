@@ -66,22 +66,27 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
           <thead>
             <tr>
               {table.column.map((col, index) => (
-                <th key={index}>{col}</th>
+                <th
+                  key={index}
+                  style={{
+                    textAlign: col === 'Cover Image' ? 'center' : undefined,
+                  }}
+                >
+                  {col}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {books.map((row, index) => (
               <tr key={index}>
-                <td>{row.ID}</td>
+                <td style={{ textAlign: 'center' }}>{row.ID}</td>
                 <td>
                   <Center
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      justifyContent: 'start',
-                    }}
+                  // style={{
+                  //   width: '6rem',
+                  //   height: '8rem',
+                  // }}
                   >
                     {row.coverImage ? (
                       <Zoom
@@ -96,6 +101,38 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                         />
                       </Zoom>
                     ) : (
+                      // <>
+                      //   <Image
+                      //     src={row.coverImage}
+                      //     alt={`${row.title} cover image`}
+                      //     layout='fill'
+                      //     objectFit='contain'
+                      //     onClick={() => {
+                      //       setModalImage({
+                      //         url: row.coverImage,
+                      //         title: row.title,
+                      //       });
+                      //     }}
+                      //   />
+                      //   {modalImage && (
+                      //     <Lightbox
+                      //       open={modalImage ? true : false}
+                      //       close={() => setModalImage(null)}
+                      //       render={{
+                      //         buttonPrev: () => null,
+                      //         buttonNext: () => null,
+                      //       }}
+                      //       slides={[
+                      //         {
+                      //           src: modalImage.url,
+                      //           alt: modalImage.title,
+                      //           title: modalImage.title,
+                      //         },
+                      //       ]}
+                      //       plugins={[Captions]}
+                      //     />
+                      //   )}
+                      // </>
                       <p>No image</p>
                     )}
                   </Center>
