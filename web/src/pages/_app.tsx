@@ -63,7 +63,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
                       initial='hidden'
                       animate='enter'
                       exit='exit'
-                      transition={{ type: 'tween', ease: 'easeInOut' }}
                     >
                       <Component {...pageProps} />
                     </m.div>
