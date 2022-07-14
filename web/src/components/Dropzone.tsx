@@ -36,7 +36,7 @@ export const dropzoneChildren = (
   <Group
     position='center'
     spacing='xl'
-    style={{ minHeight: 220, pointerEvents: 'none' }}
+    style={{ minHeight: 183, pointerEvents: 'none' }}
   >
     <ImageUploadIcon
       status={status}
