@@ -10,15 +10,17 @@ import {
   showDeleteNotif,
   updateDeleteNotif,
 } from '@/lib/notifications/delete.notification';
+import { deleteImage } from '@/lib/supabase/storage/delete';
 import { ErrorData } from '@/types/FetchErrorData';
 
 interface DeleteButtonProps {
   id: number;
   title: string;
+  coverImage: string;
   mutate?: () => void;
 }
 
-const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
+const DeleteButton = ({ id, title, coverImage, mutate }: DeleteButtonProps) => {
   const modals = useModals();
   const router = useRouter();
 
@@ -27,6 +29,7 @@ const DeleteButton = ({ id, title, mutate }: DeleteButtonProps) => {
 
     try {
       await axiosInstance.delete(`/books/${id}`);
+      await deleteImage(coverImage);
       updateDeleteNotif({
         color: 'green',
         title: 'Success!',

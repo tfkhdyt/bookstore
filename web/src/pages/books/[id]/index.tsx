@@ -24,6 +24,7 @@ import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
 import { FetchError } from '@/lib/error/FetchError';
 import { fetcher } from '@/lib/fetcher';
+import { getImageUrl } from '@/lib/supabase/storage/getImageUrl';
 import { Book } from '@/types/Book';
 
 interface IFetcher {
@@ -57,6 +58,7 @@ const Detail = () => {
     );
 
   const book = data.data;
+  console.log(book);
 
   return (
     <>
@@ -152,7 +154,7 @@ const Detail = () => {
               }}
             >
               <Image
-                src={book.coverImage}
+                src={getImageUrl(book.coverImage) as string}
                 alt={`${book.title} cover image`}
                 layout='fill'
                 objectFit='contain'
@@ -166,6 +168,7 @@ const Detail = () => {
           <DeleteButton
             id={book.ID as number}
             title={book.title}
+            coverImage={book.coverImage}
             // mutate={mutate}
           />
         </Box>

@@ -3,6 +3,7 @@ import { Box, Center, Space, Stack, Table } from '@mantine/core';
 import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
 
+import { getImageUrl } from '@/lib/supabase/storage/getImageUrl';
 import { usePaginationStore } from '@/store/pagination';
 import { Book } from '@/types/Book';
 
@@ -97,7 +98,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                         overlayBgColorStart='rgba(0, 0, 0, 0)'
                       >
                         <img
-                          src={row.coverImage}
+                          src={getImageUrl(row.coverImage) as string}
                           alt={`${row.title} cover image`}
                           height={150}
                           width='auto'
@@ -152,6 +153,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                     <DeleteButton
                       id={row.ID as number}
                       title={row.title}
+                      coverImage={row.coverImage}
                       mutate={mutate}
                     />
                   </Stack>

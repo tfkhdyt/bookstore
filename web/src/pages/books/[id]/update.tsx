@@ -34,7 +34,9 @@ import {
   mutateUpdateNotif,
   showUpdateNotif,
 } from '@/lib/notifications/update.notification';
-import { uploadImage } from '@/lib/uploadImage';
+import { deleteImage } from '@/lib/supabase/storage/delete';
+import { getImageUrl } from '@/lib/supabase/storage/getImageUrl';
+import { uploadImage } from '@/lib/supabase/storage/upload';
 import { Book } from '@/types/Book';
 import { ErrorData } from '@/types/FetchErrorData';
 
@@ -54,29 +56,6 @@ const Update = () => {
   );
 
   const { register, handleSubmit } = useForm<Book>();
-  // const form = useForm<IForm>({
-  //   initialValues: {
-  //     title: '',
-  //     author: '',
-  //     isbn: '',
-  //     publisher: '',
-  //     numberOfPages: undefined,
-  //     description: '',
-  //   },
-  //   validate: {
-  //     title: (value) => (value !== '' ? null : 'Title is required'),
-  //     author: (value) => (value !== '' ? null : 'Author is required'),
-  //     isbn: (value) => (value !== undefined ? null : 'ISBN is required'),
-  //     publisher: (value) => (value !== '' ? null : 'Publisher is required'),
-  //     numberOfPages: (value) => {
-  //       if (value === undefined) return 'Number of pages is required';
-  //       if (value === 0) return 'Number of pages should be larger than 0';
-  //       return null;
-  //     },
-  //     description: (value) => (value !== '' ? null : 'Description is required'),
-  //   },
-  // });
-
   const { isXs, isMd } = useBreakpoint();
 
   if (error) {
@@ -96,28 +75,23 @@ const Update = () => {
 
   const book = data.data;
 
-  // if (book && isFormFilled.current === false) {
-  //   form.setValues({
-  //     title: book.title,
-  //     author: book.author,
-  //     isbn: book.isbn,
-  //     description: book.description,
-  //     numberOfPages: book.numberOfPages,
-  //     publisher: book.publisher,
-  //   });
-  //   isFormFilled.current = true;
-  // }
-
   const onSubmit = async (values: Book) => {
     showUpdateNotif();
 
     if (coverImage) {
       try {
-        const { secure_url } = await uploadImage(coverImage as File);
+        const oldFileName = book.coverImage;
+        await deleteImage(oldFileName);
+        // console.log(fileName, coverImage);
+
+        const newFileName = `books/${Date.now()}-${
+          coverImage?.name
+        }`.replaceAll(' ', '-');
+        await uploadImage(coverImage as File, newFileName);
         await axiosInstance.patch(`/books/${book.ID}`, {
           ...values,
           numberOfPages: Number(values.numberOfPages),
-          coverImage: secure_url,
+          coverImage: newFileName,
         });
 
         mutate();
@@ -131,7 +105,6 @@ const Update = () => {
         console.error(err);
         if (axios.isAxiosError(err)) {
           const { message } = err.response?.data as ErrorData;
-          // console.error('error:', errorData);
           mutateUpdateNotif({
             color: 'red',
             title: 'Failed!',
@@ -260,8 +233,8 @@ const Update = () => {
                 placeholder='Example: This book explains about how to become a catfish farmer'
                 label='Description'
                 autosize
-                minRows={isMd ? 2 : 3}
-                maxRows={isMd ? 2 : 4}
+                minRows={3}
+                maxRows={4}
                 required
                 {...register('description', { required: true })}
                 defaultValue={book.description}
@@ -295,7 +268,7 @@ const Update = () => {
                       coverImage={
                         coverImage
                           ? URL.createObjectURL(coverImage as File)
-                          : book.coverImage
+                          : (getImageUrl(book.coverImage) as string)
                       }
                       title={
                         coverImage
