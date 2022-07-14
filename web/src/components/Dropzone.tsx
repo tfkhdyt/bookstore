@@ -69,7 +69,7 @@ export default function MyDropzone({ setCoverImage }: MyDropzoneProps) {
         console.error(files[0]);
         files[0].errors.forEach((error, index) => {
           let errorType = error.code.replaceAll('-', ' ');
-          errorType = errorType[0].toUpperCase() + errorType.slice(2);
+          errorType = errorType[0].toUpperCase() + errorType.slice(1);
           showNotification({
             id: `image-rejection-${index}`,
             title: errorType,
