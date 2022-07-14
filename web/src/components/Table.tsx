@@ -80,7 +80,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                       width: '100%',
                       height: '100%',
                       display: 'flex',
-                      // justifyContent: 'start',
+                      justifyContent: 'start',
                     }}
                   >
                     {row.coverImage ? (
