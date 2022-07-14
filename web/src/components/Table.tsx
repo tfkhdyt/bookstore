@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import 'react-medium-image-zoom/dist/styles.css';
-
 import { Box, Center, Space, Stack, Table } from '@mantine/core';
 import { useEffect } from 'react';
 import Zoom from 'react-medium-image-zoom';
