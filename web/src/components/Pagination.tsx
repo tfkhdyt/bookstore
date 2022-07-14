@@ -48,7 +48,9 @@ const MyPagination = ({ totalData }: PaginationProps) => {
   if (totalData === 0) {
     return (
       <Center sx={{ width: '100%' }}>
-        <Text weight={600}>No data, please add some</Text>
+        <Text weight={600} color='dimmed'>
+          No data, please add some!
+        </Text>
       </Center>
     );
   }
