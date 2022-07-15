@@ -1,4 +1,5 @@
 import { Box, Center, Loader, Space, Title } from '@mantine/core';
+import axios from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import useSWR from 'swr';
@@ -9,6 +10,7 @@ import Table from '@/components/Table';
 import { fetcher } from '@/lib/fetcher';
 import { usePaginationStore } from '@/store/pagination';
 import { Book } from '@/types/Book';
+import { ErrorData } from '@/types/FetchErrorData';
 
 interface IFetcher {
   data: Book[];
@@ -36,7 +38,13 @@ const ManageBooks: NextPage = () => {
         <AddButton />
         <Space h='sm' />
         <Box>
-          {error && <Error />}
+          {error ||
+            (axios.isAxiosError(error) && (
+              <Error
+                message={(error.response?.data as ErrorData).message}
+                status={error.response?.status}
+              />
+            ))}
           {!data ? (
             <Center style={{ width: '100%', height: '75vh' }}>
               <Loader />

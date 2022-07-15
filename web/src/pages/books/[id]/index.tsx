@@ -10,6 +10,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
+import axios from 'axios';
 import { format } from 'date-fns';
 import useBreakpoint from 'hooks/useBreakpoint';
 import Head from 'next/head';
@@ -22,10 +23,10 @@ import useSWR from 'swr';
 import DeleteButton from '@/components/Buttons/Delete';
 import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
-import { FetchError } from '@/lib/error/FetchError';
 import { fetcher } from '@/lib/fetcher';
 import { getImageUrl } from '@/lib/supabase/storage/getImageUrl';
 import { Book } from '@/types/Book';
+import { ErrorData } from '@/types/FetchErrorData';
 
 interface IFetcher {
   data: Book;
@@ -43,8 +44,13 @@ const Detail = () => {
   );
 
   if (error) {
-    if (error instanceof FetchError) {
-      return <Error message={error.message} status={error.status as number} />;
+    if (axios.isAxiosError(error)) {
+      return (
+        <Error
+          message={(error.response?.data as ErrorData).message}
+          status={error.response?.status}
+        />
+      );
     } else {
       return <Error />;
     }
@@ -58,7 +64,7 @@ const Detail = () => {
     );
 
   const book = data.data;
-  console.log(book);
+  // console.log(book);
 
   return (
     <>

@@ -28,7 +28,6 @@ import MyDropzone from '@/components/Dropzone';
 import Error from '@/components/Error';
 import { PreviewImage } from '@/components/PreviewImage';
 import { axiosInstance } from '@/lib/axios';
-import { FetchError } from '@/lib/error/FetchError';
 import { fetcher } from '@/lib/fetcher';
 import {
   mutateUpdateNotif,
@@ -59,8 +58,13 @@ const Update = () => {
   const { isXs, isMd } = useBreakpoint();
 
   if (error) {
-    if (error instanceof FetchError) {
-      return <Error message={error.message} status={error.status as number} />;
+    if (axios.isAxiosError(error)) {
+      return (
+        <Error
+          message={(error.response?.data as ErrorData).message}
+          status={error.response?.status}
+        />
+      );
     } else {
       return <Error />;
     }
