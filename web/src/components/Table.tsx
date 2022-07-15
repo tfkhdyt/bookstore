@@ -71,8 +71,10 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
                     textAlign: ['Cover Image', 'ID', 'Actions'].includes(col)
                       ? 'center'
                       : undefined,
-                    width: ['Cover Image', 'ID', 'Actions'].includes(col)
-                      ? 30
+                    width: ['Cover Image', 'Actions'].includes(col)
+                      ? 150
+                      : col === 'ID'
+                      ? 20
                       : undefined,
                   }}
                 >
@@ -86,12 +88,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
               <tr key={index}>
                 <td style={{ textAlign: 'center' }}>{row.ID}</td>
                 <td>
-                  <Center
-                  // style={{
-                  //   width: '6rem',
-                  //   height: '8rem',
-                  // }}
-                  >
+                  <Center>
                     {row.coverImage ? (
                       <Zoom
                         overlayBgColorEnd='rgba(0, 0, 0, 0.5)'
