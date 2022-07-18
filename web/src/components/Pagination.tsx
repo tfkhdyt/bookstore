@@ -1,5 +1,7 @@
 import { Center, Pagination, Text } from '@mantine/core';
+import { m } from 'framer-motion';
 
+import { variants } from '@/animations/variants';
 import { usePaginationStore } from '@/store/pagination';
 
 interface PaginationProps {
@@ -47,7 +49,15 @@ const MyPagination = ({ totalData }: PaginationProps) => {
 
   if (totalData === 0) {
     return (
-      <Center sx={{ width: '100%' }}>
+      <Center
+        sx={{ width: '100%' }}
+        component={m.div}
+        variants={variants}
+        initial='hidden'
+        animate='enter'
+        exit='exit'
+        key='table'
+      >
         <Text weight={600} color='dimmed'>
           No data, please add some!
         </Text>
