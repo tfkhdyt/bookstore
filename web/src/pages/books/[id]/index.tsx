@@ -90,50 +90,56 @@ const Detail = () => {
         </Breadcrumbs>
         <Title order={2}>Book Detail: {book.title}</Title>
         <Space h='md' />
-        <Grid grow align='flex-start' gutter={60}>
+        <Grid align='flex-start' gutter={60}>
           {/* Book Detail */}
-          <Grid.Col xs={12} md={6}>
+          <Grid.Col xs={12} md={5}>
             <List spacing='sm' sx={{ listStyle: 'none' }}>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Title:
                 </Text>
                 <Text size='md'>{book.title}</Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Author:
                 </Text>
                 <Text size='md'>{book.author}</Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   ISBN:
                 </Text>
                 <Text size='md'>{book.isbn}</Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Description:
                 </Text>
-                <Text size='md' sx={{ fontStyle: 'italic' }} align='justify'>
+                <Text
+                  size='md'
+                  sx={{
+                    fontStyle: 'italic',
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
                   {book.description}
                 </Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Publisher:
                 </Text>
                 <Text size='md'>{book.publisher}</Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Number of pages:
                 </Text>
                 <Text size='md'>{book.numberOfPages}</Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Created at:
                 </Text>
                 <Text size='md'>
@@ -141,7 +147,7 @@ const Detail = () => {
                 </Text>
               </List.Item>
               <List.Item>
-                <Text size='lg' weight={600}>
+                <Text size='lg' weight={700}>
                   Updated at:
                 </Text>
                 <Text size='md'>
@@ -151,12 +157,12 @@ const Detail = () => {
             </List>
           </Grid.Col>
           {/* Book Cover */}
-          <Grid.Col xs={12} md={6} p={isMd ? undefined : 0}>
+          <Grid.Col xs={12} md={7} p={isMd ? undefined : 0}>
             <Center
               sx={{
                 position: 'relative',
                 width: '100%',
-                height: isMd ? '32rem' : isXs ? '15rem' : '15rem',
+                height: isMd ? '46rem' : '15rem',
               }}
             >
               <Image
