@@ -36,7 +36,7 @@ const Detail = () => {
   const router = useRouter();
   const { id } = router.query;
   const [bookID] = useState(id);
-  const { isXs, isMd } = useBreakpoint();
+  const { isMd } = useBreakpoint();
 
   const { data, error } = useSWR<IFetcher>(
     bookID ? `/books/${bookID}` : null,

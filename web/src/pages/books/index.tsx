@@ -4,7 +4,6 @@ import {
   Grid,
   Loader,
   Select,
-  SimpleGrid,
   Space,
   TextInput,
   Title,
@@ -14,7 +13,7 @@ import axios from 'axios';
 import { m } from 'framer-motion';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 import { Category, Search } from 'tabler-icons-react';
 
