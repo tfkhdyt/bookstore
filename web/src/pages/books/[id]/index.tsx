@@ -12,7 +12,6 @@ import {
 } from '@mantine/core';
 import axios from 'axios';
 import { format } from 'date-fns';
-import useBreakpoint from 'hooks/useBreakpoint';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,6 +22,7 @@ import useSWR from 'swr';
 import DeleteButton from '@/components/Buttons/Delete';
 import UpdateButton from '@/components/Buttons/Update';
 import Error from '@/components/Error';
+import useBreakpoint from '@/hooks/useBreakpoint';
 import { fetcher } from '@/lib/fetcher';
 import { getImageUrl } from '@/lib/supabase/storage/getImageUrl';
 import { Book } from '@/types/Book';

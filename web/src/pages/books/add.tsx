@@ -14,7 +14,6 @@ import {
   Title,
 } from '@mantine/core';
 import axios from 'axios';
-import useBreakpoint from 'hooks/useBreakpoint';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -23,6 +22,7 @@ import { Check, DeviceFloppy, X } from 'tabler-icons-react';
 
 import MyDropzone from '@/components/Dropzone';
 import { PreviewImage } from '@/components/PreviewImage';
+import useBreakpoint from '@/hooks/useBreakpoint';
 import { axiosInstance } from '@/lib/axios';
 import {
   showCreateNotif,
