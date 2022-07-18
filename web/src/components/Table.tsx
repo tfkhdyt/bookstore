@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box, Center, Space, Stack, Table } from '@mantine/core';
 import { m } from 'framer-motion';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import Zoom from 'react-medium-image-zoom';
 
 import { variants } from '@/animations/variants';
@@ -34,6 +34,9 @@ interface MyTableProps {
 }
 
 function MyTable({ books, totalData, mutate }: MyTableProps) {
+  const memoizedBooks = useMemo(() => books, [books]);
+  // const memoizedTotalData = useMemo(() => totalData, [totalData]);
+  // const memoizedMutate = useCallback(mutate, [mutate]);
   const activePage = usePaginationStore((state) => state.activePage);
 
   useEffect(() => {
@@ -48,12 +51,12 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
           overflowX: 'auto',
           flexDirection: 'column',
         }}
-        component={m.div}
-        variants={variants}
-        initial='hidden'
-        animate='enter'
-        exit='exit'
-        key='table'
+        // component={m.div}
+        // variants={variants}
+        // initial='hidden'
+        // animate='enter'
+        // exit='exit'
+        // key='table'
       >
         <Table
           fontSize='md'
@@ -86,7 +89,7 @@ function MyTable({ books, totalData, mutate }: MyTableProps) {
             </tr>
           </thead>
           <tbody>
-            {books.map((row, index) => (
+            {memoizedBooks.map((row, index) => (
               <tr key={index}>
                 <td style={{ textAlign: 'center' }}>{row.ID}</td>
                 <td>

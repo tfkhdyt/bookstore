@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  Grid,
   Loader,
   Select,
   SimpleGrid,
@@ -13,7 +14,7 @@ import axios from 'axios';
 import { m } from 'framer-motion';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Category, Search } from 'tabler-icons-react';
 
@@ -46,11 +47,13 @@ const ManageBooks: NextPage = () => {
     string | null
   >('title');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [debounced] = useDebouncedValue(searchQuery, 1000);
+  const [debounced] = useDebouncedValue(searchQuery, 1000, { leading: true });
 
   const { data, error, mutate } = useSWR<IFetcher>(
-    activePage && limit
+    activePage && limit && debounced !== ''
       ? `/books?limit=${limit}&page=${activePage}&${activeSearchCategory}=${debounced}`
+      : activePage && limit
+      ? `/books?limit=${limit}&page=${activePage}`
       : null,
     activePage && limit ? fetcher : null
   );
@@ -64,14 +67,18 @@ const ManageBooks: NextPage = () => {
       <main>
         <Title order={2}>Manage Books</Title>
         <Space h='md' />
-        <SimpleGrid cols={isMd ? 2 : 1}>
-          <Box>
+        <Grid>
+          <Grid.Col xs={12} md={6}>
             <AddButton />
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          </Grid.Col>
+          <Grid.Col
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            xs={12}
+            md={6}
+          >
             <Select
               placeholder='Search by'
-              sx={{ width: '9rem' }}
+              sx={{ width: 140 }}
               icon={<Category />}
               defaultValue='title'
               value={activeSearchCategory}
@@ -82,13 +89,16 @@ const ManageBooks: NextPage = () => {
             <Space w={8} />
             <TextInput
               placeholder='Example: Bumi Manusia'
-              sx={{ width: isMd ? '24rem' : '12rem' }}
+              sx={{
+                width: 400,
+                flexGrow: isMd ? undefined : 1,
+              }}
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.currentTarget.value)}
               icon={<Search />}
             />
-          </Box>
-        </SimpleGrid>
+          </Grid.Col>
+        </Grid>
         <Space h='sm' />
         <Box>
           {error ||

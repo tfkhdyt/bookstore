@@ -36,3 +36,14 @@ func GetTotalData(db *gorm.DB) (int, error) {
 
 	return len(books), nil
 }
+
+func GetTotalDataByQuery(db *gorm.DB, query string, value string) (int, error) {
+	var books []models.Book
+	queryString := fmt.Sprintf("%s ILIKE ?", query)
+
+	if err := db.Where(queryString, "%"+value+"%").Find(&books).Error; err != nil {
+		return 0, err
+	}
+
+	return len(books), nil
+}
