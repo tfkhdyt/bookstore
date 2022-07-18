@@ -2,10 +2,10 @@ package books
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tfkhdyt/bookstore/api/helpers/responses"
 	"github.com/tfkhdyt/bookstore/api/models"
 	booksServices "github.com/tfkhdyt/bookstore/api/services/books"
 )
@@ -18,57 +18,93 @@ func (repo *BooksRepository) FindAll(c *gin.Context) {
 	page := c.Query("page")
 	limit := c.Query("limit")
 
-	if page != "" && limit != "" {
+	// search by query
+	titleQuery := c.Query("title")
+	authorQuery := c.Query("author")
+	isbnQuery := c.Query("isbn")
+	publisherQuery := c.Query("publisher")
+
+	if titleQuery != "" || authorQuery != "" || isbnQuery != "" || publisherQuery != "" {
 		page, err := strconv.Atoi(page)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error":   err.Error(),
-				"message": "Failed to convert page to int",
-			})
+			responses.BadRequest(c, err, "Failed to convert page to int")
 			return
 		}
 
 		limit, err := strconv.Atoi(limit)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error":   err.Error(),
-				"message": "Failed to convert limit to int",
-			})
+			responses.BadRequest(c, err, "Failed to convert page to int")
+			return
+		}
+
+		if titleQuery != "" {
+			if err := booksServices.FindAllBooksByQueryWithPagination(repo.DB, &books, "title", titleQuery, page, limit); err != nil {
+				responses.BadRequest(c, err, "Failed to query books by title")
+				return
+			}
+			responses.Ok(c, &books, len(books))
+			return
+		}
+		if authorQuery != "" {
+			if err := booksServices.FindAllBooksByQueryWithPagination(repo.DB, &books, "author", authorQuery, page, limit); err != nil {
+				responses.BadRequest(c, err, "Failed to query books by author")
+				return
+			}
+			responses.Ok(c, &books, len(books))
+			return
+		}
+		if isbnQuery != "" {
+			if err := booksServices.FindAllBooksByQueryWithPagination(repo.DB, &books, "isbn", isbnQuery, page, limit); err != nil {
+				responses.BadRequest(c, err, "Failed to query books by isbn")
+				return
+			}
+			responses.Ok(c, &books, len(books))
+			return
+		}
+		if publisherQuery != "" {
+			if err := booksServices.FindAllBooksByQueryWithPagination(repo.DB, &books, "publisher", publisherQuery, page, limit); err != nil {
+				responses.BadRequest(c, err, "Failed to query books by publisher")
+				return
+			}
+			responses.Ok(c, &books, len(books))
+			return
+		}
+	}
+	// ==============
+
+	if page != "" && limit != "" {
+		page, err := strconv.Atoi(page)
+		if err != nil {
+			responses.BadRequest(c, err, "Failed to convert page to int")
+			return
+		}
+
+		limit, err := strconv.Atoi(limit)
+		if err != nil {
+			responses.BadRequest(c, err, "Failed to convert page to int")
 			return
 		}
 
 		if err := booksServices.FindAllBooksWithLimit(repo.DB, &books, page, limit); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
+			responses.InternalServerError(c, err)
 			return
 		}
 
 		fmt.Println("Paginated books printed!")
-		totalData, err := booksServices.GetTotalData(repo.DB)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
+			responses.InternalServerError(c, err)
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"data":      books,
-			"totalData": totalData,
-		})
+		responses.Ok(c, &books, len(books))
 		return
 	}
 
 	if err := booksServices.FindAllBooksWithoutLimit(repo.DB, &books); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		responses.InternalServerError(c, err)
 		return
 	}
 
 	fmt.Println("All books printed!")
-	c.JSON(http.StatusOK, gin.H{
-		"data": books,
-	})
+	responses.Ok(c, &books, len(books))
 }

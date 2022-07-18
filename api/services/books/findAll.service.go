@@ -1,6 +1,8 @@
 package books
 
 import (
+	"fmt"
+
 	"github.com/tfkhdyt/bookstore/api/models"
 	"gorm.io/gorm"
 )
@@ -11,6 +13,18 @@ func FindAllBooksWithLimit(db *gorm.DB, books *[]models.Book, page int, limit in
 
 func FindAllBooksWithoutLimit(db *gorm.DB, books *[]models.Book) error {
 	return db.Order("id ASC").Find(books).Error
+}
+
+func FindAllBooksByQuery(db *gorm.DB, books *[]models.Book, query string, value string) error {
+	fmt.Printf("Query by %s with value %s\n", query, value)
+	queryString := fmt.Sprintf("%s ILIKE ?", query)
+	return db.Where(queryString, "%"+value+"%").Order("id ASC").Find(books).Error
+}
+
+func FindAllBooksByQueryWithPagination(db *gorm.DB, books *[]models.Book, query string, value string, page int, limit int) error {
+	fmt.Printf("Query by %s with value %s\n", query, value)
+	queryString := fmt.Sprintf("%s ILIKE ?", query)
+	return db.Where(queryString, "%"+value+"%").Limit(limit).Offset(limit * (page - 1)).Order("id ASC").Find(books).Error
 }
 
 func GetTotalData(db *gorm.DB) (int, error) {
