@@ -2,7 +2,9 @@ import {
   Box,
   Center,
   Grid,
+  Group,
   Loader,
+  MediaQuery,
   Select,
   Space,
   TextInput,
@@ -65,37 +67,39 @@ const ManageBooks: NextPage = () => {
       {/* <Table /> */}
       <main>
         <Title order={2}>Manage Books</Title>
-        <Space h='md' />
-        <Grid>
-          <Grid.Col xs={12} md={6}>
+        <MediaQuery largerThan='md' styles={{ display: 'none' }}>
+          <Space h='md' />
+        </MediaQuery>
+        <Grid justify='space-between' align='flex-end'>
+          <Grid.Col xs={12} lg={6}>
             <AddButton />
           </Grid.Col>
-          <Grid.Col
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
-            xs={12}
-            md={6}
-          >
-            <Select
-              placeholder='Search by'
-              sx={{ width: 140 }}
-              icon={<Category />}
-              defaultValue='title'
-              value={activeSearchCategory}
-              onChange={setActiveSearchCategory}
-              data={searchCategory}
-              withinPortal={false}
-            />
-            <Space w={8} />
-            <TextInput
-              placeholder='Example: Bumi Manusia'
-              sx={{
-                width: 400,
-                flexGrow: isMd ? undefined : 1,
-              }}
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.currentTarget.value)}
-              icon={<Search />}
-            />
+          <Grid.Col xs={12} lg={6}>
+            <Grid justify='flex-end' gutter='xs'>
+              <Grid.Col xs={6} lg={6}>
+                <TextInput
+                  label='Search data'
+                  placeholder='Example: Bumi Manusia'
+                  value={searchQuery}
+                  onChange={(event) =>
+                    setSearchQuery(event.currentTarget.value)
+                  }
+                  icon={<Search />}
+                />
+              </Grid.Col>
+              <Grid.Col xs={6} lg={4} xl={3}>
+                <Select
+                  label='Search by'
+                  placeholder='Search by'
+                  icon={<Category />}
+                  defaultValue='title'
+                  value={activeSearchCategory}
+                  onChange={setActiveSearchCategory}
+                  data={searchCategory}
+                  withinPortal={false}
+                />
+              </Grid.Col>
+            </Grid>
           </Grid.Col>
         </Grid>
         <Space h='sm' />
