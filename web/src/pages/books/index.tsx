@@ -2,7 +2,6 @@ import {
   Box,
   Center,
   Grid,
-  Group,
   Loader,
   MediaQuery,
   Select,
@@ -23,7 +22,6 @@ import { variants } from '@/animations/variants';
 import AddButton from '@/components/Buttons/Add';
 import Error from '@/components/Error';
 import Table from '@/components/Table';
-import useBreakpoint from '@/hooks/useBreakpoint';
 import { fetcher } from '@/lib/fetcher';
 import { usePaginationStore } from '@/store/pagination';
 import { Book } from '@/types/Book';
@@ -37,7 +35,6 @@ interface IFetcher {
 const ManageBooks: NextPage = () => {
   const activePage = usePaginationStore((state) => state.activePage);
   const limit = usePaginationStore((state) => state.limit);
-  const { isMd } = useBreakpoint();
   const [searchCategory] = useState([
     { value: 'title', label: 'Title' },
     { value: 'author', label: 'Author' },
@@ -48,7 +45,7 @@ const ManageBooks: NextPage = () => {
     string | null
   >('title');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [debounced] = useDebouncedValue(searchQuery, 1000, { leading: true });
+  const [debounced] = useDebouncedValue(searchQuery, 1000);
 
   const { data, error, mutate } = useSWR<IFetcher>(
     activePage && limit && debounced !== ''
