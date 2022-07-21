@@ -8,6 +8,7 @@ import {
   Space,
   TextInput,
   Title,
+  useMantineTheme,
 } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import axios from 'axios';
@@ -46,6 +47,7 @@ const ManageBooks: NextPage = () => {
   >('title');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debounced] = useDebouncedValue(searchQuery, 1000);
+  const theme = useMantineTheme();
 
   const { data, error, mutate } = useSWR<IFetcher>(
     activePage && limit && debounced !== ''
@@ -84,18 +86,16 @@ const ManageBooks: NextPage = () => {
                   icon={<Search />}
                   rightSection={
                     searchQuery ? (
-                      <X size={14} onClick={() => setSearchQuery('')} />
+                      <X
+                        size={14}
+                        onClick={() => setSearchQuery('')}
+                        style={{
+                          cursor: 'pointer',
+                          color: theme.colors.gray[6],
+                        }}
+                      />
                     ) : undefined
                   }
-                  styles={(theme) => ({
-                    rightSection: {
-                      color: theme.colors.gray[6],
-                      cursor: 'pointer',
-                      '&:hover': {
-                        color: theme.colors.red[7],
-                      },
-                    },
-                  })}
                 />
               </Grid.Col>
               <Grid.Col xs={6} lg={4} xl={3}>
