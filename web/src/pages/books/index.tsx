@@ -16,7 +16,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import useSWR from 'swr';
-import { Category, Search } from 'tabler-icons-react';
+import { Category, Search, X } from 'tabler-icons-react';
 
 import { variants } from '@/animations/variants';
 import AddButton from '@/components/Buttons/Add';
@@ -82,6 +82,20 @@ const ManageBooks: NextPage = () => {
                     setSearchQuery(event.currentTarget.value)
                   }
                   icon={<Search />}
+                  rightSection={
+                    searchQuery ? (
+                      <X size={14} onClick={() => setSearchQuery('')} />
+                    ) : undefined
+                  }
+                  styles={(theme) => ({
+                    rightSection: {
+                      color: theme.colors.gray[6],
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: theme.colors.red[7],
+                      },
+                    },
+                  })}
                 />
               </Grid.Col>
               <Grid.Col xs={6} lg={4} xl={3}>
