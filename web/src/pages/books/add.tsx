@@ -38,7 +38,7 @@ const AddBook = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Book>();
 
   const { isXs, isMd } = useBreakpoint();
@@ -203,7 +203,12 @@ const AddBook = () => {
             </Grid.Col>
           </Grid>
           <Space h='lg' />
-          <Button type='submit' leftIcon={<DeviceFloppy />} variant='light'>
+          <Button
+            type='submit'
+            leftIcon={<DeviceFloppy />}
+            variant='light'
+            loading={isSubmitting}
+          >
             Save
           </Button>
         </form>

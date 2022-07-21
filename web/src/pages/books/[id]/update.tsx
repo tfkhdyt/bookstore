@@ -54,7 +54,11 @@ const Update = () => {
     bookID ? fetcher : null
   );
 
-  const { register, handleSubmit } = useForm<Book>();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Book>();
   const { isXs, isMd } = useBreakpoint();
 
   if (error) {
@@ -286,7 +290,12 @@ const Update = () => {
             </Grid.Col>
           </Grid>
           <Space h='lg' />
-          <Button type='submit' leftIcon={<DeviceFloppy />} variant='light'>
+          <Button
+            type='submit'
+            leftIcon={<DeviceFloppy />}
+            variant='light'
+            loading={isSubmitting}
+          >
             Save
           </Button>
         </form>
