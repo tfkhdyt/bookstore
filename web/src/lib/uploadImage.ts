@@ -27,7 +27,7 @@ export const uploadImage = async (image: File) => {
 
   return new Promise<UploadImageResult>((resolve, reject) => {
     if (result.status === 200) {
-      console.log(result.data);
+      // console.log(result.data);
       resolve(result.data);
     } else {
       reject('Upload image failed');
