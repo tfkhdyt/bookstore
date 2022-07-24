@@ -1,6 +1,6 @@
 start-api: 
 	@cd api && \
-	reflex -r ".go" -s go run .
+	reflex -g "*.go" -s -- go run .
 
 start-web:
 	@cd web && \
@@ -15,9 +15,14 @@ stop-db:
 status-db:
 	@systemctl status postgresql
 
-build: 
+build-linux: 
 	@cd api && \
-	rm -fr ./bin/* && \
-	go build -o "./bin/bookstore-linux" . && \
-	GOOS=windows go build -o "./bin/bookstore-windows.exe" . && \
-	GOOS=darwin go build -o "./bin/bookstore-mac" .
+	go build -o bin/bookstore-linux .
+
+build-windows:
+	@cd api && \
+	GOOS=windows go build -o bin/bookstore-windows.exe .
+
+build-mac:
+	@cd api && \
+	GOOS=darwin go build -o bin/bookstore-mac .
