@@ -26,3 +26,4 @@ build-windows:
 build-mac:
 	@cd api && \
 	GOOS=darwin go build -o bin/bookstore-mac .
+
